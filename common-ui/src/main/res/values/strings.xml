@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preview_headline_text">Заголовок</string>
+    <string name="preview_support_text">Подзаголовок с описанием чего то важного</string>
+    <string name="preview_extra_headline_text">25</string>
+
+</resources>

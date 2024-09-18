@@ -1,0 +1,118 @@
+[versions]
+agp = "8.5.0"
+accompanistSwiperefresh = "0.24.2-alpha"
+activityCompose = "1.9.2"
+androidGradlePlugin = "8.2.2"
+compose = "1.5.1"
+composeBom = "2024.04.01"
+composeCharts = "0.2.1"
+core = "1.1.2-beta"
+coreKtx = "1.13.1"
+espressoCore = "3.6.1"
+hiltAndroid = "2.51.1"
+hiltNavigationCompose = "1.2.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+kotlin = "1.9.0"
+kotlinCoroutines = "1.7.1"
+lifecycleRuntimeCompose = "2.8.5"
+lifecycleRuntimeKtx = "2.8.5"
+material3 = "1.2.1"
+navigation = "2.5.3"
+okhttp = "4.11.0"
+pagingCompose = "3.3.2"
+retrofit = "2.9.0"
+roomKtx = "2.6.1"
+symbolProcessingApi = "1.9.0-1.0.12"
+ycharts = "2.1.0"
+appcompat = "1.7.0"
+material = "1.12.0"
+
+[libraries]
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+#Android
+androidToolsBuildGradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+
+#Accompanist
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
+
+#Bytebeats charts
+compose-charts = { module = "io.github.bytebeats:compose-charts", version.ref = "composeCharts" }
+
+#Desugaring
+desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
+
+#Hilt
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationCompose" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+
+#Paging
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+
+#Room
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
+
+#Moshi converter
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+
+#Compose Destinations
+compose-destinations = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "core" }
+ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "core" }
+
+#Navigation
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
+#Coroutines
+kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+testCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+
+#OkHttp
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
+#Retrofit
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+#Ycharts
+ycharts = { module = "co.yml:ycharts", version.ref = "ycharts" }
+
+#ksp
+symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "symbolProcessingApi" }
+
+#UTILS
+coil = "io.coil-kt:coil-compose:2.4.0"
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hiltAndroid = {id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid"}
+kspSymbolProcessing = {id = "com.google.devtools.ksp", version.ref = "symbolProcessingApi"}
+kotlinKapt = { id = "kotlin-kapt", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
