@@ -99,6 +99,7 @@ fun CryptoSearchBar(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
+            .fillMaxWidth()
             .focusRequester(focusRequester)
             .onFocusChanged { focusState ->
                 isFocused.value = focusState.isFocused

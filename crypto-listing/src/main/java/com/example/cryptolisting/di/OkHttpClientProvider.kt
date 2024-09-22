@@ -22,18 +22,22 @@ class OkHttpClientProvider (private val app : Application) {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
+        // API Key Interceptor
+        val apiKeyInterceptor = { chain: okhttp3.Interceptor.Chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+                .header("X-API-KEY", BuildConfig.API_KEY)
+                .header("accept", "application/json")
+
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+
         // Настройка OkHttpClient с кэшем и логированием
         return OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(logging)
-            .addNetworkInterceptor { chain ->
-                val response = chain.proceed(chain.request())
-                //время жизни кэша 300 секунд
-                response.newBuilder()
-                    .header("Cache-Control", "public, max-age=300")
-                    .header("X-API-KEY", BuildConfig.API_KEY)
-                    .build()
-            }
+            .addInterceptor(apiKeyInterceptor)
             .build()
     }
 }

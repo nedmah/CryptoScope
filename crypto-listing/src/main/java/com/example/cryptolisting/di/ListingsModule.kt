@@ -11,6 +11,7 @@ import com.example.core.Constants
 import com.example.cryptolisting.data.local.CryptoDb
 import com.example.cryptolisting.data.local.CryptoListingEntity
 import com.example.cryptolisting.data.remote.CryptoListingsApi
+import com.example.cryptolisting.data.remote.ListingsRemoteMediator
 import com.example.cryptolisting.data.repository.CryptoListingRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -54,7 +55,7 @@ object ListingsModule {
     fun provideCryptoPager(db: CryptoDb, api: CryptoListingsApi) : Pager<Int, CryptoListingEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = CryptoListingRepositoryImpl(api, db),
+            remoteMediator = ListingsRemoteMediator(api, db),
             pagingSourceFactory = {db.getCryptoListingsDao().pagingSource()}
         )
     }

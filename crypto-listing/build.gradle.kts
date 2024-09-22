@@ -43,6 +43,9 @@ android {
 
 dependencies {
 
+    implementation(project(":core"))
+    implementation(project(":common-ui"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -77,5 +80,11 @@ dependencies {
 
     //Paging
     implementation(libs.androidx.paging.compose)
+
+    // Coil Compose
+    implementation (libs.coil)
+
+    // Accompanists swipeRefresh
+    implementation(libs.accompanist.swiperefresh)
 
 }
