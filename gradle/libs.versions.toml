@@ -9,6 +9,7 @@ composeCharts = "0.2.1"
 core = "1.1.2-beta"
 coreKtx = "1.13.1"
 espressoCore = "3.6.1"
+gson = "2.11.0"
 hiltAndroid = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
@@ -31,6 +32,7 @@ material = "1.12.0"
 [libraries]
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -115,4 +117,5 @@ hiltAndroid = {id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid
 kspSymbolProcessing = {id = "com.google.devtools.ksp", version.ref = "symbolProcessingApi"}
 kotlinKapt = { id = "kotlin-kapt", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+parcelize = {id = "kotlin-parcelize"}
 

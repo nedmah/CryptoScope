@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kspSymbolProcessing)
     id(libs.plugins.kotlinKapt.get().pluginId)
+    id(libs.plugins.parcelize.get().pluginId)
 }
 
 android {
@@ -56,7 +57,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(project(":core"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,5 +86,12 @@ dependencies {
 
     // Accompanists swipeRefresh
     implementation(libs.accompanist.swiperefresh)
+
+    //charts
+    implementation(libs.compose.charts)
+
+    //gson
+    implementation (libs.gson)
+
 
 }

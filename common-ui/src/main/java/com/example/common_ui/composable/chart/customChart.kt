@@ -1,17 +1,22 @@
 package com.example.common_ui.composable.chart
 
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.unit.dp
 import me.bytebeats.views.charts.line.LineChart
 import me.bytebeats.views.charts.line.LineChartData
 import me.bytebeats.views.charts.line.render.line.EmptyLineShader
+import me.bytebeats.views.charts.line.render.line.GradientLineShader
 import me.bytebeats.views.charts.line.render.line.ILineDrawer
 import me.bytebeats.views.charts.line.render.line.ILineShader
 import me.bytebeats.views.charts.line.render.line.SolidLineDrawer
+import me.bytebeats.views.charts.line.render.point.EmptyPointDrawer
 import me.bytebeats.views.charts.line.render.point.FilledCircularPointDrawer
 import me.bytebeats.views.charts.line.render.point.IPointDrawer
 import me.bytebeats.views.charts.line.render.xaxis.IXAxisDrawer
@@ -25,9 +30,9 @@ fun CustomLineChart(
     lineChartData: LineChartData,
     modifier: Modifier = Modifier,
     animation: AnimationSpec<Float> = simpleChartAnimation(),
-    pointDrawer: IPointDrawer = FilledCircularPointDrawer(),
-    lineDrawer: ILineDrawer = SolidLineDrawer(),
-    lineShader: ILineShader = EmptyLineShader,
+    pointDrawer: IPointDrawer = EmptyPointDrawer, //FilledCircularPointDrawer()
+    lineDrawer: ILineDrawer = SolidLineDrawer(thickness = 2.dp, color = MaterialTheme.colorScheme.error),
+    lineShader: ILineShader = GradientLineShader(colors = listOf( MaterialTheme.colorScheme.error, Color.Transparent)), //EmptyLineShader
     xAxisDrawer: IXAxisDrawer = SimpleXAxisDrawer(),
     yAxisDrawer: IYAxisDrawer = SimpleYAxisDrawer(),
     horizontalOffset: Float = 5F,

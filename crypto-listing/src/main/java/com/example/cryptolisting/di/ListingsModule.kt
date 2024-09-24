@@ -7,19 +7,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.room.Room
-import com.example.core.Constants
 import com.example.cryptolisting.data.local.CryptoDb
 import com.example.cryptolisting.data.local.CryptoListingEntity
 import com.example.cryptolisting.data.remote.CryptoListingsApi
 import com.example.cryptolisting.data.remote.ListingsRemoteMediator
-import com.example.cryptolisting.data.repository.CryptoListingRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -27,22 +23,12 @@ import javax.inject.Singleton
 object ListingsModule {
 
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClientProvider(app: Application): OkHttpClientProvider {
-        return OkHttpClientProvider(app)
-    }
 
     @Provides
     @Singleton
-    fun provideCryptoApi(okHttpClientProvider: OkHttpClientProvider) : CryptoListingsApi =
-        Retrofit
-            .Builder()
-            .baseUrl(Constants.BASE_URL)
-            .client(okHttpClientProvider.provideOkHttpClient())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create()
+    fun provideCryptoApi(retrofit: Retrofit): CryptoListingsApi {
+        return retrofit.create(CryptoListingsApi::class.java)
+    }
 
     @Provides
     @Singleton

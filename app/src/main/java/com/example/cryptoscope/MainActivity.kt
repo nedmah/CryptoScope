@@ -14,8 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.common_ui.composable.CryptoScrollableScaffold
 import com.example.common_ui.theme.CryptoScopeTheme
+import com.example.core.util.extensions.navigate
+import com.example.crypto_info.presentation.CryptoInfoScreen
+import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.CryptoListingsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,10 +31,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             CryptoScopeTheme {
                 Surface {
-                    CryptoListingsScreen()
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = "CryptoListings"
+                    ) {
+                        composable(route = "CryptoListings") {
+                            CryptoListingsScreen(navigate = { cryptoModelBundle ->
+                                navController.navigate(
+                                    route = "CryptoInfoScreen",
+                                    args = cryptoModelBundle
+                                )
+                            })
+                        }
+                        composable(route = "CryptoInfoScreen") {
+                            val cryptoData =
+                                navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
+                                    "cryptoInfo"
+                                )
+                            CryptoInfoScreen(cryptoModel = cryptoData!!){
+
+                            }
+                        }
+                    }
                 }
             }
         }

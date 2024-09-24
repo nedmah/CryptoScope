@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common-ui" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/crypto-info" />
             <option value="$PROJECT_DIR$/crypto-listing" />
           </set>
         </option>

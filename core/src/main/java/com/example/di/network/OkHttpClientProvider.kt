@@ -1,4 +1,4 @@
-package com.example.cryptolisting.di
+package com.example.di.network
 
 import android.app.Application
 import com.example.core.BuildConfig
@@ -12,7 +12,6 @@ import javax.inject.Singleton
 class OkHttpClientProvider (private val app : Application) {
 
     fun provideOkHttpClient(): OkHttpClient {
-        // Размер кэша (5 MB)
         val cacheSize = 5 * 1024 * 1024 // 5 MB
         val cacheDir = File(app.cacheDir, "http_cache")
         val cache = Cache(cacheDir, cacheSize.toLong())

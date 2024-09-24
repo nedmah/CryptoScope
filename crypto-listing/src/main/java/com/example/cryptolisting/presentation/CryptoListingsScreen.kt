@@ -1,22 +1,21 @@
 package com.example.cryptolisting.presentation
 
-import androidx.compose.foundation.layout.Box
+import android.os.Bundle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.common_ui.composable.CryptoScrollableLazyScaffold
 import com.example.common_ui.composable.CryptoSearchBar
-import com.example.common_ui.shimmerEffect
-import com.example.common_ui.theme.model.Paddings
+import com.example.common_ui.theme.paddings
+import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.composables.CryptoItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -24,17 +23,18 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun CryptoListingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: CryptoListingViewModel = hiltViewModel()
+    viewModel: CryptoListingViewModel = hiltViewModel(),
+    navigate: (Bundle) -> Unit
 ) {
     val state = viewModel.state
-    val cryptos = viewModel.pageFlow.collectAsLazyPagingItems()
+    val cryptosPagingItems = viewModel.pageFlow.collectAsLazyPagingItems()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(Paddings.medium),
+            .padding(MaterialTheme.paddings.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CryptoSearchBar(
@@ -42,37 +42,37 @@ fun CryptoListingsScreen(
             onValueChange = { viewModel.onEvent(CryptoListingsEvents.OnSearchQueryChange(it)) }
         )
 
-        if (cryptos.loadState.refresh is LoadState.Loading && state.cryptos.isEmpty()) {
-            CircularProgressIndicator()
+        if (cryptosPagingItems.loadState.refresh is LoadState.Loading) {
+            CircularProgressIndicator(modifier = modifier.padding(top = MaterialTheme.paddings.large))
         } else {
 
             SwipeRefresh(
                 modifier = modifier,
                 state = swipeRefreshState,
                 onRefresh = {
-                    cryptos.refresh()
+                    cryptosPagingItems.refresh()
 
                 }
             ) {
                 LazyColumn() {
-                    if (state.searchQuery.isNotBlank()) {
+                    if (state.cryptos.isNotEmpty() || state.searchQuery.isNotBlank()) {
                         items(state.cryptos.size) { index ->
                             val crypto = state.cryptos[index]
-                            CryptoItem(cryptoModel = crypto)
+                            CryptoItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) })
                         }
                     } else {
-                        if (cryptos.loadState.refresh != LoadState.Loading) {
-                            items(cryptos.itemCount) {
-                                val crypto = cryptos[it]
+                        if (cryptosPagingItems.loadState.refresh != LoadState.Loading) {
+                            items(cryptosPagingItems.itemCount) {
+                                val crypto = cryptosPagingItems[it]
                                 if (crypto != null) {
-                                    CryptoItem(cryptoModel = crypto)
+                                    CryptoItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) })
                                 }
                             }
                         }
                     }
 
                     item {
-                        if (cryptos.loadState.append is LoadState.Loading) {
+                        if (cryptosPagingItems.loadState.append is LoadState.Loading) {
                             CircularProgressIndicator(
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
@@ -82,4 +82,14 @@ fun CryptoListingsScreen(
             }
         }
     }
+}
+
+private fun navigateWithBundle(
+    model: CryptoListingsModel,
+    navigate: (Bundle) -> Unit
+){
+    val bundle = Bundle().apply {
+        putParcelable("cryptoInfo", model)
+    }
+    navigate(bundle)
 }

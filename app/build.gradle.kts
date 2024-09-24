@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":core"))
     implementation(project(":crypto-listing"))
+    implementation(project(":crypto-info"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
