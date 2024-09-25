@@ -12,5 +12,11 @@ data class CryptoListingEntity(
     val name: String,
     val symbol: String,
     val price: String,
-    val percentage: String
+    val percentage: String,
+    val percentageOneHour : String,
+    val percentageOneWeek : String,
+    val totalSupply : String,
+    val marketCap : String,
+    val redditUrl : String,
+    val twitterUrl : String
 )

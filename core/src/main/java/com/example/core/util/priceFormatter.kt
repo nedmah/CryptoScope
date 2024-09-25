@@ -8,7 +8,10 @@ fun formatPriceString(price: String): String {
 
     val decimalFormat = if (numericPrice < 0.01) {
         DecimalFormat("#,##0.#######")
-    } else {
+    } else if (numericPrice > 0.9 && numericPrice < 1.1){
+        DecimalFormat("#,##0.######")
+    }
+    else {
         DecimalFormat("#,##0.###")
     }
 

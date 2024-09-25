@@ -11,5 +11,11 @@ data class CryptoListingsModel(
     val name : String,
     val icon : String,
     val price : String,
-    val percentage : String
+    val percentage : String,
+    val percentageOneHour : String,
+    val percentageOneWeek : String,
+    val totalSupply : String,
+    val marketCap : String,
+    val redditUrl : String,
+    val twitterUrl : String,
 ) : Parcelable

@@ -16,5 +16,19 @@ data class CryptoListingDataDto(
     val rank : Int,
 
     @field:Json(name = "priceChange1d")
-    val percentage : String
+    val percentage : String,
+
+    @field:Json(name = "priceChange1h")
+    val percentageOneHour : Double,
+
+    @field:Json(name = "priceChange1w")
+    val percentageOneWeek : Double,
+
+    val totalSupply : Long,
+
+    val marketCap : Double,
+
+    val redditUrl : String?,
+
+    val twitterUrl : String?
 )

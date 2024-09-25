@@ -12,7 +12,13 @@ fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity{
         name = name,
         symbol = symbol,
         price = price.toString(),
-        percentage = percentage
+        percentage = percentage,
+        percentageOneHour = percentageOneHour.toString(),
+        percentageOneWeek = percentageOneWeek.toString(),
+        totalSupply = totalSupply.toString(),
+        marketCap = marketCap.toString(),
+        redditUrl = redditUrl ?: "https://www.reddit.com",
+        twitterUrl = twitterUrl ?: "https://twitter.com/SkyEcosystem"
     )
 
 }
@@ -25,7 +31,13 @@ fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel{
         icon = icon,
         cryptoId = id,
         price = price.toString(),
-        percentage = percentage
+        percentage = percentage,
+        percentageOneHour = percentageOneHour.toString(),
+        percentageOneWeek = percentageOneWeek.toString(),
+        totalSupply = totalSupply.toString(),
+        marketCap = marketCap.toString(),
+        redditUrl = redditUrl ?: "https://www.reddit.com",
+        twitterUrl = twitterUrl ?: "https://twitter.com/SkyEcosystem"
     )
 }
 
@@ -37,7 +49,13 @@ fun CryptoListingEntity.toCryptoListingsModel() : CryptoListingsModel{
         icon = iconUrl,
         price = price,
         percentage = percentage,
-        cryptoId = cryptoId
+        cryptoId = cryptoId,
+        percentageOneHour = percentageOneHour,
+        percentageOneWeek = percentageOneWeek,
+        totalSupply = totalSupply,
+        marketCap = marketCap,
+        redditUrl = redditUrl,
+        twitterUrl = twitterUrl
     )
 }
 
@@ -49,6 +67,12 @@ fun CryptoListingsModel.toCryptoListingsEntity() : CryptoListingEntity{
         name = name,
         symbol = symbol,
         price = price,
-        percentage = percentage
+        percentage = percentage,
+        percentageOneHour = percentageOneHour,
+        percentageOneWeek = percentageOneWeek,
+        totalSupply = totalSupply,
+        marketCap = marketCap,
+        redditUrl = redditUrl,
+        twitterUrl = twitterUrl
     )
 }

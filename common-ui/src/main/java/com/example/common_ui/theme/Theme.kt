@@ -12,6 +12,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
+import com.example.common_ui.theme.model.CryptoColor
+import com.example.common_ui.theme.model.DarkNegative
+import com.example.common_ui.theme.model.DarkPositive
+import com.example.common_ui.theme.model.LightNegative
+import com.example.common_ui.theme.model.LightPositive
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.model.Spacers
 
@@ -80,6 +85,20 @@ private val DarkColors = darkColorScheme(
 )
 
 
+private val darkExtraColor = CryptoColor(
+    positive = DarkPositive,
+    negative = DarkNegative
+)
+
+private val lightExtraColor = CryptoColor(
+    positive = LightPositive,
+    negative = LightNegative
+)
+
+private val LocalExtraColor = staticCompositionLocalOf<CryptoColor> {
+    error("CompositionLocal LocalExtraColor not present")
+}
+
 private val LocalPaddings = staticCompositionLocalOf<Paddings> {
     error("CompositionLocal LocalDimensions not present")
 }
@@ -98,6 +117,11 @@ val MaterialTheme.spacers: Spacers
     @ReadOnlyComposable
     get() = LocalSpacers.current
 
+val MaterialTheme.extraColor: CryptoColor
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalExtraColor.current
+
 @Composable
 fun CryptoScopeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -115,9 +139,12 @@ fun CryptoScopeTheme(
         else -> LightColors
     }
 
+    val extraColors = if (darkTheme) darkExtraColor else lightExtraColor
+
     CompositionLocalProvider(
         LocalPaddings provides Paddings,
-        LocalSpacers provides Spacers
+        LocalSpacers provides Spacers,
+        LocalExtraColor provides extraColors
     ) {
 
 

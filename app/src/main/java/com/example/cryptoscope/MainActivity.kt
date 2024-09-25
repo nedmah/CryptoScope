@@ -51,8 +51,10 @@ class MainActivity : ComponentActivity() {
                                 navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
                                     "cryptoInfo"
                                 )
-                            CryptoInfoScreen(cryptoModel = cryptoData!!){
-
+                            if (cryptoData != null){
+                                CryptoInfoScreen(cryptoModel = cryptoData){
+                                    navController.navigateUp()
+                                }
                             }
                         }
                     }

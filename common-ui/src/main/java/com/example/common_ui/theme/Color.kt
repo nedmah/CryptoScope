@@ -3,7 +3,7 @@ package com.example.common_ui.theme
 import androidx.compose.ui.graphics.Color
 
 
-internal val LightPrimary = Color(0xFF005CBC)
+internal val LightPrimary = Color(0xFF00B7AE)
 internal val LightOnPrimary = Color(0xFFFFFFFF)
 internal val LightPrimaryContainer = Color(0xFFD7E2FF)
 internal val LightOnPrimaryContainer = Color(0xFF001B3F)
@@ -33,7 +33,7 @@ internal val LightOutline = Color(0xFFA9ABB4)
 internal val LightOutlineVariant = Color(0xFFE0E2EC)
 internal val LightScrim = Color(0xFF000000)
 
-internal val DarkPrimary = Color(0xFFABC7FF)
+internal val DarkPrimary = Color(0xFF00B7AE)
 internal val DarkOnPrimary = Color(0xFF002F66)
 internal val DarkPrimaryContainer = Color(0xFF004590)
 internal val DarkOnPrimaryContainer = Color(0xFFD7E2FF)
