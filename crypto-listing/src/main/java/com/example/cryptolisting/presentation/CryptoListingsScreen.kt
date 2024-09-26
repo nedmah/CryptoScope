@@ -17,6 +17,7 @@ import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.theme.paddings
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.composables.CryptoItem
+import com.example.cryptolisting.presentation.composables.CryptoSwipeableItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -58,14 +59,14 @@ fun CryptoListingsScreen(
                     if (state.cryptos.isNotEmpty() || state.searchQuery.isNotBlank()) {
                         items(state.cryptos.size) { index ->
                             val crypto = state.cryptos[index]
-                            CryptoItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) })
+                            CryptoSwipeableItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) }, onFavouriteAdd = {})
                         }
                     } else {
                         if (cryptosPagingItems.loadState.refresh != LoadState.Loading) {
                             items(cryptosPagingItems.itemCount) {
                                 val crypto = cryptosPagingItems[it]
                                 if (crypto != null) {
-                                    CryptoItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) })
+                                    CryptoSwipeableItem(cryptoModel = crypto, onClick = { navigateWithBundle(crypto, navigate) }, onFavouriteAdd = {})
                                 }
                             }
                         }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +22,7 @@ import com.example.common_ui.composable.CryptoScrollableScaffold
 import com.example.common_ui.theme.CryptoScopeTheme
 import com.example.core.util.extensions.navigate
 import com.example.crypto_info.presentation.CryptoInfoScreen
+import com.example.crypto_info.presentation.CryptoInfoViewModel
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.CryptoListingsScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +54,8 @@ class MainActivity : ComponentActivity() {
                                     "cryptoInfo"
                                 )
                             if (cryptoData != null){
-                                CryptoInfoScreen(cryptoModel = cryptoData){
+                                val cryptoInfoViewModel : CryptoInfoViewModel = hiltViewModel()
+                                CryptoInfoScreen(){
                                     navController.navigateUp()
                                 }
                             }

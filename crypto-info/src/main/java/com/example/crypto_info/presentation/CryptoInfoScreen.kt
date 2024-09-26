@@ -16,11 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.FavoriteIcon
@@ -29,15 +31,21 @@ import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
 import com.example.crypto_info.R
+import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 import me.bytebeats.views.charts.line.LineChartData
 
 @Composable
 fun CryptoInfoScreen(
     modifier: Modifier = Modifier,
-    cryptoModel: CryptoListingsModel,
+//    cryptoModel: CryptoListingsModel,
+//    cryptoInfo: CryptoInfo,
+    viewModel: CryptoInfoViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
+
+    val state = viewModel.state.collectAsState().value
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,7 +75,7 @@ fun CryptoInfoScreen(
             ){
                 Text(
                     modifier = modifier,
-                    text = cryptoModel.name,
+                    text = state.name,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -78,14 +86,14 @@ fun CryptoInfoScreen(
         AsyncImage(
             modifier = modifier
                 .size(45.dp),
-            model = cryptoModel.icon,
+            model = state.icon,
             error = painterResource(id = com.example.common_ui.R.drawable.ic_error_24),
             contentDescription = null,
         )
 
         Text(
             modifier = modifier.padding(Paddings.extraMedium),
-            text = formatPriceString(cryptoModel.price),
+            text = formatPriceString(state.price),
             style = MaterialTheme.typography.headlineSmall
             )
 
