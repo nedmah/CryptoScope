@@ -13,6 +13,6 @@ interface CryptoInfoApi {
     suspend fun getCryptoCharts(
         @Path("coinId") coinId : String,
         @Query("period") period : String   //24h,1w,1m,3m,6m,1y,all
-    ) : CryptoInfoDto
+    ) : List<List<String>>
 
 }

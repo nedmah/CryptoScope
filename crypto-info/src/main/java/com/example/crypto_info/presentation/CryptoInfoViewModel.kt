@@ -63,15 +63,16 @@ class CryptoInfoViewModel @Inject constructor(
 
     private fun getCryptoInfo(period : TimeIntervals = TimeIntervals.ONE_DAY, coinId : String){
         viewModelScope.launch(Dispatchers.IO) {
-
-            when(val info = getCryptoInfoUseCase(coinId,period)){
-                is Resource.Error -> _state.value = _state.value.copy(error = info.message?: "an error has occurred")
-                is Resource.Loading -> _state.value = _state.value.copy(loading = true)
-                is Resource.Success -> {
-                    info.data?.let { data ->
-                        _state.value = _state.value.copy(
-                            cryptoInfo = data
-                        )
+            getCryptoInfoUseCase(coinId,period).collect{ result ->
+                when(result){
+                    is Resource.Error -> _state.value = _state.value.copy(error = result.message?: "an error has occurred")
+                    is Resource.Loading -> _state.value = _state.value.copy(loading = result.isLoading)
+                    is Resource.Success -> {
+                        result.data?.let { data ->
+                            _state.value = _state.value.copy(
+                                cryptoInfo = data
+                            )
+                        }
                     }
                 }
             }

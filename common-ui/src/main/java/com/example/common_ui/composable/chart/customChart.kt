@@ -1,6 +1,7 @@
 package com.example.common_ui.composable.chart
 
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -71,8 +72,26 @@ fun CustomLineChart(
                     labels = filteredLabels
                 )
             }
+
+            override fun drawXAxisLine(drawScope: DrawScope, canvas: Canvas, drawableArea: Rect) {
+                null
+            }
         },
-        yAxisDrawer = yAxisDrawer,
+        yAxisDrawer = object : IYAxisDrawer by yAxisDrawer{
+            override fun drawAxisLabels(
+                drawScope: DrawScope,
+                canvas: Canvas,
+                drawableArea: Rect,
+                minValue: Float,
+                maxValue: Float
+            ) {
+                null
+            }
+
+            override fun drawAxisLine(drawScope: DrawScope, canvas: Canvas, drawableArea: Rect) {
+                null
+            }
+        },
         horizontalOffset = horizontalOffset
     )
 }

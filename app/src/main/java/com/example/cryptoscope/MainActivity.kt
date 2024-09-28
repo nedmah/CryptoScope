@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             if (cryptoData != null){
                                 val cryptoInfoViewModel : CryptoInfoViewModel = hiltViewModel()
-                                CryptoInfoScreen(){
+                                CryptoInfoScreen(onIntervalChanged = {}){
                                     navController.navigateUp()
                                 }
                             }
