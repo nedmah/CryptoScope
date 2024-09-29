@@ -16,16 +16,22 @@ import javax.inject.Inject
 
 class CryptoInfoRepositoryImpl @Inject constructor(
     private val api: CryptoInfoApi
-): CryptoInfoRepository {
+) : CryptoInfoRepository {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    override suspend fun getCryptoInfo(coinId: String, period: TimeIntervals): Flow<Resource<CryptoInfo>> {
-        return flow{
+    override suspend fun getCryptoInfo(
+        coinId: String,
+        period: TimeIntervals
+    ): Flow<Resource<CryptoInfo>> {
+        return flow {
 
             emit(Resource.Loading(true))
-            val cryptoInfoRemote = api.getCryptoCharts(coinId,period.text)
+            val cryptoInfoRemote = api.getCryptoCharts(coinId, period.text)
 
-            val cryptoInfo = cryptoInfoRemote.toCryptoInfo()
+            val cryptoInfo =
+                if (period == TimeIntervals.ONE_MONTH) cryptoInfoRemote.toCryptoInfo()
+                else cryptoInfoRemote.filterIndexed { index, _ -> index % 2 == 0 }.toCryptoInfo()
+
             emit(Resource.Success(data = cryptoInfo))
             emit(Resource.Loading(false))
         }

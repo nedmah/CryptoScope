@@ -29,7 +29,7 @@ fun FavoriteIcon(
     Icon(
         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
         contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
-        tint = if (isFavorite) MaterialTheme.colorScheme.error else Color.Gray,
+        tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

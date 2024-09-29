@@ -13,8 +13,12 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import com.example.common_ui.theme.model.CryptoColor
+import com.example.common_ui.theme.model.DarkChart
+import com.example.common_ui.theme.model.DarkChartGradient
 import com.example.common_ui.theme.model.DarkNegative
 import com.example.common_ui.theme.model.DarkPositive
+import com.example.common_ui.theme.model.LightChart
+import com.example.common_ui.theme.model.LightChartGradient
 import com.example.common_ui.theme.model.LightNegative
 import com.example.common_ui.theme.model.LightPositive
 import com.example.common_ui.theme.model.Paddings
@@ -87,12 +91,16 @@ private val DarkColors = darkColorScheme(
 
 private val darkExtraColor = CryptoColor(
     positive = DarkPositive,
-    negative = DarkNegative
+    negative = DarkNegative,
+    chart = DarkChart,
+    chartGradient = DarkChartGradient
 )
 
 private val lightExtraColor = CryptoColor(
     positive = LightPositive,
-    negative = LightNegative
+    negative = LightNegative,
+    chart = LightChart,
+    chartGradient = LightChartGradient
 )
 
 private val LocalExtraColor = staticCompositionLocalOf<CryptoColor> {

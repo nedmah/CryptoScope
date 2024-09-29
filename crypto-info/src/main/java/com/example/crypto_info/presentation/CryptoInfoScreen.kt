@@ -20,8 +20,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,17 +42,31 @@ import com.example.core.util.formatPriceString
 import com.example.crypto_info.R
 import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.cryptolisting.domain.model.CryptoListingsModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.bytebeats.views.charts.line.LineChartData
 
 @Composable
 fun CryptoInfoScreen(
     modifier: Modifier = Modifier,
     viewModel: CryptoInfoViewModel = hiltViewModel(),
-    onIntervalChanged : (TimeIntervals) -> Unit,
+    onIntervalChanged: (TimeIntervals) -> Unit,
     onBack: () -> Unit
 ) {
 
     val state = viewModel.state.collectAsState().value
+
+    var chartDataState by remember { mutableStateOf(LineChartData(emptyList())) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(state.cryptoInfo) {
+        coroutineScope.launch(Dispatchers.Default) {
+            val mappedData = state.cryptoInfo.prices.mapIndexed { index, price ->
+                LineChartData.Point(price, index.toString())
+            }
+            chartDataState = LineChartData(mappedData)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -75,7 +94,7 @@ fun CryptoInfoScreen(
             Box(
                 modifier = modifier.weight(1f),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Text(
                     modifier = modifier,
                     text = state.name,
@@ -98,26 +117,18 @@ fun CryptoInfoScreen(
             modifier = modifier.padding(Paddings.extraMedium),
             text = formatPriceString(state.price),
             style = MaterialTheme.typography.headlineSmall
-            )
+        )
 
-        if (state.loading) CircularProgressIndicator()
-        else{
+        if (state.loading || chartDataState.points.isEmpty()) CircularProgressIndicator()
+        else {
             CustomLineChart(
-                modifier = modifier.fillMaxHeight(0.4f),
-                lineChartData = LineChartData(
-                    state.cryptoInfo.prices.mapIndexed { index,price ->
-                        LineChartData.Point(price,index.toString())
-                    }
-                )
+                modifier = Modifier
+                    .fillMaxHeight(0.4f)
+                    .fillMaxWidth()
+                    .padding(bottom = MaterialTheme.paddings.small, start = 0.dp, end = 0.dp),
+                lineChartData = chartDataState
             )
         }
-
-
-
-
-
-//        Text(text = state.cryptoInfo.prices.toString())
-
 
         IntervalButtonGroup(
             onIntervalChanged = {
