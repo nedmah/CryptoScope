@@ -98,13 +98,12 @@ fun CryptoSearchBar(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester)
-            .onFocusChanged { focusState ->
-                isFocused.value = focusState.isFocused
-            }
-            .clearFocusOnKeyboardDismiss(),
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
+//            .fillMaxWidth()
+//            .focusRequester(focusRequester)
+//            .onFocusChanged { focusState ->
+//                isFocused.value = focusState.isFocused
+//            },
         enabled = enabled,
         textStyle = textStyle,
         label = label,

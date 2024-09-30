@@ -40,6 +40,7 @@ class CryptoListingViewModel @Inject constructor(
 
     fun onEvent(event: CryptoListingsEvents) {
         when (event) {
+
             is CryptoListingsEvents.OnSearchQueryChange -> {
                 state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
@@ -50,8 +51,24 @@ class CryptoListingViewModel @Inject constructor(
             }
 
             CryptoListingsEvents.Refresh -> getCryptoListings(fetchFromNetwork = true)
+
+            is CryptoListingsEvents.Filter -> {
+                state = state.copy(
+                    cryptos = when(event.filter){
+                        Filters.RANK -> state.cryptos.sortedBy { it.rank }
+                        Filters.PRICE_INC -> state.cryptos.sortedBy { it.price }
+                        Filters.PRICE_DEC -> state.cryptos.sortedByDescending { it.price }
+                        Filters.PERCENTAGE_INC -> state.cryptos.sortedBy { it.percentage }
+                        Filters.PERCENTAGE_DEC -> state.cryptos.sortedByDescending { it.percentage }
+                        Filters.NAME -> state.cryptos.sortedBy { it.name }
+                    }
+                )
+            }
+            CryptoListingsEvents.OnFilterIconPushed -> state = state.copy(isBottomDialogOpened = true)
+            CryptoListingsEvents.OnFilterDismiss -> state= state.copy(isBottomDialogOpened = false)
         }
     }
+
 
 
     private fun getCryptoListings(

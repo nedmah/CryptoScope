@@ -140,7 +140,6 @@ fun CryptoItem(
             .fillMaxWidth()
             .padding(vertical = MaterialTheme.paddings.extraMedium)
             .clickable { onClick() },
-//        shape = RoundedCornerShape(20)
     ) {
 
         Row(
