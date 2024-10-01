@@ -2,19 +2,14 @@ package com.example.crypto_info.presentation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,16 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.FavoriteIcon
+import com.example.common_ui.composable.PercentageTextCard
 import com.example.common_ui.composable.chart.CustomLineChart
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
-import com.example.crypto_info.R
-import com.example.crypto_info.domain.model.CryptoInfo
-import com.example.cryptolisting.domain.model.CryptoListingsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.bytebeats.views.charts.line.LineChartData
@@ -74,36 +66,8 @@ fun CryptoInfoScreen(
             .padding(top = MaterialTheme.paddings.large),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.paddings.medium),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = modifier.clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onBack()
-                },
-                painter = painterResource(id = com.example.common_ui.R.drawable.ic_back_24),
-                contentDescription = null
-            )
 
-            Box(
-                modifier = modifier.weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    modifier = modifier,
-                    text = state.name,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-
-            FavoriteIcon() {}
-        }
+        CryptoInfoHeader(name = state.name, onBack = onBack)
 
         AsyncImage(
             modifier = modifier
@@ -118,6 +82,12 @@ fun CryptoInfoScreen(
             text = formatPriceString(state.price),
             style = MaterialTheme.typography.headlineSmall
         )
+        
+        PercentageTextCard(percent = state.percentage)
+
+
+
+
 
         if (state.loading || chartDataState.points.isEmpty()) CircularProgressIndicator()
         else {
@@ -135,5 +105,45 @@ fun CryptoInfoScreen(
                 viewModel.onEvent(CryptoInfoEvents.OnIntervalPushed(it))
             }
         )
+    }
+}
+
+
+
+@Composable
+private fun CryptoInfoHeader(
+    modifier: Modifier = Modifier,
+    name: String,
+    onBack: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.paddings.medium),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onBack()
+            },
+            painter = painterResource(id = com.example.common_ui.R.drawable.ic_back_24),
+            contentDescription = null
+        )
+
+        Box(
+            modifier = modifier.weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = modifier,
+                text = name,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+
+        FavoriteIcon() {}
     }
 }

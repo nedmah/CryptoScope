@@ -1,5 +1,8 @@
 package com.example.cryptolisting.presentation.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,20 +27,21 @@ import com.example.cryptolisting.presentation.Filters
 @Composable
 fun FilterBottomSheet(
     onFilterSelected: (Filters) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    showDialog: Boolean
 ) {
     val filterOptions = Filters.entries.toList()
-
     var selectedItem by remember { mutableIntStateOf(0) }
 
+
     BottomDialog(
-        showDialog = true,
+        showDialog = showDialog,
         onDismiss = { onDismiss() }
     ) {
         Column {
             Text(text = "Sorting", modifier = Modifier.align(Alignment.CenterHorizontally))
             HorizontalDivider()
-            filterOptions.forEachIndexed { index,filter ->
+            filterOptions.forEachIndexed { index, filter ->
                 FilterOptionItem(
                     filter = filter,
                     isSelected = index == selectedItem,
@@ -51,6 +55,7 @@ fun FilterBottomSheet(
         }
     }
 }
+
 
 @Composable
 fun FilterOptionItem(

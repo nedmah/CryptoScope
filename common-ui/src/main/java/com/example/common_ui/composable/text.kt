@@ -1,25 +1,60 @@
 package com.example.common_ui.composable
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.common_ui.R
+import com.example.common_ui.theme.extraColor
+import com.example.common_ui.theme.paddings
+
+
+@Composable
+fun PercentageTextCard(
+    modifier: Modifier = Modifier,
+    percent : String,
+    style: TextStyle = MaterialTheme.typography.titleMedium,
+){
+    Box(
+        modifier = modifier.background(
+            color = MaterialTheme.extraColor.percentageCard,
+            shape = RoundedCornerShape(14.dp)
+        ),
+        contentAlignment = Alignment.Center
+    ) {
+        PercentageText(
+            modifier = modifier.padding(MaterialTheme.paddings.extraSmall),
+            percent = percent,
+            style = style
+        )
+    }
+}
+
 
 @Composable
 fun PercentageText(
+    modifier: Modifier = Modifier,
     percent : String,
-    modifier: Modifier = Modifier
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
 ){
 
     val isPositive = !percent.contains('-')
@@ -47,10 +82,9 @@ fun PercentageText(
             modifier = modifier,
             text = value,
             color = color,
-            style = MaterialTheme.typography.bodyMedium
+            style = style
         )
     }
-
 }
 
 @Composable

@@ -115,12 +115,11 @@ fun CryptoListingsScreen(
         }
     }
 
-    if (state.isBottomDialogOpened){
         FilterBottomSheet(
+            showDialog = state.isBottomDialogOpened,
             onFilterSelected = { viewModel.onEvent(CryptoListingsEvents.Filter(it)) },
             onDismiss = {viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss)}
         )
-    }
 
 }
 

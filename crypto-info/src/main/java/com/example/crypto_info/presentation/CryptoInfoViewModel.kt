@@ -4,15 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.util.Resource
-import com.example.crypto_info.domain.repository.CryptoInfoRepository
+import com.example.core.util.calculatePercentageChange
+import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.crypto_info.domain.use_case.GetCryptoInfoUseCase
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,7 +53,6 @@ class CryptoInfoViewModel @Inject constructor(
                     )
                 }
             }
-
             CryptoInfoEvents.Refresh -> TODO()
         }
     }
@@ -70,7 +68,8 @@ class CryptoInfoViewModel @Inject constructor(
                     is Resource.Success -> {
                         result.data?.let { data ->
                             _state.value = _state.value.copy(
-                                cryptoInfo = data
+                                cryptoInfo = data,
+                                percentage = calculatePercentageChange(data.prices)
                             )
                         }
                     }
@@ -79,5 +78,4 @@ class CryptoInfoViewModel @Inject constructor(
         }
 
     }
-
 }

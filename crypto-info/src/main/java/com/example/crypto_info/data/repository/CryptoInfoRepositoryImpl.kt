@@ -1,8 +1,6 @@
 package com.example.crypto_info.data.repository
 
-import android.net.http.NetworkException
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresExtension
 import com.example.core.util.Resource
 import com.example.crypto_info.data.remote.CryptoInfoApi
