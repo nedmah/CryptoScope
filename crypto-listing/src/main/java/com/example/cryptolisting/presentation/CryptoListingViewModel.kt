@@ -1,5 +1,6 @@
 package com.example.cryptolisting.presentation
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,26 +10,23 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.core.util.Resource
-import com.example.cryptolisting.data.local.CryptoListingEntity
+import com.example.core.db.entities.CryptoListingEntity
 import com.example.cryptolisting.data.toCryptoListingsModel
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
+import com.example.cryptolisting.domain.repository.FavouritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CryptoListingViewModel @Inject constructor(
-    private val repository: CryptoListingsRepository,
-    private val pager: Pager<Int, CryptoListingEntity>
+    private val listingsRepository: CryptoListingsRepository,
+    private val favouritesRepository: FavouritesRepository,
 ) : ViewModel() {
-
-
-    var pageFlow = pager.flow.map {pagingData -> pagingData.map { it.toCryptoListingsModel() } }.cachedIn(viewModelScope)
 
     var state by mutableStateOf(CryptoListingsState())
 
@@ -66,6 +64,8 @@ class CryptoListingViewModel @Inject constructor(
             }
             CryptoListingsEvents.OnFilterIconPushed -> state = state.copy(isBottomDialogOpened = true)
             CryptoListingsEvents.OnFilterDismiss -> state= state.copy(isBottomDialogOpened = false)
+
+            is CryptoListingsEvents.OnFavourite -> toggleFavorite(event.cryptoId)
         }
     }
 
@@ -75,14 +75,8 @@ class CryptoListingViewModel @Inject constructor(
         query: String = state.searchQuery,
         fetchFromNetwork: Boolean = false
     ) {
-
-        if (fetchFromNetwork){
-            pageFlow = pager.flow.map { pagingData ->
-                pagingData.map { it.toCryptoListingsModel() }
-            }.cachedIn(viewModelScope)
-        }else {
             viewModelScope.launch() {
-                repository.getListings(fetchFromNetwork, query).collect { result ->
+                listingsRepository.getListings(fetchFromNetwork, query).collect { result ->
                     when (result) {
                         is Resource.Error -> {
                             state = state.copy(
@@ -95,6 +89,7 @@ class CryptoListingViewModel @Inject constructor(
                         }
 
                         is Resource.Success -> {
+                            updateCryptoList()
                             state = state.copy(
                                 isLoading = false,
                                 isRefreshing = false,
@@ -102,8 +97,28 @@ class CryptoListingViewModel @Inject constructor(
                             )
                         }
                     }
-                }
             }
         }
+    }
+
+    private fun toggleFavorite(cryptoId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isFavourite = favouritesRepository.isFavourite(cryptoId)
+            if (isFavourite) {
+                favouritesRepository.removeFavourite(cryptoId)
+            } else {
+                favouritesRepository.addFavourite(cryptoId)
+            }
+            updateCryptoList()
+        }
+    }
+
+    private suspend fun updateCryptoList() {
+        val favoriteIds = favouritesRepository.getFavourites()
+        Log.d("TAG", "updateCryptoList: $favoriteIds")
+        val updatedCryptos = state.cryptos.map { crypto ->
+            crypto.copy(isFavorite = favoriteIds.contains(crypto.cryptoId))
+        }
+        state = state.copy(cryptos = updatedCryptos)
     }
 }

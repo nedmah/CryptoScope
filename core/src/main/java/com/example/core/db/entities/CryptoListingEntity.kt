@@ -1,9 +1,10 @@
-package com.example.cryptolisting.data.local
+package com.example.core.db.entities
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity()
 data class CryptoListingEntity(
     @PrimaryKey
     val id: Int,

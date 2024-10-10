@@ -7,10 +7,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.room.Room
-import com.example.cryptolisting.data.local.CryptoDb
-import com.example.cryptolisting.data.local.CryptoListingEntity
+import com.example.core.db.CryptoDb
+import com.example.core.db.daos.CryptoListingsDao
+import com.example.core.db.daos.FavouritesDao
+import com.example.core.db.entities.CryptoListingEntity
 import com.example.cryptolisting.data.remote.CryptoListingsApi
-import com.example.cryptolisting.data.remote.ListingsRemoteMediator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +24,6 @@ import javax.inject.Singleton
 object ListingsModule {
 
 
-
     @Provides
     @Singleton
     fun provideCryptoApi(retrofit: Retrofit): CryptoListingsApi {
@@ -32,17 +32,10 @@ object ListingsModule {
 
     @Provides
     @Singleton
-    fun provideDb(app: Application) : CryptoDb {
-        return Room.databaseBuilder(app, CryptoDb::class.java,"cryptoDb.db").build()
-    }
+    fun provideListingsDao(db: CryptoDb) : CryptoListingsDao = db.getCryptoListingsDao()
 
     @Provides
     @Singleton
-    fun provideCryptoPager(db: CryptoDb, api: CryptoListingsApi) : Pager<Int, CryptoListingEntity> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            remoteMediator = ListingsRemoteMediator(api, db),
-            pagingSourceFactory = {db.getCryptoListingsDao().pagingSource()}
-        )
-    }
+    fun provideFavouritesDao(db: CryptoDb) : FavouritesDao = db.getFavouritesDao()
+
 }

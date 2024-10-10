@@ -49,6 +49,7 @@ import com.example.common_ui.composable.PreviewWrapper
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
 import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.cryptolisting.presentation.CryptoListingsEvents
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -58,6 +59,7 @@ import kotlin.math.roundToInt
 fun CryptoSwipeableItem(
     modifier: Modifier = Modifier,
     cryptoModel: CryptoListingsModel,
+    isFavourite: Boolean,
     onFavouriteAdd: () -> Unit,
     onClick: () -> Unit
 ) {
@@ -80,7 +82,10 @@ fun CryptoSwipeableItem(
                 .align(Alignment.CenterEnd),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FavoriteIcon(modifier = modifier.padding(start = MaterialTheme.paddings.medium)) {
+            FavoriteIcon(
+                modifier = modifier.padding(start = MaterialTheme.paddings.medium),
+                isFavourite = isFavourite
+            ) {
                 onFavouriteAdd()
                 scope.launch {
                     offset.animateTo(0f)

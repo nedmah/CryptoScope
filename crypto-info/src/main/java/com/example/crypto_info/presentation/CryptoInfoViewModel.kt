@@ -8,6 +8,7 @@ import com.example.core.util.calculatePercentageChange
 import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.crypto_info.domain.use_case.GetCryptoInfoUseCase
 import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.cryptolisting.domain.repository.FavouritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CryptoInfoViewModel @Inject constructor(
     private val getCryptoInfoUseCase: GetCryptoInfoUseCase,
+    private val repository: FavouritesRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -33,11 +35,13 @@ class CryptoInfoViewModel @Inject constructor(
                 name = model.name,
                 price = model.price,
                 icon = model.icon,
-                percentage = model.percentage,
+                percentage = model.percentageOneHour,
                 totalSupply = model.totalSupply,
                 marketCap = model.marketCap,
                 redditUrl = model.redditUrl,
-                twitterUrl = model.twitterUrl
+                twitterUrl = model.twitterUrl,
+                cryptoId = model.cryptoId,
+                isFavourite = model.isFavorite
             )
             getCryptoInfo(coinId = model.cryptoId)
         }
@@ -54,6 +58,7 @@ class CryptoInfoViewModel @Inject constructor(
                 }
             }
             CryptoInfoEvents.Refresh -> TODO()
+            is CryptoInfoEvents.OnFavourite -> toggleFavorite(events.cryptoId)
         }
     }
 
@@ -76,6 +81,16 @@ class CryptoInfoViewModel @Inject constructor(
                 }
             }
         }
+    }
 
+    private fun toggleFavorite(cryptoId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isFavourite = repository.isFavourite(cryptoId)
+            if (isFavourite) {
+                repository.removeFavourite(cryptoId)
+            } else {
+                repository.addFavourite(cryptoId)
+            }
+        }
     }
 }

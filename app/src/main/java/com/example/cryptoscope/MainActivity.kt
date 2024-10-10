@@ -48,15 +48,21 @@ class MainActivity : ComponentActivity() {
                                 )
                             })
                         }
+
                         composable(route = "CryptoInfoScreen") {
                             val cryptoData =
                                 navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
                                     "cryptoInfo"
                                 )
                             if (cryptoData != null){
-                                val cryptoInfoViewModel : CryptoInfoViewModel = hiltViewModel()
-                                CryptoInfoScreen(onIntervalChanged = {}){
+//                                val cryptoInfoViewModel : CryptoInfoViewModel = hiltViewModel()
+                                CryptoInfoScreen(){
                                     navController.navigateUp()
+
+//                                    navController.navigate("CryptoListings") {
+//                                        popUpTo("CryptoListings") {
+//                                            inclusive = true
+//                                        }
                                 }
                             }
                         }

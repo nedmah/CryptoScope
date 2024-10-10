@@ -22,9 +22,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FavoriteIcon(
     modifier: Modifier = Modifier,
+    isFavourite : Boolean,
     onValueChanged : () -> Unit
 ) {
-    var isFavorite by remember { mutableStateOf(false) }
+    var isFavorite by remember { mutableStateOf(isFavourite) }
 
     Icon(
         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
@@ -45,6 +46,6 @@ fun FavoriteIcon(
 @Composable
 fun FavoriteIconPreview() {
     PreviewWrapper {
-        FavoriteIcon(){}
+        FavoriteIcon(isFavourite = false){}
     }
 }

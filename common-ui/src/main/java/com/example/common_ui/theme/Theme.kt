@@ -158,14 +158,11 @@ fun CryptoScopeTheme(
         LocalSpacers provides Spacers,
         LocalExtraColor provides extraColors
     ) {
-
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
-
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
     }
 
 }

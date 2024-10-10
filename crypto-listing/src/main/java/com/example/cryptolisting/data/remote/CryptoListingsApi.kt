@@ -9,8 +9,7 @@ interface CryptoListingsApi {
 
     @GET("/coins")
     suspend fun getCryptoListings(
-        @Query("page") page : Int,
-        @Query("limit") pageCount : Int
+        @Query("limit") count : Int
     ) : CryptoListingDto
 
 

@@ -1,10 +1,10 @@
 package com.example.cryptolisting.data
 
-import com.example.cryptolisting.data.local.CryptoListingEntity
+import com.example.core.db.entities.CryptoListingEntity
 import com.example.cryptolisting.data.remote.CryptoListingDataDto
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 
-fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity{
+fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity {
     return CryptoListingEntity(
         id = rank,
         cryptoId = id,
@@ -59,7 +59,7 @@ fun CryptoListingEntity.toCryptoListingsModel() : CryptoListingsModel{
     )
 }
 
-fun CryptoListingsModel.toCryptoListingsEntity() : CryptoListingEntity{
+fun CryptoListingsModel.toCryptoListingsEntity() : CryptoListingEntity {
     return CryptoListingEntity(
         id = rank,
         cryptoId = cryptoId,

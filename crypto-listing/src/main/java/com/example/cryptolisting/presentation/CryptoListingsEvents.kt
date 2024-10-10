@@ -6,4 +6,5 @@ sealed class CryptoListingsEvents {
     data object OnFilterIconPushed : CryptoListingsEvents()
     data object OnFilterDismiss : CryptoListingsEvents()
     data class Filter(val filter: Filters) : CryptoListingsEvents()
+    data class OnFavourite(val cryptoId : String) : CryptoListingsEvents()
 }

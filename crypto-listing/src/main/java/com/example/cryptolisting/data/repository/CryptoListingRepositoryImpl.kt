@@ -2,35 +2,29 @@
 
 package com.example.cryptolisting.data.repository
 
-import android.annotation.SuppressLint
 import android.net.http.HttpException
-import android.util.Log
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadType
-import androidx.paging.PagingState
-import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
 import com.example.core.util.Resource
-import com.example.cryptolisting.data.local.CryptoDb
-import com.example.cryptolisting.data.local.CryptoListingEntity
-import com.example.cryptolisting.data.local.CryptoListingsDao
+import com.example.core.db.CryptoDb
+import com.example.core.db.daos.CryptoListingsDao
 import com.example.cryptolisting.data.remote.CryptoListingsApi
-import com.example.cryptolisting.data.remote.ListingsRemoteMediator
-import com.example.cryptolisting.data.toCryptoEntity
+import com.example.cryptolisting.data.toCryptoListingsEntity
 import com.example.cryptolisting.data.toCryptoListingsModel
 import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
 class CryptoListingRepositoryImpl @Inject constructor(
-    private val db: CryptoDb
+    private val dao: CryptoListingsDao,
+    private val api: CryptoListingsApi
 ) : CryptoListingsRepository {
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun getListings(
         fetchFromNetwork: Boolean,
         query: String
@@ -38,7 +32,7 @@ class CryptoListingRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading())
 
-            val localListings = db.getCryptoListingsDao().searchForListings(query)
+            val localListings = dao.searchForListings(query)
             emit(Resource.Success(localListings.map { it.toCryptoListingsModel() }))
 
             val dbIsEmpty = query.isBlank() || localListings.isEmpty()
@@ -48,15 +42,31 @@ class CryptoListingRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-            if (fetchFromNetwork){
-                db.getCryptoListingsDao().clearListings()
+            val remoteListings = try {
+                api.getCryptoListings(100)
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't retrieve data"))
+                null
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't retrieve data"))
+                null
             }
 
-            emit(Resource.Success(
-                data = db.getCryptoListingsDao().searchForListings("")
-                    .map { it.toCryptoListingsModel() }
-            ))
-            emit(Resource.Loading(false))
+
+            remoteListings?.let {
+                val listings = it.listings.map { item -> item.toCryptoListingsModel() }
+                dao.clearListings()
+                dao.saveCryptoListings(listings.map { item -> item.toCryptoListingsEntity() })
+                emit(
+                    Resource.Success(
+                        data = dao
+                            .searchForListings("")
+                            .map { listingItem -> listingItem.toCryptoListingsModel() })
+                )
+                emit(Resource.Loading(false))
+            }
 
         }
     }

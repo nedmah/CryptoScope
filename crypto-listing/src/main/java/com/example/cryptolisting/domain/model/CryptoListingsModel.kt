@@ -18,4 +18,5 @@ data class CryptoListingsModel(
     val marketCap : String,
     val redditUrl : String,
     val twitterUrl : String,
+    val isFavorite: Boolean = false
 ) : Parcelable

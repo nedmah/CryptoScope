@@ -42,7 +42,6 @@ import me.bytebeats.views.charts.line.LineChartData
 fun CryptoInfoScreen(
     modifier: Modifier = Modifier,
     viewModel: CryptoInfoViewModel = hiltViewModel(),
-    onIntervalChanged: (TimeIntervals) -> Unit,
     onBack: () -> Unit
 ) {
 
@@ -67,7 +66,12 @@ fun CryptoInfoScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        CryptoInfoHeader(name = state.name, onBack = onBack)
+        CryptoInfoHeader(
+            name = state.name,
+            isFavourite = state.isFavourite,
+            onFavouritePushed = { viewModel.onEvent(CryptoInfoEvents.OnFavourite(state.cryptoId)) },
+            onBack = onBack
+        )
 
         AsyncImage(
             modifier = modifier
@@ -82,7 +86,7 @@ fun CryptoInfoScreen(
             text = formatPriceString(state.price),
             style = MaterialTheme.typography.headlineSmall
         )
-        
+
         PercentageTextCard(percent = state.percentage)
 
 
@@ -109,11 +113,12 @@ fun CryptoInfoScreen(
 }
 
 
-
 @Composable
 private fun CryptoInfoHeader(
     modifier: Modifier = Modifier,
     name: String,
+    isFavourite: Boolean,
+    onFavouritePushed: () -> Unit,
     onBack: () -> Unit
 ) {
     Row(
@@ -144,6 +149,6 @@ private fun CryptoInfoHeader(
             )
         }
 
-        FavoriteIcon() {}
+        FavoriteIcon(isFavourite = isFavourite, onValueChanged = onFavouritePushed)
     }
 }
