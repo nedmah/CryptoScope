@@ -11,7 +11,7 @@ data class CryptoListingDataDto(
 
     val symbol : String,
 
-    val price : Double,
+    val price : String,
 
     val rank : Int,
 
@@ -26,7 +26,7 @@ data class CryptoListingDataDto(
 
     val totalSupply : Long,
 
-    val marketCap : Double,
+    val marketCap : String,
 
     val redditUrl : String?,
 

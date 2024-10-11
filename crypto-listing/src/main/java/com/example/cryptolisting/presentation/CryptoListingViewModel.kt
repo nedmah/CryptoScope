@@ -54,10 +54,10 @@ class CryptoListingViewModel @Inject constructor(
                 state = state.copy(
                     cryptos = when(event.filter){
                         Filters.RANK -> state.cryptos.sortedBy { it.rank }
-                        Filters.PRICE_INC -> state.cryptos.sortedBy { it.price }
-                        Filters.PRICE_DEC -> state.cryptos.sortedByDescending { it.price }
-                        Filters.PERCENTAGE_INC -> state.cryptos.sortedBy { it.percentage }
-                        Filters.PERCENTAGE_DEC -> state.cryptos.sortedByDescending { it.percentage }
+                        Filters.PRICE_INC -> state.cryptos.sortedBy { it.price.toDouble() }
+                        Filters.PRICE_DEC -> state.cryptos.sortedByDescending { it.price.toDouble() }
+                        Filters.PERCENTAGE_INC -> state.cryptos.sortedBy { it.percentage.toDouble() }
+                        Filters.PERCENTAGE_DEC -> state.cryptos.sortedByDescending { it.percentage.toDouble() }
                         Filters.NAME -> state.cryptos.sortedBy { it.name }
                     }
                 )
@@ -66,6 +66,7 @@ class CryptoListingViewModel @Inject constructor(
             CryptoListingsEvents.OnFilterDismiss -> state= state.copy(isBottomDialogOpened = false)
 
             is CryptoListingsEvents.OnFavourite -> toggleFavorite(event.cryptoId)
+            CryptoListingsEvents.CheckFavourites -> viewModelScope.launch(Dispatchers.IO) { updateCryptoList() }
         }
     }
 

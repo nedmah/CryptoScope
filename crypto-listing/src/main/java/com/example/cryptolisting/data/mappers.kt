@@ -30,12 +30,12 @@ fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel{
         name = name,
         icon = icon,
         cryptoId = id,
-        price = price.toString(),
+        price = price,
         percentage = percentage,
         percentageOneHour = percentageOneHour.toString(),
         percentageOneWeek = percentageOneWeek.toString(),
         totalSupply = totalSupply.toString(),
-        marketCap = marketCap.toString(),
+        marketCap = marketCap,
         redditUrl = redditUrl ?: "https://www.reddit.com",
         twitterUrl = twitterUrl ?: "https://twitter.com/SkyEcosystem"
     )
