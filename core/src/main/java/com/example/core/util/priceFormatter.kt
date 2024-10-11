@@ -7,12 +7,12 @@ fun formatPriceString(price: String): String {
     val numericPrice = price.toDoubleOrNull() ?: throw IllegalArgumentException("Invalid price format")
 
     val decimalFormat = if (numericPrice < 0.01) {
-        DecimalFormat("#,##0.#######")
+        DecimalFormat("#,###,##0.#######")
     } else if (numericPrice > 0.9 && numericPrice < 1.1){
-        DecimalFormat("#,##0.######")
+        DecimalFormat("#,###,##0.######")
     }
     else {
-        DecimalFormat("#,##0.###")
+        DecimalFormat("#,###,##0.###")
     }
 
     return "$" + decimalFormat.format(numericPrice)

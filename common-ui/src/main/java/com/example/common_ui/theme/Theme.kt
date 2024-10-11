@@ -15,11 +15,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.common_ui.theme.model.CryptoColor
 import com.example.common_ui.theme.model.DarkChart
 import com.example.common_ui.theme.model.DarkChartGradient
+import com.example.common_ui.theme.model.DarkHyperlink
 import com.example.common_ui.theme.model.DarkNegative
 import com.example.common_ui.theme.model.DarkPercentageCard
 import com.example.common_ui.theme.model.DarkPositive
 import com.example.common_ui.theme.model.LightChart
 import com.example.common_ui.theme.model.LightChartGradient
+import com.example.common_ui.theme.model.LightHyperlink
 import com.example.common_ui.theme.model.LightNegative
 import com.example.common_ui.theme.model.LightPercentageCard
 import com.example.common_ui.theme.model.LightPositive
@@ -96,7 +98,8 @@ private val darkExtraColor = CryptoColor(
     negative = DarkNegative,
     chart = DarkChart,
     chartGradient = DarkChartGradient,
-    percentageCard = LightPercentageCard
+    percentageCard = LightPercentageCard,
+    hyperlink = DarkHyperlink
 )
 
 private val lightExtraColor = CryptoColor(
@@ -104,7 +107,8 @@ private val lightExtraColor = CryptoColor(
     negative = LightNegative,
     chart = LightChart,
     chartGradient = LightChartGradient,
-    percentageCard = DarkPercentageCard
+    percentageCard = DarkPercentageCard,
+    hyperlink = LightHyperlink
 )
 
 private val LocalExtraColor = staticCompositionLocalOf<CryptoColor> {

@@ -57,7 +57,6 @@ class CryptoInfoViewModel @Inject constructor(
                     )
                 }
             }
-            CryptoInfoEvents.Refresh -> TODO()
             is CryptoInfoEvents.OnFavourite -> toggleFavorite(events.cryptoId)
         }
     }

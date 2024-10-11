@@ -55,14 +55,8 @@ class MainActivity : ComponentActivity() {
                                     "cryptoInfo"
                                 )
                             if (cryptoData != null){
-//                                val cryptoInfoViewModel : CryptoInfoViewModel = hiltViewModel()
                                 CryptoInfoScreen(){
                                     navController.navigateUp()
-
-//                                    navController.navigate("CryptoListings") {
-//                                        popUpTo("CryptoListings") {
-//                                            inclusive = true
-//                                        }
                                 }
                             }
                         }
