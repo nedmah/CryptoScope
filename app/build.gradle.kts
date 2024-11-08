@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hiltAndroid)
+//    alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kspSymbolProcessing)
     id(libs.plugins.kotlinKapt.get().pluginId)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -52,9 +53,9 @@ android {
     }
 }
 
-hilt {
-    enableAggregatingTask = true
-}
+//hilt {
+//    enableAggregatingTask = true
+//}
 
 dependencies {
 
@@ -71,6 +72,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //Navigation
+    implementation(libs.compose.navigation)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -80,10 +85,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Hilt
-    implementation (libs.hilt.android)
-    kapt (libs.hilt.android.compiler)
-    kapt (libs.androidx.hilt.compiler)
-    implementation (libs.androidx.hilt.navigation.compose)
+//    implementation (libs.hilt.android)
+//    kapt (libs.hilt.android.compiler)
+//    kapt (libs.androidx.hilt.compiler)
+//    implementation (libs.androidx.hilt.navigation.compose)
+
+    //Dagger
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
     // Retrofit
     implementation (libs.retrofit)

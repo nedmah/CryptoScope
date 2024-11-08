@@ -1,8 +1,11 @@
 package com.example.crypto_info.presentation
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.cryptolisting.presentation.CryptoListingsEvents
 
+@Immutable
 data class CryptoInfoState(
     val name : String = "",
     val price : String = "",

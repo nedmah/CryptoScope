@@ -4,7 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hiltAndroid)
+//    alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kspSymbolProcessing)
     id(libs.plugins.kotlinKapt.get().pluginId)
 }
@@ -58,15 +58,22 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Dagger - Hilt
-    implementation (libs.hilt.android)
-    kapt (libs.hilt.android.compiler)
-    kapt (libs.androidx.hilt.compiler)
-    implementation (libs.androidx.hilt.navigation.compose)
+//    implementation (libs.hilt.android)
+//    kapt (libs.hilt.android.compiler)
+//    kapt (libs.androidx.hilt.compiler)
+//    implementation (libs.androidx.hilt.navigation.compose)
+
+    //Dagger
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
     // Room
     implementation (libs.androidx.room.ktx)
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.paging)
+
+    //Navigation
+    implementation(libs.compose.navigation)
 
     // Retrofit
     implementation (libs.retrofit)

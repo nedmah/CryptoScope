@@ -1,28 +1,24 @@
 package com.example.cryptolisting.presentation
 
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.cachedIn
-import androidx.paging.map
 import com.example.core.util.Resource
-import com.example.core.db.entities.CryptoListingEntity
-import com.example.cryptolisting.data.toCryptoListingsModel
+import com.example.cryptolisting.domain.model.CryptoListingsModel
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
 import com.example.cryptolisting.domain.repository.FavouritesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+
 class CryptoListingViewModel @Inject constructor(
     private val listingsRepository: CryptoListingsRepository,
     private val favouritesRepository: FavouritesRepository,
@@ -68,6 +64,16 @@ class CryptoListingViewModel @Inject constructor(
             is CryptoListingsEvents.OnFavourite -> toggleFavorite(event.cryptoId)
             CryptoListingsEvents.CheckFavourites -> viewModelScope.launch(Dispatchers.IO) { updateCryptoList() }
         }
+    }
+
+    fun navigateWithBundle(
+        model: CryptoListingsModel,
+        navigate: (Bundle) -> Unit
+    ) {
+        val bundle = Bundle().apply {
+            putParcelable("cryptoInfo", model)
+        }
+        navigate(bundle)
     }
 
 
@@ -122,4 +128,5 @@ class CryptoListingViewModel @Inject constructor(
         }
         state = state.copy(cryptos = updatedCryptos)
     }
+
 }

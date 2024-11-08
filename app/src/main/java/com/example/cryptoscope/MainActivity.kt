@@ -5,60 +5,77 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.activity.viewModels
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.runtime.remember
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.common_ui.composable.CryptoScrollableScaffold
 import com.example.common_ui.theme.CryptoScopeTheme
 import com.example.core.util.extensions.navigate
 import com.example.crypto_info.presentation.CryptoInfoScreen
 import com.example.crypto_info.presentation.CryptoInfoViewModel
 import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.cryptolisting.presentation.CryptoListingViewModel
 import com.example.cryptolisting.presentation.CryptoListingsScreen
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.cryptoscope.di.appComponent
+import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
+import javax.inject.Inject
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var factory: MultiViewModelFactory
+
+    @Inject
+    lateinit var cryptoInfoViewModelFactory: CryptoInfoViewModel.CryptoInfoViewModelFactory.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appComponent.inject(this)
+
         enableEdgeToEdge()
         setContent {
             CryptoScopeTheme {
                 Surface {
+
                     val navController = rememberNavController()
+                    val getViewModelFactory: () -> MultiViewModelFactory = remember {
+                        { factory }
+                    }
+
                     NavHost(
                         navController = navController,
                         startDestination = "CryptoListings"
                     ) {
                         composable(route = "CryptoListings") {
-                            CryptoListingsScreen(navigate = { cryptoModelBundle ->
-                                navController.navigate(
-                                    route = "CryptoInfoScreen",
-                                    args = cryptoModelBundle
-                                )
-                            })
+                            CryptoListingsScreen(
+                                navigate = { cryptoModelBundle ->
+                                    navController.navigate(
+                                        route = "CryptoInfoScreen",
+                                        args = cryptoModelBundle
+                                    )
+                                },
+                                getViewModelFactory = getViewModelFactory
+                            )
                         }
-
                         composable(route = "CryptoInfoScreen") {
+
                             val cryptoData =
                                 navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
                                     "cryptoInfo"
                                 )
-                            if (cryptoData != null){
-                                CryptoInfoScreen(){
+
+                            if (cryptoData != null) {
+                                val vm : CryptoInfoViewModel = viewModel(factory = cryptoInfoViewModelFactory.create(cryptoData))
+                                CryptoInfoScreen(viewModel = vm) {
                                     navController.navigateUp()
                                 }
-                            }
+                            } else navController.navigateUp()
                         }
                     }
                 }

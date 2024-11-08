@@ -15,10 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.theme.paddings
 import com.example.cryptolisting.domain.model.CryptoListingsModel
@@ -26,20 +26,21 @@ import com.example.cryptolisting.presentation.composables.CryptoSwipeableItem
 import com.example.cryptolisting.presentation.composables.FilterBottomSheet
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.delay
 
 @Composable
 fun CryptoListingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: CryptoListingViewModel = hiltViewModel(),
+    getViewModelFactory : () -> ViewModelProvider.Factory,
+    viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory()),
     navigate: (Bundle) -> Unit
 ) {
     val state = viewModel.state
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
-        LaunchedEffect(Unit) {
-            viewModel.onEvent(CryptoListingsEvents.CheckFavourites)
-        }
+
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(CryptoListingsEvents.CheckFavourites)
+    }
 
     Column(
         modifier = modifier
@@ -89,7 +90,7 @@ fun CryptoListingsScreen(
                         val crypto = state.cryptos[index]
                         CryptoSwipeableItem(
                             cryptoModel = crypto,
-                            onClick = { navigateWithBundle(crypto, navigate) },
+                            onClick = { viewModel.navigateWithBundle(crypto, navigate) },
                             isFavourite = crypto.isFavorite,
                             onFavouriteAdd = {
                                 viewModel.onEvent(CryptoListingsEvents.OnFavourite(crypto.cryptoId))
@@ -106,14 +107,4 @@ fun CryptoListingsScreen(
         onDismiss = { viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss) }
     )
 
-}
-
-private fun navigateWithBundle(
-    model: CryptoListingsModel,
-    navigate: (Bundle) -> Unit
-) {
-    val bundle = Bundle().apply {
-        putParcelable("cryptoInfo", model)
-    }
-    navigate(bundle)
 }

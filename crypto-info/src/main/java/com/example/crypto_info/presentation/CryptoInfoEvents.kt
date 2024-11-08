@@ -1,6 +1,5 @@
 package com.example.crypto_info.presentation
 
-import com.example.cryptolisting.presentation.CryptoListingsEvents
 
 sealed class CryptoInfoEvents {
 

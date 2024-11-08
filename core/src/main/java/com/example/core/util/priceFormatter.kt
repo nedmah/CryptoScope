@@ -4,7 +4,7 @@ import java.text.DecimalFormat
 
 fun formatPriceString(price: String): String {
 
-    val numericPrice = price.toDoubleOrNull() ?: throw IllegalArgumentException("Invalid price format")
+    val numericPrice = price.toDoubleOrNull() ?: throw IllegalArgumentException("Invalid price format $price")
 
     val decimalFormat = if (numericPrice < 0.01) {
         DecimalFormat("#,###,##0.#######")
