@@ -19,12 +19,14 @@ import com.example.common_ui.theme.model.DarkHyperlink
 import com.example.common_ui.theme.model.DarkNegative
 import com.example.common_ui.theme.model.DarkPercentageCard
 import com.example.common_ui.theme.model.DarkPositive
+import com.example.common_ui.theme.model.DarkWallet
 import com.example.common_ui.theme.model.LightChart
 import com.example.common_ui.theme.model.LightChartGradient
 import com.example.common_ui.theme.model.LightHyperlink
 import com.example.common_ui.theme.model.LightNegative
 import com.example.common_ui.theme.model.LightPercentageCard
 import com.example.common_ui.theme.model.LightPositive
+import com.example.common_ui.theme.model.LightWallet
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.model.Spacers
 
@@ -97,6 +99,7 @@ private val darkExtraColor = CryptoColor(
     positive = DarkPositive,
     negative = DarkNegative,
     chart = DarkChart,
+    wallet = DarkWallet,
     chartGradient = DarkChartGradient,
     percentageCard = LightPercentageCard,
     hyperlink = DarkHyperlink
@@ -106,6 +109,7 @@ private val lightExtraColor = CryptoColor(
     positive = LightPositive,
     negative = LightNegative,
     chart = LightChart,
+    wallet = LightWallet,
     chartGradient = LightChartGradient,
     percentageCard = DarkPercentageCard,
     hyperlink = LightHyperlink
@@ -123,6 +127,15 @@ private val LocalSpacers = staticCompositionLocalOf<Spacers> {
     error("CompositionLocal LocalSpacers not present")
 }
 
+/**
+ * extraSmall = 4.dp
+ * small = 8.dp
+ * extraMedium = 12.dp
+ * medium = 16.dp
+ * large = 24.dp
+ * extraLarge = 32.dp
+ * xxLarge = 64.dp
+ */
 val MaterialTheme.paddings: Paddings
     @Composable
     @ReadOnlyComposable

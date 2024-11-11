@@ -45,7 +45,6 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":common-ui"))
-    implementation(project(":crypto-listing"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

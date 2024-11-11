@@ -1,7 +1,7 @@
 package com.example.cryptolisting.presentation
 
 import androidx.compose.runtime.Immutable
-import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.core.domain.model.CryptoListingsModel
 
 @Immutable
 data class CryptoListingsState(

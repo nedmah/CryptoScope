@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.common_ui.R
 import com.example.common_ui.theme.extraColor
@@ -84,6 +85,59 @@ fun PercentageText(
             color = color,
             style = style
         )
+    }
+}
+
+@Composable
+fun CryptoNameSymbol(
+    modifier: Modifier = Modifier,
+    padding : Dp = MaterialTheme.paddings.small,
+    symbol : String,
+    name : String
+){
+    Column(
+        modifier = modifier.padding(start = MaterialTheme.paddings.medium),
+    ) {
+        Text(
+            modifier = modifier.padding(bottom = padding),
+            text = symbol,
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Text(
+            text = name,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun CryptoNameSymbolPricePercent(
+    modifier: Modifier = Modifier,
+    padding : Dp = MaterialTheme.paddings.small,
+    symbol : String,
+    name : String,
+    price : String,
+    percent: String
+){
+    Column(
+        modifier = modifier.padding(start = MaterialTheme.paddings.medium),
+    ) {
+        Text(
+            modifier = modifier.padding(bottom = padding),
+            text = "$name($symbol)",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Row{
+            Text(
+                text = price,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            PercentageText(percent = percent, style = MaterialTheme.typography.bodySmall,)
+        }
     }
 }
 

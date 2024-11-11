@@ -1,11 +1,11 @@
-package com.example.core.db.daos
+package com.example.core.data.db.daos
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.core.db.entities.CryptoListingEntity
+import com.example.core.data.db.entities.CryptoListingEntity
 
 @Dao
 interface CryptoListingsDao {

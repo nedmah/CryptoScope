@@ -1,8 +1,8 @@
 package com.example.cryptolisting.data
 
-import com.example.core.db.entities.CryptoListingEntity
+import com.example.core.data.db.entities.CryptoListingEntity
 import com.example.cryptolisting.data.remote.CryptoListingDataDto
-import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.core.domain.model.CryptoListingsModel
 
 fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity {
     return CryptoListingEntity(
@@ -23,7 +23,7 @@ fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity {
 
 }
 
-fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel{
+fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel {
     return CryptoListingsModel(
         rank = rank,
         symbol = symbol,
@@ -41,7 +41,7 @@ fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel{
     )
 }
 
-fun CryptoListingEntity.toCryptoListingsModel() : CryptoListingsModel{
+fun CryptoListingEntity.toCryptoListingsModel() : CryptoListingsModel {
     return CryptoListingsModel(
         rank = id,
         symbol = symbol,

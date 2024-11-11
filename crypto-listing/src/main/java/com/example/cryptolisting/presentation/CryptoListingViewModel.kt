@@ -5,13 +5,12 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.util.Resource
-import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.core.domain.model.CryptoListingsModel
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
-import com.example.cryptolisting.domain.repository.FavouritesRepository
+import com.example.core.domain.repository.FavouritesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

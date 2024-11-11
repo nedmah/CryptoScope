@@ -1,7 +1,7 @@
 package com.example.di.network
 
 import android.app.Application
-import com.example.core.network.Constants
+import com.example.core.data.network.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

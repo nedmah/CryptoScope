@@ -4,13 +4,12 @@ package com.example.cryptolisting.data.repository
 import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
-import androidx.paging.ExperimentalPagingApi
 import com.example.core.util.Resource
-import com.example.core.db.daos.CryptoListingsDao
+import com.example.core.data.db.daos.CryptoListingsDao
 import com.example.cryptolisting.data.remote.CryptoListingsApi
 import com.example.cryptolisting.data.toCryptoListingsEntity
 import com.example.cryptolisting.data.toCryptoListingsModel
-import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.core.domain.model.CryptoListingsModel
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

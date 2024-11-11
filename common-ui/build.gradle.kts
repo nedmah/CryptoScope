@@ -52,6 +52,9 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.compose.charts)
 
+    // Coil Compose
+    implementation (libs.coil)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

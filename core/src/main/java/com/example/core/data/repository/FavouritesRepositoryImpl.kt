@@ -1,8 +1,8 @@
-package com.example.cryptolisting.data.repository
+package com.example.core.data.repository
 
-import com.example.core.db.daos.FavouritesDao
-import com.example.core.db.entities.FavouriteEntity
-import com.example.cryptolisting.domain.repository.FavouritesRepository
+import com.example.core.data.db.daos.FavouritesDao
+import com.example.core.data.db.entities.FavouriteEntity
+import com.example.core.domain.repository.FavouritesRepository
 import javax.inject.Inject
 
 class FavouritesRepositoryImpl @Inject constructor(

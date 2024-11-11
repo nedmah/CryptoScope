@@ -15,14 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.composable.CryptoSearchBar
+import com.example.common_ui.composable.CryptoSwipeableItem
 import com.example.common_ui.theme.paddings
-import com.example.cryptolisting.domain.model.CryptoListingsModel
-import com.example.cryptolisting.presentation.composables.CryptoSwipeableItem
 import com.example.cryptolisting.presentation.composables.FilterBottomSheet
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

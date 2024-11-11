@@ -1,11 +1,11 @@
-package com.example.core.db.daos
+package com.example.core.data.db.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.core.db.entities.FavouriteEntity
+import com.example.core.data.db.entities.FavouriteEntity
 
 @Dao
 interface FavouritesDao {

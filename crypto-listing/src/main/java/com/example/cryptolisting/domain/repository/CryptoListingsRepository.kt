@@ -1,7 +1,7 @@
 package com.example.cryptolisting.domain.repository
 
 import com.example.core.util.Resource
-import com.example.cryptolisting.domain.model.CryptoListingsModel
+import com.example.core.domain.model.CryptoListingsModel
 import kotlinx.coroutines.flow.Flow
 
 

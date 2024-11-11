@@ -1,4 +1,4 @@
-package com.example.core.network
+package com.example.core.data.network
 
 object Constants {
 

@@ -1,15 +1,13 @@
 package com.example.crypto_info.presentation
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.core.util.Resource
 import com.example.core.util.calculatePercentageChange
 import com.example.crypto_info.domain.use_case.GetCryptoInfoUseCase
-import com.example.cryptolisting.domain.model.CryptoListingsModel
-import com.example.cryptolisting.domain.repository.FavouritesRepository
+import com.example.core.domain.model.CryptoListingsModel
+import com.example.core.domain.repository.FavouritesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -17,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class CryptoInfoViewModel (
     private val cryptoListingsModel: CryptoListingsModel,

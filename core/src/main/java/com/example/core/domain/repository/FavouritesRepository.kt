@@ -1,4 +1,4 @@
-package com.example.cryptolisting.domain.repository
+package com.example.core.domain.repository
 
 interface FavouritesRepository {
 

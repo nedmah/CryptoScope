@@ -1,14 +1,11 @@
 package com.example.cryptoscope
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,8 +14,7 @@ import com.example.common_ui.theme.CryptoScopeTheme
 import com.example.core.util.extensions.navigate
 import com.example.crypto_info.presentation.CryptoInfoScreen
 import com.example.crypto_info.presentation.CryptoInfoViewModel
-import com.example.cryptolisting.domain.model.CryptoListingsModel
-import com.example.cryptolisting.presentation.CryptoListingViewModel
+import com.example.core.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.CryptoListingsScreen
 import com.example.cryptoscope.di.appComponent
 import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory

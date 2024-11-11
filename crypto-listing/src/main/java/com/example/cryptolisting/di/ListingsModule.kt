@@ -1,8 +1,8 @@
 package com.example.cryptolisting.di
 
-import com.example.core.db.CryptoDb
-import com.example.core.db.daos.CryptoListingsDao
-import com.example.core.db.daos.FavouritesDao
+import com.example.core.data.db.CryptoDb
+import com.example.core.data.db.daos.CryptoListingsDao
+import com.example.core.data.db.daos.FavouritesDao
 import com.example.cryptolisting.data.remote.CryptoListingsApi
 import dagger.Module
 import dagger.Provides

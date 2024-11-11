@@ -7,6 +7,7 @@ plugins {
 //    alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kspSymbolProcessing)
     id(libs.plugins.kotlinKapt.get().pluginId)
+    id(libs.plugins.parcelize.get().pluginId)
 }
 
 android {
