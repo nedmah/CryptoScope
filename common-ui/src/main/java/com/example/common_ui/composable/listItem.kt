@@ -1,6 +1,7 @@
 package com.example.common_ui.composable
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,6 +39,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.common_ui.R
 import com.example.common_ui.theme.paddings
 import com.example.common_ui.theme.spacers
 import com.example.core.domain.model.CryptoListingsModel
@@ -117,8 +121,6 @@ fun CryptoSwipeableItem(
             )
         }
     }
-
-
 }
 
 @Composable
@@ -220,6 +222,78 @@ fun CryptoItemSmall(
                     percent = cryptoModel.percentage
                 )
             }
+        }
+    }
+}
+
+
+@Composable
+fun CryptoSwipeableItemWallet(
+    modifier: Modifier = Modifier,
+    cryptoModel: CryptoListingsModel,
+    amount : String,
+    sum : String,
+    onAction: () -> Unit,
+    onClick: () -> Unit
+) {
+
+    var contextMenuWidth by remember { mutableFloatStateOf(0f) }
+    val offset = remember { Animatable(initialValue = 0f) }
+    val scope = rememberCoroutineScope()
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .clip(RoundedCornerShape(30))
+    ) {
+        Row(
+            modifier = Modifier
+                .onSizeChanged {
+                    contextMenuWidth = it.width.toFloat()
+                }
+                .align(Alignment.CenterEnd),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                modifier = modifier.background(color = MaterialTheme.colorScheme.error),
+                onClick = onAction
+            ) {
+                Icon(painter = painterResource(id = R.drawable.ic_delete_24), contentDescription = null)
+            }
+        }
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset { IntOffset(offset.value.roundToInt(), 0) }
+                .pointerInput(contextMenuWidth) {
+                    detectHorizontalDragGestures(
+                        onHorizontalDrag = { _, dragAmount ->
+                            scope.launch {
+                                val newOffset = (offset.value + dragAmount)
+                                    .coerceIn(-contextMenuWidth, 0f)
+                                offset.snapTo(newOffset)
+                            }
+                        },
+                        onDragEnd = {
+                            when {
+                                offset.value <= -contextMenuWidth / 2f -> {
+                                    scope.launch {
+                                        offset.animateTo(-contextMenuWidth)
+                                    }
+                                }
+
+                                else -> {
+                                    scope.launch {
+                                        offset.animateTo(0f)
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+        ) {
+            CryptoItemWallet(cryptoModel = cryptoModel, amount = amount, sum = sum, onClick = onClick)
         }
     }
 }

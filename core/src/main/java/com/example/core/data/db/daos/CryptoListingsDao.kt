@@ -27,4 +27,11 @@ interface CryptoListingsDao {
 
     @Query("SELECT * FROM cryptolistingentity")
     fun pagingSource() : PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+        SELECT * 
+        FROM CryptoListingEntity 
+        WHERE id IN (SELECT id FROM WalletCryptoEntity)
+    """)
+    fun getCryptoListingsInWallet(): List<CryptoListingEntity>
 }
