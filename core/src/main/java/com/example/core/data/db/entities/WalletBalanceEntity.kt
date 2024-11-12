@@ -12,5 +12,5 @@ data class WalletBalanceEntity(
     val profitOrAddition: String,  // Профит или пополнение
     val isAddition: Boolean,  // Флаг, является ли это пополнением
     val percentageChange: String,  // Средний процент изменения активов
-    val date: Date  // Дата записи
+    val date: String  // Дата записи
 )
