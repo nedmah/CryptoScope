@@ -15,8 +15,8 @@ data class WalletCryptoEntity(
 data class WalletWithDetails(
     val id: Int,
     val cryptoId: String,
-    val amount: String,
-    val count: String,
+    val amount: String, //количество в деньгах
+    val count: String, //количество в монетах
     val name: String,
     val symbol : String,
     val price: String,

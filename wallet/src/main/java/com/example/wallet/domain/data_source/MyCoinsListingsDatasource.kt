@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MyCoinsListingsDatasource {
 
-    suspend fun getMyCoinsListings(
-        query : String
-    ) : Flow<List<CryptoListingsModel>>
+    suspend fun getMyCoinsListings() : Flow<Resource<List<CryptoListingsModel>>>
 }

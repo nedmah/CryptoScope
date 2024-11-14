@@ -49,7 +49,7 @@ fun WalletCard(
     balance: String,
     profit: String,
     percentage: String,
-    navigate : () -> Unit,
+    navigate: () -> Unit,
 ) {
 
 
@@ -58,7 +58,7 @@ fun WalletCard(
             .fillMaxWidth()
             .height(height)
             .clickable {
-                navigate
+                navigate()
             }
             .background(
                 brush = Brush.linearGradient(gradientColors),
@@ -72,32 +72,45 @@ fun WalletCard(
                 offsetY = height,
                 spread = (-6).dp
             )
-            .padding(16.dp),
+            .padding(horizontal = MaterialTheme.paddings.medium, vertical = MaterialTheme.paddings.extraLarge),
         contentAlignment = Alignment.Center
     ) {
         Row(
             modifier = modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = MaterialTheme.paddings.medium,
-                    vertical = MaterialTheme.paddings.large
-                ),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
 
                 Column {
-                    Text(text = "Баланс", color = contentColor)
-                    Spacer(modifier = modifier.height(MaterialTheme.spacers.extraSmall))
-                    Text(text = balance, color = contentColor, style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraSmall),
+                        text = "Баланс",
+                        color = contentColor,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = balance,
+                        color = contentColor,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
                 Column {
-                    Text(text = "Прибыль за сегодня", color = contentColor)
-                    Spacer(modifier = modifier.height(MaterialTheme.spacers.extraSmall))
-                    Text(text = profit, color = contentColor, style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraSmall),
+                        text = "Прибыль за сегодня",
+                        color = contentColor,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = profit,
+                        color = contentColor,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             }
             PercentageTextCard(modifier = modifier.align(Alignment.Bottom), percent = percentage)
@@ -145,7 +158,7 @@ fun cardsPreview() {
 
             Spacer(modifier = Modifier.size(MaterialTheme.paddings.large))
 
-            WalletCard(balance = "\$2,549.370", profit = "\$75.982", percentage = "0.12"){
+            WalletCard(balance = "\$2,549.370", profit = "\$75.982", percentage = "0.12") {
 
             }
 

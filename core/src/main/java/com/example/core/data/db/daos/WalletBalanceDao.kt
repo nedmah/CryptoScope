@@ -15,4 +15,20 @@ interface WalletBalanceDao {
 
     @Query("SELECT * FROM WalletBalanceEntity ORDER BY date DESC")
     fun getAllBalances(): Flow<List<WalletBalanceEntity>>
+
+    @Query("""
+        SELECT * 
+        FROM WalletBalanceEntity 
+        ORDER BY date DESC 
+        LIMIT 1
+    """)
+    fun getLatestWalletBalance(): WalletBalanceEntity?
+
+
+    @Query("""
+        SELECT COUNT(*) 
+        FROM WalletBalanceEntity 
+        WHERE totalBalance = :totalBalance AND profitOrAddition = :profitOrAddition
+    """)
+    suspend fun countMatchingRecords(totalBalance: String, profitOrAddition: String): Int
 }

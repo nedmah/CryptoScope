@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.core.data.db.entities.CryptoListingEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CryptoListingsDao {
@@ -34,4 +35,12 @@ interface CryptoListingsDao {
         WHERE id IN (SELECT id FROM WalletCryptoEntity)
     """)
     fun getCryptoListingsInWallet(): List<CryptoListingEntity>
+
+
+    @Query("""
+        SELECT * 
+        FROM CryptoListingEntity 
+        WHERE cryptoId IN (SELECT crypto FROM FavouriteEntity)
+    """)
+    fun getCryptoListingsInFavorites(): Flow<List<CryptoListingEntity>>
 }

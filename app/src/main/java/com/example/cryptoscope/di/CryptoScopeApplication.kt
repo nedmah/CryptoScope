@@ -10,6 +10,7 @@ import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.cryptoscope.di.viewmodel.ViewModelFactoryModule
 import com.example.di.db.DatabaseModule
 import com.example.di.network.NetworkModule
+import com.example.wallet.di.WalletModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -34,6 +35,7 @@ class CryptoScopeApplication : Application() {
         NetworkModule::class,
         ListingsModule::class,
         CryptoInfoModule::class,
+        WalletModule::class,
         ViewModelFactoryModule::class
     ]
 )

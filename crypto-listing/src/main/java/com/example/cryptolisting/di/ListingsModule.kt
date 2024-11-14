@@ -20,10 +20,6 @@ object ListingsModule {
 
     @Provides
     @Singleton
-    fun provideListingsDao(db: CryptoDb) : CryptoListingsDao = db.getCryptoListingsDao()
-
-    @Provides
-    @Singleton
     fun provideFavouritesDao(db: CryptoDb) : FavouritesDao = db.getFavouritesDao()
 
 }

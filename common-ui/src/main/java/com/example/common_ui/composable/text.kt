@@ -38,7 +38,7 @@ fun PercentageTextCard(
     Box(
         modifier = modifier.background(
             color = MaterialTheme.extraColor.percentageCard,
-            shape = RoundedCornerShape(14.dp)
+            shape = RoundedCornerShape(16.dp)
         ),
         contentAlignment = Alignment.Center
     ) {
@@ -70,7 +70,7 @@ fun PercentageText(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        Box(modifier = modifier.width(20.dp), contentAlignment = Alignment.Center)
+        Box(modifier = modifier.width(15.dp), contentAlignment = Alignment.Center)
         {
             Icon(
                 painter = painterResource(id = iconRes),

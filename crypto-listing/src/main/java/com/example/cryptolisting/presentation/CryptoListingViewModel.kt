@@ -95,12 +95,12 @@ class CryptoListingViewModel @Inject constructor(
                         }
 
                         is Resource.Success -> {
-                            updateCryptoList()
                             state = state.copy(
                                 isLoading = false,
                                 isRefreshing = false,
                                 cryptos = result.data ?: emptyList()
                             )
+                            updateCryptoList()
                         }
                     }
             }

@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class FavouriteEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val crypto: String
+    val crypto: String  //cryptoId
 )
