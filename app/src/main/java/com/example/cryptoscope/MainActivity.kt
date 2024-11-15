@@ -19,6 +19,7 @@ import com.example.cryptolisting.presentation.CryptoListingsScreen
 import com.example.cryptoscope.di.appComponent
 import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.wallet.presentation.CryptoWalletScreen
+import com.example.wallet.presentation.wallet_history.WalletHistoryScreen
 import javax.inject.Inject
 
 
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "CryptoWallet"
+                        startDestination = "CryptoWalletHistory"
                     ) {
                         composable(route = "CryptoListings") {
                             CryptoListingsScreen(
@@ -77,6 +78,12 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = "CryptoWallet") {
                             CryptoWalletScreen(getViewModelFactory = getViewModelFactory)
+                        }
+
+                        composable(route = "CryptoWalletHistory") {
+                            WalletHistoryScreen(getViewModelFactory = getViewModelFactory){
+                                navController.navigateUp()
+                            }
                         }
                     }
                 }

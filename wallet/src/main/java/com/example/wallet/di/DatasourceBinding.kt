@@ -1,9 +1,11 @@
 package com.example.wallet.di
 
 
+import com.example.wallet.data.local.data_source.BalanceHistoryDatasourceImpl
 import com.example.wallet.data.local.data_source.FavoriteCoinsDatasourceImpl
 import com.example.wallet.data.local.data_source.MyCoinsListingsDatasourceImpl
 import com.example.wallet.data.local.data_source.WalletBalanceDatasourceImpl
+import com.example.wallet.domain.data_source.BalanceHistoryDatasource
 import com.example.wallet.domain.data_source.FavoriteCoinsDatasource
 import com.example.wallet.domain.data_source.MyCoinsListingsDatasource
 import com.example.wallet.domain.data_source.WalletBalanceDatasource
@@ -25,4 +27,8 @@ internal interface DatasourceBinding {
     @Binds
     @Singleton
     fun bindWalletBalanceDatasource(datasource: WalletBalanceDatasourceImpl) : WalletBalanceDatasource
+
+    @Binds
+    @Singleton
+    fun bindBalanceHistoryDatasource(datasource: BalanceHistoryDatasourceImpl) : BalanceHistoryDatasource
 }

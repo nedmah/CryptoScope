@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.crypto_info.presentation.CryptoInfoViewModel
 import com.example.cryptolisting.presentation.CryptoListingViewModel
 import com.example.wallet.presentation.CryptoWalletViewModel
+import com.example.wallet.presentation.wallet_history.WalletHistoryViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,5 +21,10 @@ interface AppBindsModule {
     @IntoMap
     @ViewModelKey(CryptoWalletViewModel::class)
     fun provideWalletViewModel(cryptoWalletViewModel: CryptoWalletViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(WalletHistoryViewModel::class)
+    fun provideWalletHistoryViewModel(walletHistoryViewModel: WalletHistoryViewModel): ViewModel
 
 }
