@@ -75,6 +75,7 @@ dependencies {
 
     //Navigation
     implementation(libs.compose.navigation)
+    implementation(libs.kotlinx.serialization.json)
 
     // Retrofit
     implementation (libs.retrofit)

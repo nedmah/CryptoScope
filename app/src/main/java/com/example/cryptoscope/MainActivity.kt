@@ -18,6 +18,7 @@ import com.example.core.domain.model.CryptoListingsModel
 import com.example.cryptolisting.presentation.CryptoListingsScreen
 import com.example.cryptoscope.di.appComponent
 import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
+import com.example.cryptoscope.navigation.Routes
 import com.example.wallet.presentation.CryptoWalletScreen
 import com.example.wallet.presentation.wallet_history.WalletHistoryScreen
 import javax.inject.Inject
@@ -48,20 +49,20 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "CryptoWalletHistory"
+                        startDestination = Routes.CryptoListingsScreen.name
                     ) {
-                        composable(route = "CryptoListings") {
+                        composable(Routes.CryptoListingsScreen.name) {
                             CryptoListingsScreen(
                                 navigate = { cryptoModelBundle ->
                                     navController.navigate(
-                                        route = "CryptoInfoScreen",
+                                        route = Routes.CryptoInfoScreen.name,
                                         args = cryptoModelBundle
                                     )
                                 },
                                 getViewModelFactory = getViewModelFactory
                             )
                         }
-                        composable(route = "CryptoInfoScreen") {
+                        composable(Routes.CryptoInfoScreen.name) {
 
                             val cryptoData =
                                 navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
@@ -76,11 +77,11 @@ class MainActivity : ComponentActivity() {
                             } else navController.navigateUp()
                         }
 
-                        composable(route = "CryptoWallet") {
+                        composable(Routes.CryptoWalletScreen.name) {
                             CryptoWalletScreen(getViewModelFactory = getViewModelFactory)
                         }
 
-                        composable(route = "CryptoWalletHistory") {
+                        composable(Routes.CryptoWalletBalanceScreen.name) {
                             WalletHistoryScreen(getViewModelFactory = getViewModelFactory){
                                 navController.navigateUp()
                             }

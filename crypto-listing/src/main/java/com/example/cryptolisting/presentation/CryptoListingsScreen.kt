@@ -88,7 +88,9 @@ fun CryptoListingsScreen(
                         val crypto = state.cryptos[index]
                         CryptoSwipeableItem(
                             cryptoModel = crypto,
-                            onClick = { viewModel.navigateWithBundle(crypto, navigate) },
+                            onClick = {
+                                viewModel.navigateWithBundle(crypto, navigate)
+                                      },
                             isFavourite = crypto.isFavorite,
                             onFavouriteAdd = {
                                 viewModel.onEvent(CryptoListingsEvents.OnFavourite(crypto.cryptoId))
