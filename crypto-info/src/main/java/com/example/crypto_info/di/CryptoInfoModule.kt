@@ -3,6 +3,7 @@ package com.example.crypto_info.di
 import androidx.lifecycle.SavedStateHandle
 import com.example.crypto_info.data.remote.CryptoInfoApi
 import com.example.crypto_info.domain.repository.CryptoInfoRepository
+import com.example.crypto_info.domain.use_case.GetCryptoInfoChartUseCase
 import com.example.crypto_info.domain.use_case.GetCryptoInfoUseCase
 import dagger.Module
 import dagger.Provides
@@ -17,6 +18,11 @@ object CryptoInfoModule {
     @Singleton
     fun provideCryptoInfoApi(retrofit: Retrofit): CryptoInfoApi {
         return retrofit.create(CryptoInfoApi::class.java)
+    }
+
+    @Provides
+    fun provideCryptoInfoChartUseCase(repository: CryptoInfoRepository) : GetCryptoInfoChartUseCase {
+        return GetCryptoInfoChartUseCase(repository)
     }
 
     @Provides

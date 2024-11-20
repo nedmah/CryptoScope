@@ -1,27 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-//    alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.kspSymbolProcessing)
     id(libs.plugins.kotlinKapt.get().pluginId)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.cryptoscope"
+    namespace = "com.example.news"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cryptoscope"
         minSdk = 30
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -46,27 +37,20 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
-
-//hilt {
-//    enableAggregatingTask = true
-//}
 
 dependencies {
 
-    implementation(project(":common-ui"))
     implementation(project(":core"))
-    implementation(project(":crypto-listing"))
-    implementation(project(":crypto-info"))
-    implementation(project(":wallet"))
-    implementation(project(":news"))
+    implementation(project(":common-ui"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -75,27 +59,17 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    //Navigation
-    implementation(libs.compose.navigation)
-    implementation(libs.kotlinx.serialization.json)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    //Hilt
-//    implementation (libs.hilt.android)
-//    kapt (libs.hilt.android.compiler)
-//    kapt (libs.androidx.hilt.compiler)
-//    implementation (libs.androidx.hilt.navigation.compose)
-
     //Dagger
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
+
+    //viewmodel
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Room
+    implementation (libs.androidx.room.ktx)
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.paging)
 
     // Retrofit
     implementation (libs.retrofit)
@@ -103,5 +77,9 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.logging.interceptor)
 
-    implementation(libs.compose.charts)
+    // Coil Compose
+    implementation (libs.coil)
+
+    // Accompanists swipeRefresh
+    implementation(libs.accompanist.swiperefresh)
 }

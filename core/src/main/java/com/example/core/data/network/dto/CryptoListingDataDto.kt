@@ -1,4 +1,4 @@
-package com.example.cryptolisting.data.remote
+package com.example.core.data.network.dto
 
 import com.squareup.moshi.Json
 

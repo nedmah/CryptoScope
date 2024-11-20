@@ -1,5 +1,6 @@
 package com.example.crypto_info.domain.use_case
 
+import com.example.core.domain.model.CryptoListingsModel
 import com.example.core.util.Resource
 import com.example.crypto_info.domain.model.CryptoInfo
 import com.example.crypto_info.domain.repository.CryptoInfoRepository
@@ -10,7 +11,7 @@ import javax.inject.Inject
 class GetCryptoInfoUseCase @Inject constructor(
     private val repository: CryptoInfoRepository
 ) {
-    suspend operator fun invoke(coinId : String, intervals: TimeIntervals) : Flow<Resource<CryptoInfo>> {
-        return repository.getCryptoInfo(coinId,intervals)
+    suspend operator fun invoke(coinId : String) : Flow<Resource<CryptoListingsModel>> {
+        return repository.getCryptoInfo(coinId = coinId)
     }
 }

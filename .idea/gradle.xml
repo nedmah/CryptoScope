@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/crypto-info" />
             <option value="$PROJECT_DIR$/crypto-listing" />
+            <option value="$PROJECT_DIR$/news" />
             <option value="$PROJECT_DIR$/wallet" />
           </set>
         </option>

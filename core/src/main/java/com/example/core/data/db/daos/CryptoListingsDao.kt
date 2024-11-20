@@ -34,7 +34,7 @@ interface CryptoListingsDao {
         FROM CryptoListingEntity 
         WHERE id IN (SELECT id FROM WalletCryptoEntity)
     """)
-    fun getCryptoListingsInWallet(): List<CryptoListingEntity>
+    suspend fun getCryptoListingsInWallet(): List<CryptoListingEntity>
 
 
     @Query("""
@@ -43,4 +43,12 @@ interface CryptoListingsDao {
         WHERE cryptoId IN (SELECT crypto FROM FavouriteEntity)
     """)
     fun getCryptoListingsInFavorites(): Flow<List<CryptoListingEntity>>
+
+
+    @Query("""
+        SELECT * 
+        FROM CryptoListingEntity 
+        WHERE cryptoId = :cryptoId
+    """)
+    suspend fun getCryptoListingById(cryptoId : String): CryptoListingEntity?
 }

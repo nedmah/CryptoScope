@@ -2,6 +2,7 @@ package com.example.crypto_info.presentation
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import com.example.core.domain.model.CryptoListingsModel
 import com.example.crypto_info.domain.model.CryptoInfo
 
 @Immutable

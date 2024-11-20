@@ -1,6 +1,7 @@
 package com.example.core.data.mappers
 
 import com.example.core.data.db.entities.CryptoListingEntity
+import com.example.core.data.network.dto.CryptoListingDataDto
 import com.example.core.domain.model.CryptoListingsModel
 
 
@@ -38,5 +39,23 @@ fun CryptoListingsModel.toCryptoListingsEntity() : CryptoListingEntity {
         marketCap = marketCap,
         redditUrl = redditUrl,
         twitterUrl = twitterUrl
+    )
+}
+
+fun CryptoListingDataDto.toCryptoListingsModel() : CryptoListingsModel {
+    return CryptoListingsModel(
+        rank = rank,
+        symbol = symbol,
+        name = name,
+        icon = icon,
+        cryptoId = id,
+        price = price,
+        percentage = percentage,
+        percentageOneHour = percentageOneHour.toString(),
+        percentageOneWeek = percentageOneWeek.toString(),
+        totalSupply = totalSupply.toString(),
+        marketCap = marketCap,
+        redditUrl = redditUrl ?: "https://www.reddit.com",
+        twitterUrl = twitterUrl ?: "https://twitter.com/SkyEcosystem"
     )
 }
