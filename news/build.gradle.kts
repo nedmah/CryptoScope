@@ -66,6 +66,10 @@ dependencies {
     //viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    //Paging
+    implementation(libs.androidx.paging.compose)
+    implementation (libs.androidx.paging.runtime.ktx)
+
     // Room
     implementation (libs.androidx.room.ktx)
     kapt (libs.androidx.room.compiler)

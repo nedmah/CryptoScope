@@ -12,7 +12,8 @@ data class CryptoNewsDataDto(
     @field:Json(name = "searchKeyWords")
     val tags : List<String>,
 
-    val date : Long,
+    val source : String,
+    val feedDate : Long,
     val title : String,
     val sourceLink : String,
     val imgUrl : String,

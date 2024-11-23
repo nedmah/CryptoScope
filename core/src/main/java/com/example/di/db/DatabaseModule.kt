@@ -22,4 +22,5 @@ object DatabaseModule {
     @Singleton
     fun provideListingsDao(db: CryptoDb) : CryptoListingsDao = db.getCryptoListingsDao()
 
+
 }

@@ -10,6 +10,7 @@ import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.cryptoscope.di.viewmodel.ViewModelFactoryModule
 import com.example.di.db.DatabaseModule
 import com.example.di.network.NetworkModule
+import com.example.news.di.NewsModule
 import com.example.wallet.di.WalletModule
 import dagger.BindsInstance
 import dagger.Component
@@ -36,10 +37,10 @@ class CryptoScopeApplication : Application() {
         ListingsModule::class,
         CryptoInfoModule::class,
         WalletModule::class,
+        NewsModule::class,
         ViewModelFactoryModule::class
     ]
 )
-
 interface AppComponent {
 
     fun inject(activity: MainActivity)

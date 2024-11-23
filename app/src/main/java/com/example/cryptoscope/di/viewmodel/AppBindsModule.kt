@@ -3,6 +3,7 @@ package com.example.cryptoscope.di.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.crypto_info.presentation.CryptoInfoViewModel
 import com.example.cryptolisting.presentation.CryptoListingViewModel
+import com.example.news.presentation.NewsViewModel
 import com.example.wallet.presentation.CryptoWalletViewModel
 import com.example.wallet.presentation.wallet_history.WalletHistoryViewModel
 import dagger.Binds
@@ -26,5 +27,10 @@ interface AppBindsModule {
     @IntoMap
     @ViewModelKey(WalletHistoryViewModel::class)
     fun provideWalletHistoryViewModel(walletHistoryViewModel: WalletHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewsViewModel::class)
+    fun provideNewsViewModel(newsViewModel: NewsViewModel): ViewModel
 
 }

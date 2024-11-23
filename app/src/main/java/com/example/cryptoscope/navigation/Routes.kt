@@ -18,4 +18,8 @@ sealed interface Routes {
     data object CryptoWalletBalanceScreen : Routes{
         val name : String = "CryptoWalletBalanceScreen"
     }
+
+    data object CryptoNewsScreen : Routes{
+        val name : String = "CryptoNewsScreen"
+    }
 }

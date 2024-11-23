@@ -4,6 +4,7 @@ data class CryptoNewsModel(
     val newsId : String,
     val date: String,
     val title: String,
+    val source : String,
     val sourceLink: String,
     val imgUrl: String,
     val shareURL: String,

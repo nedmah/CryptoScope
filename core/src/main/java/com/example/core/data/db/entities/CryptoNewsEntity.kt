@@ -10,6 +10,7 @@ data class CryptoNewsEntity(
     val newsId : String,
     val date: Long,
     val title: String,
+    val source: String,
     val sourceLink: String,
     val imgUrl: String,
     val shareURL: String,
