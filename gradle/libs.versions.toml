@@ -3,6 +3,7 @@ agp = "8.5.0"
 accompanistSwiperefresh = "0.24.2-alpha"
 activityCompose = "1.9.2"
 androidGradlePlugin = "8.2.2"
+browser = "1.8.0"
 compose = "1.5.1"
 composeBom = "2024.04.01"
 composeCharts = "0.2.1"
@@ -32,6 +33,7 @@ material = "1.12.0"
 
 [libraries]
 
+androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

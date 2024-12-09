@@ -86,4 +86,7 @@ dependencies {
 
     // Accompanists swipeRefresh
     implementation(libs.accompanist.swiperefresh)
+
+    //Customtabs
+    implementation (libs.androidx.browser)
 }

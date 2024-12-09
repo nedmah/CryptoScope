@@ -83,6 +83,8 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.logging.interceptor)
 
+    //Customtabs
+    implementation (libs.androidx.browser)
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.news.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,10 +38,15 @@ fun CryptoNewsItem(
     source: String,
     imageUrl: String,
     date: String,
+    onClick : () -> Unit
 ) {
     ElevatedCard(modifier = modifier
         .fillMaxWidth()
-        .height(128.dp)) {
+        .height(128.dp)
+        .clickable {
+            onClick()
+        }
+    ) {
         Row(
             modifier = modifier.padding(MaterialTheme.paddings.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -49,8 +55,7 @@ fun CryptoNewsItem(
 
             AsyncImage(
                 modifier = modifier
-                    .width(96.dp)
-                    .fillMaxHeight()
+                    .size(80.dp)
                     .clip(RoundedCornerShape(12.dp)),
                 filterQuality = FilterQuality.Medium,
                 contentScale = ContentScale.Crop,
@@ -66,7 +71,7 @@ fun CryptoNewsItem(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = title,style = MaterialTheme.typography.titleSmall, maxLines = 3)
+                Text(text = title,style = MaterialTheme.typography.titleSmall, maxLines = 2)
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -103,6 +108,8 @@ fun NewsItemPreview() {
             source = "BBC News",
             imageUrl = "https://coin-turk.com/wp-content/uploads/2024/11/bitcoin-202.jpg",
             date = "20.12.2024"
-        )
+        ){
+
+        }
     }
 }

@@ -88,4 +88,7 @@ dependencies {
 
     //charts
     implementation(libs.compose.charts)
+
+    //Customtabs
+    implementation (libs.androidx.browser)
 }

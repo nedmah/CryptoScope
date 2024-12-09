@@ -30,6 +30,7 @@ import com.example.common_ui.composable.chart.CustomLineChart
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
+import com.example.core.util.openCustomTab
 import com.example.crypto_info.presentation.composables.CryptoInfoHeader
 import com.example.crypto_info.presentation.composables.CryptoInfoItem
 import com.example.crypto_info.presentation.composables.ExternalUrl
@@ -112,12 +113,10 @@ fun CryptoInfoScreen(
             CryptoInfoItem(text = "Market cap", value = state.marketCap)
             CryptoInfoItem(text = "Total supply", value = state.totalSupply)
             ExternalUrl(url = state.twitterUrl, imageId = com.example.common_ui.R.drawable.x_logo){
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(state.twitterUrl))
-                context.startActivity(intent)
+                openCustomTab(context, state.twitterUrl)
             }
             ExternalUrl(url = state.redditUrl, imageId = com.example.common_ui.R.drawable.reddit_logo){
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(state.redditUrl))
-                context.startActivity(intent)
+                openCustomTab(context, state.redditUrl)
             }
         }
 
