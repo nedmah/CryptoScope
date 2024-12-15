@@ -48,6 +48,46 @@ fun CustomLineChart(
         lineDrawer = lineDrawer,
         lineShader = lineShader,
         xAxisDrawer = labelDrawer,
+        priceColor = MaterialTheme.colorScheme.onBackground,
+        horizontalOffset = horizontalOffset,
+    )
+}
+
+@Composable
+fun CompareLineCharts(
+    modifier: Modifier = Modifier,
+    lineChartData: List<LineChartData>,
+    animation: AnimationSpec<Float> = simpleChartAnimation(),
+    pointDrawer: IPointDrawer = EmptyPointDrawer, //FilledCircularPointDrawer()
+    lineDrawer: List<ILineDrawer> = listOf(
+        SolidLineDrawer(
+        thickness = 2.dp,
+        color = MaterialTheme.extraColor.chart),
+        SolidLineDrawer(
+            thickness = 2.dp,
+            color = MaterialTheme.extraColor.secondChart)
+    ),
+    lineShader: ILineShader = GradientLineShader(
+        colors = listOf(
+            MaterialTheme.extraColor.chartGradient,
+            Color.Transparent
+        )
+    ),
+    labelDrawer: CryptoLabelDrawer = CryptoLabelsDrawer(
+        lowestTextColor = MaterialTheme.extraColor.negative,
+        highestTextColor = MaterialTheme.extraColor.positive
+    ),
+    horizontalOffset: Float = 0F,
+) {
+
+    CryptoLineChartsComparison(
+        lineChartDataList = lineChartData,
+        modifier = modifier.fillMaxWidth(),
+        animation = animation,
+        pointDrawer = pointDrawer,
+        lineDrawer = lineDrawer,
+        lineShader = lineShader,
+        xAxisDrawer = labelDrawer,
         horizontalOffset = horizontalOffset,
     )
 }

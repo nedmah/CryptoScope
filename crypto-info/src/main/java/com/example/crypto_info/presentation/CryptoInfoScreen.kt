@@ -1,7 +1,5 @@
 package com.example.crypto_info.presentation
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.PercentageTextCard
 import com.example.common_ui.composable.chart.CustomLineChart
+import com.example.common_ui.composable.chart.CompareLineCharts
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
@@ -53,7 +52,7 @@ fun CryptoInfoScreen(
     LaunchedEffect(state.cryptoInfo) {
         coroutineScope.launch(Dispatchers.Default) {
             val mappedData = state.cryptoInfo.prices.mapIndexed { index, price ->
-                LineChartData.Point(price, index.toString())
+                LineChartData.Point(price, state.cryptoInfo.time[index].toString())
             }
             chartDataState = LineChartData(mappedData)
         }

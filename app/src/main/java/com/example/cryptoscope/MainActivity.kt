@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = Routes.CryptoNewsScreen.name
+                        startDestination = Routes.CryptoListingsScreen.name
                     ) {
                         composable(Routes.CryptoListingsScreen.name) {
                             CryptoListingsScreen(
