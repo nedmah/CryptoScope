@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.common_ui.theme.extraColor
 import com.example.core.util.formatTimestamp
-import com.example.core.util.formatTimestampSimple
 import me.bytebeats.views.charts.line.LineChartData
 import me.bytebeats.views.charts.line.render.line.EmptyLineShader
 import me.bytebeats.views.charts.line.render.line.ILineDrawer
@@ -72,16 +71,18 @@ fun CryptoLineChart(
     val transitionAnimation = remember(lineChartData.points) {
         Animatable(initialValue = 0F)
     }
-
-    LaunchedEffect(lineChartData.points) {
-        transitionAnimation.snapTo(0F)
-        transitionAnimation.animateTo(1F, animationSpec = animation)
-    }
-
     val textMeasurer = rememberTextMeasurer()
     val selectedPoint = remember { mutableStateOf<Offset?>(null) }
     val selectedValue = remember { mutableStateOf<String?>(null) }
     val selectedDate = remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(lineChartData.points) {
+        transitionAnimation.snapTo(0F)
+        transitionAnimation.animateTo(1F, animationSpec = animation)
+        selectedPoint.value = null
+        selectedValue.value = null
+        selectedDate.value = null
+    }
 
     Canvas(
         modifier = modifier
@@ -118,8 +119,8 @@ fun CryptoLineChart(
                             index = lineChartData.points.indexOf(tappedPoint)
                         )
                         selectedValue.value = tappedPoint.value.toString()
-                        println(tappedPoint.label)
-                        selectedDate.value = formatTimestamp(tappedPoint.label.toLong())
+                        val date = tappedPoint.label.toLongOrNull() ?: 0L
+                        selectedDate.value = (formatTimestamp(date, milli = true))
                     } else {
                         selectedPoint.value = null
                         selectedValue.value = null

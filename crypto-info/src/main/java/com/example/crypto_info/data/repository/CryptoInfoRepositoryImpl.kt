@@ -33,8 +33,11 @@ class CryptoInfoRepositoryImpl @Inject constructor(
             val cryptoInfoRemote = api.getCryptoCharts(coinId, period.text)
 
             val cryptoInfo =
-                if (period == TimeIntervals.ONE_MONTH) cryptoInfoRemote.toCryptoInfo()
-                else cryptoInfoRemote.filterIndexed { index, _ -> index % 2 == 0 }.toCryptoInfo()
+                when (period) {
+                    TimeIntervals.ONE_MONTH -> cryptoInfoRemote.toCryptoInfo()
+                    TimeIntervals.ALL -> cryptoInfoRemote.filterIndexed { index, _ -> index % 10 == 0 }.toCryptoInfo()
+                    else -> cryptoInfoRemote.filterIndexed { index, _ -> index % 2 == 0 }.toCryptoInfo()
+                }
 
             emit(Resource.Success(data = cryptoInfo))
             emit(Resource.Loading(false))

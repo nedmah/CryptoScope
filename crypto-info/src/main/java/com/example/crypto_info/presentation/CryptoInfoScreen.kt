@@ -102,7 +102,9 @@ fun CryptoInfoScreen(
         IntervalButtonGroup(
             modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraMedium),
             onIntervalChanged = {
+                println(it)
                 viewModel.onEvent(CryptoInfoEvents.OnIntervalPushed(it))
+                chartDataState = LineChartData(emptyList())
             }
         )
 

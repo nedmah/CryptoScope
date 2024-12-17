@@ -2,7 +2,6 @@ package com.example.news.data
 
 import com.example.core.data.db.entities.CryptoNewsEntity
 import com.example.core.util.formatTimestamp
-import com.example.core.util.formatTimestampSimple
 import com.example.news.data.remote.CryptoNewsDataDto
 import com.example.news.data.remote.CryptoNewsDto
 import com.example.news.domain.model.CryptoNewsModel
@@ -25,7 +24,7 @@ fun CryptoNewsDataDto.toCryptoNewsEntity() : CryptoNewsEntity{
 }
 
 fun CryptoNewsEntity.toCryptoNewsModel() : CryptoNewsModel{
-    val formattedDate = formatTimestamp(date)
+    val formattedDate = formatTimestamp(date, milli = false)
     val tags = tags.split(" ").filter { it.isNotBlank() }
     val coins = relatedCoins.split(" ").filter { it.isNotBlank() }
     return CryptoNewsModel(
