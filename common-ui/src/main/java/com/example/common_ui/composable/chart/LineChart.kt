@@ -31,6 +31,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.common_ui.theme.extraColor
+import com.example.core.util.formatPriceString
 import com.example.core.util.formatTimestamp
 import me.bytebeats.views.charts.line.LineChartData
 import me.bytebeats.views.charts.line.render.line.EmptyLineShader
@@ -118,9 +119,9 @@ fun CryptoLineChart(
                             point = tappedPoint,
                             index = lineChartData.points.indexOf(tappedPoint)
                         )
-                        selectedValue.value = tappedPoint.value.toString()
+                        selectedValue.value = formatPriceString(tappedPoint.value.toString())
                         val date = tappedPoint.label.toLongOrNull() ?: 0L
-                        selectedDate.value = (formatTimestamp(date, milli = true))
+                        selectedDate.value = formatTimestamp(date, milli = true)
                     } else {
                         selectedPoint.value = null
                         selectedValue.value = null

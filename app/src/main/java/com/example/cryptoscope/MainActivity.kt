@@ -1,15 +1,27 @@
 package com.example.cryptoscope
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.common_ui.R
+import com.example.common_ui.composable.CryptoBasicScaffold
+import com.example.common_ui.composable.bottom_nav.BottomBarScreens
+import com.example.common_ui.composable.bottom_nav.CryptoBottomBar
 import com.example.common_ui.theme.CryptoScopeTheme
 import com.example.core.util.extensions.navigate
 import com.example.crypto_info.presentation.CryptoInfoScreen
@@ -33,6 +45,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var cryptoInfoViewModelFactory: CryptoInfoViewModel.CryptoInfoViewModelFactory.Factory
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,6 +61,45 @@ class MainActivity : ComponentActivity() {
                         { factory }
                     }
 
+                    val bottomNavItems = listOf(
+                        BottomBarScreens(
+                            Routes.CryptoNewsScreen.name,
+                            stringResource(id = R.string.news),
+                            R.drawable.ic_news_24
+                        ),
+                        BottomBarScreens(
+                            Routes.CryptoListingsScreen.name,
+                            stringResource(id = R.string.market),
+                            R.drawable.ic_market_24
+                        ),
+                        BottomBarScreens(
+                            Routes.CryptoWalletScreen.name,
+                            stringResource(id = R.string.wallet),
+                            R.drawable.ic_wallet_24
+                        ),
+                        BottomBarScreens(
+                            Routes.CryptoSettingsScreen.name,
+                            stringResource(id = R.string.settings),
+                            R.drawable.ic_settings_24
+                        )
+                    )
+                    val currentIndex = rememberSaveable {
+                        mutableIntStateOf(1)
+                    }
+
+                    CryptoBasicScaffold(
+                        bottomBar = {
+                            CryptoBottomBar(
+                                navController = navController,
+                                bottomNavigationItems = bottomNavItems,
+                                initialIndex = currentIndex
+                            ) {
+                                Log.i("SELECTED_ITEM", "onCreate: Selected Item ${it.name}")
+                            }
+                        }
+                    ) {
+
+
                     NavHost(
                         navController = navController,
                         startDestination = Routes.CryptoListingsScreen.name
@@ -57,19 +109,18 @@ class MainActivity : ComponentActivity() {
                                 navigate = { cryptoModelBundle ->
                                     navController.navigate(
                                         route = Routes.CryptoInfoScreen.name,
-                                        args = cryptoModelBundle
+                                        args = cryptoModelBundle,
+                                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                                     )
                                 },
                                 getViewModelFactory = getViewModelFactory
                             )
                         }
                         composable(Routes.CryptoInfoScreen.name) {
-
                             val cryptoData =
                                 navController.currentBackStackEntry?.arguments?.getParcelable<CryptoListingsModel>(
                                     "cryptoInfo"
                                 )
-
                             if (cryptoData != null) {
                                 val vm : CryptoInfoViewModel = viewModel(factory = cryptoInfoViewModelFactory.create(cryptoData))
                                 CryptoInfoScreen(viewModel = vm) {
@@ -78,9 +129,7 @@ class MainActivity : ComponentActivity() {
                             } else navController.navigateUp()
                         }
 
-                        composable(Routes.CryptoWalletScreen.name) {
-                            CryptoWalletScreen(getViewModelFactory = getViewModelFactory)
-                        }
+                        composable(Routes.CryptoWalletScreen.name) { CryptoWalletScreen(getViewModelFactory = getViewModelFactory) }
 
                         composable(Routes.CryptoWalletBalanceScreen.name) {
                             WalletHistoryScreen(getViewModelFactory = getViewModelFactory){
@@ -88,9 +137,11 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        composable(Routes.CryptoNewsScreen.name) {
-                            CryptoNewsScreen(getViewModelFactory = getViewModelFactory)
+                        composable(Routes.CryptoNewsScreen.name) { CryptoNewsScreen(getViewModelFactory = getViewModelFactory) }
+                        composable(Routes.CryptoSettingsScreen.name) {
+                            Text(text = "privetiki")
                         }
+                    }
                     }
                 }
             }

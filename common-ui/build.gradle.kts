@@ -52,6 +52,9 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.compose.charts)
 
+    //Navigation
+    implementation(libs.compose.navigation)
+
     // Coil Compose
     implementation (libs.coil)
 

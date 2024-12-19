@@ -5,4 +5,9 @@
     <string name="preview_support_text">Подзаголовок с описанием чего то важного</string>
     <string name="preview_extra_headline_text">25</string>
 
+    <string name="news">Новости</string>
+    <string name="wallet">Кошелёк</string>
+    <string name="market">Рынок</string>
+    <string name="settings">Настройки</string>
+
 </resources>

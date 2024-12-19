@@ -22,4 +22,8 @@ sealed interface Routes {
     data object CryptoNewsScreen : Routes{
         val name : String = "CryptoNewsScreen"
     }
+
+    data object CryptoSettingsScreen : Routes{
+        val name : String = "CryptoSettingsScreen"
+    }
 }
