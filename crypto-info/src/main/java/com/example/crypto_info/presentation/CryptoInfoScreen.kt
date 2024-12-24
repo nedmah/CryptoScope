@@ -39,8 +39,8 @@ import me.bytebeats.views.charts.line.LineChartData
 
 @Composable
 fun CryptoInfoScreen(
-    modifier: Modifier = Modifier,
     viewModel: CryptoInfoViewModel,
+    modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
 

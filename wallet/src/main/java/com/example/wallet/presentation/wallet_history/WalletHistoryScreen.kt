@@ -38,10 +38,10 @@ import me.bytebeats.views.charts.simpleChartAnimation
 
 @Composable
 fun WalletHistoryScreen(
-    modifier: Modifier = Modifier,
     getViewModelFactory: () -> ViewModelProvider.Factory,
-    viewModel: WalletHistoryViewModel = viewModel(factory = getViewModelFactory()),
-    onBack : () -> Unit
+    onBack : () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: WalletHistoryViewModel = viewModel(factory = getViewModelFactory())
 ) {
 
     val state = viewModel.state.collectAsState().value

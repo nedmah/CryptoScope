@@ -29,10 +29,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CryptoListingsScreen(
-    modifier: Modifier = Modifier,
     getViewModelFactory : () -> ViewModelProvider.Factory,
-    viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory()),
-    navigate: (Bundle) -> Unit
+    navigate: (Bundle) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory())
 ) {
     val state = viewModel.state
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)

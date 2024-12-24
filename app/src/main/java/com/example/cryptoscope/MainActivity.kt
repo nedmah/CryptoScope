@@ -106,14 +106,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.CryptoListingsScreen.name) {
                             CryptoListingsScreen(
+                                getViewModelFactory,
                                 navigate = { cryptoModelBundle ->
                                     navController.navigate(
                                         route = Routes.CryptoInfoScreen.name,
                                         args = cryptoModelBundle,
-                                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                                    )
-                                },
-                                getViewModelFactory = getViewModelFactory
+                                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build())}
                             )
                         }
                         composable(Routes.CryptoInfoScreen.name) {
@@ -123,21 +121,19 @@ class MainActivity : ComponentActivity() {
                                 )
                             if (cryptoData != null) {
                                 val vm : CryptoInfoViewModel = viewModel(factory = cryptoInfoViewModelFactory.create(cryptoData))
-                                CryptoInfoScreen(viewModel = vm) {
+                                CryptoInfoScreen(vm) {
                                     navController.navigateUp()
                                 }
                             } else navController.navigateUp()
                         }
 
-                        composable(Routes.CryptoWalletScreen.name) { CryptoWalletScreen(getViewModelFactory = getViewModelFactory) }
+                        composable(Routes.CryptoWalletScreen.name) { CryptoWalletScreen(getViewModelFactory) }
 
                         composable(Routes.CryptoWalletBalanceScreen.name) {
-                            WalletHistoryScreen(getViewModelFactory = getViewModelFactory){
-                                navController.navigateUp()
-                            }
+                            WalletHistoryScreen(getViewModelFactory, {navController.navigateUp()})
                         }
 
-                        composable(Routes.CryptoNewsScreen.name) { CryptoNewsScreen(getViewModelFactory = getViewModelFactory) }
+                        composable(Routes.CryptoNewsScreen.name) { CryptoNewsScreen(getViewModelFactory) }
                         composable(Routes.CryptoSettingsScreen.name) {
                             Text(text = "privetiki")
                         }

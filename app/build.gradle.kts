@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-//    alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kspSymbolProcessing)
-    id(libs.plugins.kotlinKapt.get().pluginId)
     alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.kotlinKapt.get().pluginId)
+
 }
 
 android {
@@ -53,9 +53,7 @@ android {
     }
 }
 
-//hilt {
-//    enableAggregatingTask = true
-//}
+
 
 dependencies {
 
@@ -87,11 +85,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Hilt
-//    implementation (libs.hilt.android)
-//    kapt (libs.hilt.android.compiler)
-//    kapt (libs.androidx.hilt.compiler)
-//    implementation (libs.androidx.hilt.navigation.compose)
 
     //Dagger
     implementation(libs.dagger)

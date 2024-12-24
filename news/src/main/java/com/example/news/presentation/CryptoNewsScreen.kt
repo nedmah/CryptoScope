@@ -29,8 +29,8 @@ import com.example.news.domain.model.CryptoNewsModel
 
 @Composable
 fun CryptoNewsScreen(
-    modifier: Modifier = Modifier,
     getViewModelFactory: () -> ViewModelProvider.Factory,
+    modifier: Modifier = Modifier,
     viewModel: NewsViewModel = viewModel(factory = getViewModelFactory())
 ) {
 

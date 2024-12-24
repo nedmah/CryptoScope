@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/convention-plugins/base" name="base">
+                <projects>
+                  <project path="$PROJECT_DIR$/convention-plugins/base" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
@@ -11,10 +22,12 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common-ui" />
+            <option value="$PROJECT_DIR$/convention-plugins/base" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/crypto-info" />
             <option value="$PROJECT_DIR$/crypto-listing" />
             <option value="$PROJECT_DIR$/news" />
+            <option value="$PROJECT_DIR$/settings" />
             <option value="$PROJECT_DIR$/wallet" />
           </set>
         </option>

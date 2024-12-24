@@ -40,8 +40,8 @@ import com.example.wallet.domain.model.CryptoWalletModel
 
 @Composable
 fun CryptoWalletScreen(
-    modifier: Modifier = Modifier,
     getViewModelFactory: () -> ViewModelProvider.Factory,
+    modifier: Modifier = Modifier,
     viewModel: CryptoWalletViewModel = viewModel(factory = getViewModelFactory()),
 ) {
 
