@@ -10,6 +10,7 @@ internal val LightChart = Color(0xFF00BDB0)
 internal val LightSecondChart = Color(0xFF058BB3)
 internal val LightWallet = Color(0xFF028F98)
 internal val LightChartGradient = Color(0x3300BDB0)
+internal val LightSecondChartGradient = Color(0x403B82F6)
 internal val LightPercentageCard = Color(0xFFBCF7DB)
 internal val LightHyperlink = Color(0xFF0554AA)
 internal val LightNavIcon = Color(0xFF626E85)
@@ -23,10 +24,10 @@ internal val DarkChart = Color(0xFF00BDB0)
 internal val DarkSecondChart = Color(0xFF11B1E0)
 internal val DarkWallet = Color(0xFF028F98)
 internal val DarkChartGradient = Color(0x3300BDB0)
+internal val DarkSecondChartGradient = Color(0x403B82F6)
 internal val DarkPercentageCard = Color(0xFFDBFBEC)
 internal val DarkHyperlink = Color(0xFF1ECEC8)
 internal val DarkNavIcon = Color(0xFF626E85)
-
 
 class CryptoColor (
     val positive : Color,
@@ -35,6 +36,7 @@ class CryptoColor (
     val secondChart : Color,
     val wallet : Color,
     val chartGradient : Color,
+    val secondGradient : Color,
     val percentageCard : Color,
     val navIconColor : Color,
     val hyperlink : Color

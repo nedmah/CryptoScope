@@ -85,8 +85,8 @@ fun CryptoListingsScreen(
                     viewModel.onEvent(CryptoListingsEvents.Refresh)
                 }
             ) {
-                LazyColumn {
-                    items(state.cryptos.size) { index ->
+                LazyColumn() {
+                    items(count = state.cryptos.size, key = {it}) { index ->
                         val crypto = state.cryptos[index]
                         CryptoSwipeableItem(
                             cryptoModel = crypto,

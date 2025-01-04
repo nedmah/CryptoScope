@@ -1,9 +1,8 @@
-package com.example.crypto_info.presentation
+package com.example.crypto_info.presentation.crypto_info
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
-import com.example.core.domain.model.CryptoListingsModel
 import com.example.crypto_info.domain.model.CryptoInfo
+import com.example.crypto_info.presentation.TimeIntervals
 
 @Immutable
 data class CryptoInfoState(

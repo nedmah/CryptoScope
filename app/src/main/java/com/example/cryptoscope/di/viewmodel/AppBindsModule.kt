@@ -1,7 +1,6 @@
 package com.example.cryptoscope.di.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.crypto_info.presentation.CryptoInfoViewModel
 import com.example.cryptolisting.presentation.CryptoListingViewModel
 import com.example.news.presentation.NewsViewModel
 import com.example.wallet.presentation.CryptoWalletViewModel

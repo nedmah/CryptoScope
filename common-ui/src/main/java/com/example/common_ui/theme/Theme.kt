@@ -21,6 +21,7 @@ import com.example.common_ui.theme.model.DarkNegative
 import com.example.common_ui.theme.model.DarkPercentageCard
 import com.example.common_ui.theme.model.DarkPositive
 import com.example.common_ui.theme.model.DarkSecondChart
+import com.example.common_ui.theme.model.DarkSecondChartGradient
 import com.example.common_ui.theme.model.DarkWallet
 import com.example.common_ui.theme.model.LightChart
 import com.example.common_ui.theme.model.LightChartGradient
@@ -30,6 +31,7 @@ import com.example.common_ui.theme.model.LightNegative
 import com.example.common_ui.theme.model.LightPercentageCard
 import com.example.common_ui.theme.model.LightPositive
 import com.example.common_ui.theme.model.LightSecondChart
+import com.example.common_ui.theme.model.LightSecondChartGradient
 import com.example.common_ui.theme.model.LightWallet
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.model.Spacers
@@ -106,6 +108,7 @@ private val darkExtraColor = CryptoColor(
     secondChart = DarkSecondChart,
     wallet = DarkWallet,
     chartGradient = DarkChartGradient,
+    secondGradient = DarkSecondChartGradient,
     percentageCard = LightPercentageCard,
     hyperlink = DarkHyperlink,
     navIconColor = DarkNavIcon
@@ -118,6 +121,7 @@ private val lightExtraColor = CryptoColor(
     secondChart = LightSecondChart,
     wallet = LightWallet,
     chartGradient = LightChartGradient,
+    secondGradient = LightSecondChartGradient,
     percentageCard = DarkPercentageCard,
     hyperlink = LightHyperlink,
     navIconColor = LightNavIcon

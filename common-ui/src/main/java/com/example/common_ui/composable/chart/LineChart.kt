@@ -237,7 +237,7 @@ fun CryptoLineChartsComparison(
     animation: AnimationSpec<Float> = simpleChartAnimation(),
     pointDrawer: IPointDrawer = FilledCircularPointDrawer(),
     lineDrawer: List<ILineDrawer> = listOf(SolidLineDrawer()),
-    lineShader: ILineShader = EmptyLineShader,
+    lineShader: List<ILineShader> = listOf(EmptyLineShader),
     xAxisDrawer: CryptoLabelDrawer,
     horizontalOffset: Float = 5F,
 ) {
@@ -290,7 +290,7 @@ fun CryptoLineChartsComparison(
                         transitionProgress = transitionAnimation.value
                     )
                 )
-                lineShader.fillLine(
+                lineShader[index].fillLine(
                     drawScope = this,
                     canvas = canvas,
                     fillPath = computeFillPath(

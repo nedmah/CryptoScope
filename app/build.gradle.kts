@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":crypto-info"))
     implementation(project(":wallet"))
     implementation(project(":news"))
+    implementation(project(":settings"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

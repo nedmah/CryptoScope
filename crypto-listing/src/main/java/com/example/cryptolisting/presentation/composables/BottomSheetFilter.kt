@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,13 +30,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.common_ui.composable.BottomDialog
 import com.example.common_ui.theme.paddings
+import com.example.common_ui.theme.spacers
 import com.example.cryptolisting.presentation.Filters
 
 @Composable
 fun FilterBottomSheet(
     onFilterSelected: (Filters) -> Unit,
     onDismiss: () -> Unit,
-    showDialog: Boolean
+    showDialog: Boolean,
+    modifier: Modifier = Modifier
 ) {
     val filterOptions = Filters.entries.toList()
     var selectedItem by remember { mutableIntStateOf(0) }
@@ -49,13 +52,13 @@ fun FilterBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .width(32.dp)
                     .height(5.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .background(color = MaterialTheme.colorScheme.onSurfaceVariant)
                     .padding(
-                    top = MaterialTheme.paddings.small
+                        top = MaterialTheme.paddings.small
                     )
             )
             Text(style = MaterialTheme.typography.headlineSmall, text = "Sorting", modifier = Modifier.padding(vertical = MaterialTheme.paddings.medium))
@@ -71,6 +74,7 @@ fun FilterBottomSheet(
                 )
                 HorizontalDivider()
             }
+            Spacer(modifier = modifier.height(MaterialTheme.spacers.large))
         }
     }
 }

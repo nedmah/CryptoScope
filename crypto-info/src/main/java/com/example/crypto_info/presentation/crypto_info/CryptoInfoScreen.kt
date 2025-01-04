@@ -1,4 +1,4 @@
-package com.example.crypto_info.presentation
+package com.example.crypto_info.presentation.crypto_info
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.PercentageTextCard
 import com.example.common_ui.composable.chart.CustomLineChart
-import com.example.common_ui.composable.chart.CompareLineCharts
 import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
 import com.example.core.util.openCustomTab
+import com.example.crypto_info.presentation.IntervalButtonGroup
 import com.example.crypto_info.presentation.composables.CryptoInfoHeader
 import com.example.crypto_info.presentation.composables.CryptoInfoItem
 import com.example.crypto_info.presentation.composables.ExternalUrl
@@ -102,7 +102,6 @@ fun CryptoInfoScreen(
         IntervalButtonGroup(
             modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraMedium),
             onIntervalChanged = {
-                println(it)
                 viewModel.onEvent(CryptoInfoEvents.OnIntervalPushed(it))
                 chartDataState = LineChartData(emptyList())
             }

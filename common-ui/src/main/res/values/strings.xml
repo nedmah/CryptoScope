@@ -10,4 +10,10 @@
     <string name="market">Рынок</string>
     <string name="settings">Настройки</string>
 
+    <string name="comparison">Сравнение</string>
+    <string name="accounts">Мои счета</string>
+    <string name="theme">Тема</string>
+    <string name="currency">Валюта</string>
+    <string name="info">О приложении</string>
+
 </resources>

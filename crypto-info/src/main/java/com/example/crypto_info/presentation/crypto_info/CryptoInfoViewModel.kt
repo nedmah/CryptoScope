@@ -1,4 +1,4 @@
-package com.example.crypto_info.presentation
+package com.example.crypto_info.presentation.crypto_info
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +9,7 @@ import com.example.crypto_info.domain.use_case.GetCryptoInfoChartUseCase
 import com.example.core.domain.model.CryptoListingsModel
 import com.example.core.domain.repository.FavouritesRepository
 import com.example.crypto_info.domain.use_case.GetCryptoInfoUseCase
+import com.example.crypto_info.presentation.TimeIntervals
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
