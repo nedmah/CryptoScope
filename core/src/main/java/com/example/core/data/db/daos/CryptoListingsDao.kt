@@ -51,4 +51,12 @@ interface CryptoListingsDao {
         WHERE cryptoId = :cryptoId
     """)
     suspend fun getCryptoListingById(cryptoId : String): CryptoListingEntity?
+
+    // Запрос для получения всех имен в виде списка строк
+    @Query("SELECT name FROM CryptoListingEntity")
+    suspend fun getAllNames(): List<String>
+
+    // Запрос для получения объекта по имени
+    @Query("SELECT * FROM CryptoListingEntity WHERE name = :name LIMIT 1")
+    suspend fun getCryptoByName(name: String): CryptoListingEntity?
 }

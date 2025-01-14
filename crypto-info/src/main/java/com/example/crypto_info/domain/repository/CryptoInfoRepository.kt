@@ -17,4 +17,17 @@ interface CryptoInfoRepository {
     suspend fun getCryptoInfo(
         coinId : String,
     ) : Flow<Resource<CryptoListingsModel>>
+
+    suspend fun getCryptoNames() : Resource<List<String>>
+
+    suspend fun getLocalCryptoInfoByName(
+        name : String,
+    ) : Resource<CryptoListingsModel>
+
+    suspend fun getCryptoComparisonChart(
+        coinId1 : String?,
+        coinId2 : String?,
+        period : TimeIntervals
+    ) : Flow<Resource<Pair<CryptoInfo?, CryptoInfo?>>>
+
 }

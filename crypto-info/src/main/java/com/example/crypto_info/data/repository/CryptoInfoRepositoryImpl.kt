@@ -1,6 +1,7 @@
 package com.example.crypto_info.data.repository
 
 import android.net.http.HttpException
+import android.net.http.NetworkException
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.example.core.data.db.daos.CryptoListingsDao
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 class CryptoInfoRepositoryImpl @Inject constructor(
     private val api: CryptoInfoApi,
-    private val dao : CryptoListingsDao
+    private val dao: CryptoListingsDao
 ) : CryptoInfoRepository {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -29,18 +30,20 @@ class CryptoInfoRepositoryImpl @Inject constructor(
     ): Flow<Resource<CryptoInfo>> {
         return flow {
 
-            emit(Resource.Loading(true))
-            val cryptoInfoRemote = api.getCryptoCharts(coinId, period.text)
+            try{
+                emit(Resource.Loading(true))
+                val cryptoInfoRemote = api.getCryptoCharts(coinId, period.text)
 
-            val cryptoInfo =
-                when (period) {
-                    TimeIntervals.ONE_MONTH -> cryptoInfoRemote.toCryptoInfo()
-                    TimeIntervals.ALL -> cryptoInfoRemote.filterIndexed { index, _ -> index % 10 == 0 }.toCryptoInfo()
-                    else -> cryptoInfoRemote.filterIndexed { index, _ -> index % 2 == 0 }.toCryptoInfo()
-                }
+                val cryptoInfo = listReduction(period, cryptoInfoRemote)
 
-            emit(Resource.Success(data = cryptoInfo))
-            emit(Resource.Loading(false))
+                emit(Resource.Success(data = cryptoInfo))
+            } catch (e : IOException){
+                emit(Resource.Error(message = "io exception"))
+            } catch (e : NetworkException){
+                emit(Resource.Error(message = "network exception"))
+            }finally {
+                emit(Resource.Loading(false))
+            }
         }
     }
 
@@ -73,4 +76,65 @@ class CryptoInfoRepositoryImpl @Inject constructor(
 
         }
     }
+
+
+
+    override suspend fun getCryptoNames(): Resource<List<String>> {
+        return try {
+            val names = dao.getAllNames()
+            Resource.Success(data = names)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "can't retrieve coins list")
+        }
+    }
+
+    override suspend fun getLocalCryptoInfoByName(name: String): Resource<CryptoListingsModel> {
+        val cryptoInfo = dao.getCryptoByName(name)?.toCryptoListingsModel()
+        return cryptoInfo?.let {
+            Resource.Success(data = it)
+        } ?: Resource.Error(message = "can't retrieve crypto data")
+
+    }
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun getCryptoComparisonChart(
+        coinId1: String?,
+        coinId2: String?,
+        period: TimeIntervals
+    ): Flow<Resource<Pair<CryptoInfo?, CryptoInfo?>>> {
+        return flow {
+
+            try{
+                emit(Resource.Loading(true))
+                val cryptoInfoRemote1 = coinId1?.let { api.getCryptoCharts(it, period.text) }
+                val cryptoInfoRemote2 = coinId2?.let { api.getCryptoCharts(it, period.text) }
+
+                val cryptoInfo1 = cryptoInfoRemote1?.let { listReduction(period, it) }
+                val cryptoInfo2 = cryptoInfoRemote2?.let { listReduction(period, it) }
+                emit(Resource.Success(data = Pair(cryptoInfo1, cryptoInfo2)))
+
+            } catch (e : IOException){
+                emit(Resource.Error(message = "io exception ${e.message}"))
+            } catch (e : NetworkException){
+                emit(Resource.Error(message = "network exception ${e.message}"))
+            }catch (e: Exception) {
+                emit(Resource.Error(message = "Unexpected error: ${e.message}"))
+            }
+            finally {
+                emit(Resource.Loading(false))
+            }
+        }
+    }
+
+    private fun listReduction(period: TimeIntervals, data :  List<List<String>>) : CryptoInfo{
+        return when(period){
+            TimeIntervals.ONE_MONTH -> data.toCryptoInfo()
+            TimeIntervals.ALL -> data.filterIndexed { index, _ -> index % 10 == 0 }
+                .toCryptoInfo()
+            else -> data.filterIndexed { index, _ -> index % 2 == 0 }
+                .toCryptoInfo()
+        }
+    }
+
 }

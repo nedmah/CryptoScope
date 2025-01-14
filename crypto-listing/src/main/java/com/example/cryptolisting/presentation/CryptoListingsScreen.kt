@@ -16,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.composable.CryptoSwipeableItem
+import com.example.common_ui.composable.DashedDivider
 import com.example.common_ui.theme.paddings
 import com.example.cryptolisting.presentation.composables.FilterBottomSheet
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -29,7 +31,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CryptoListingsScreen(
-    getViewModelFactory : () -> ViewModelProvider.Factory,
+    getViewModelFactory: () -> ViewModelProvider.Factory,
     navigate: (Bundle) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory())
@@ -86,13 +88,13 @@ fun CryptoListingsScreen(
                 }
             ) {
                 LazyColumn() {
-                    items(count = state.cryptos.size, key = {it}) { index ->
+                    items(count = state.cryptos.size, key = { it }) { index ->
                         val crypto = state.cryptos[index]
                         CryptoSwipeableItem(
                             cryptoModel = crypto,
                             onClick = {
                                 viewModel.navigateWithBundle(crypto, navigate)
-                                      },
+                            },
                             isFavourite = crypto.isFavorite,
                             onFavouriteAdd = {
                                 viewModel.onEvent(CryptoListingsEvents.OnFavourite(crypto.cryptoId))

@@ -15,46 +15,26 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.theme.paddings
-import com.example.settings.navigation.Routes
 
 @Composable
 fun SettingsScreen(
+    getViewModelFactory: () -> ViewModelProvider.Factory,
     action: (String?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    val items = listOf(
-        SettingsItem(
-            stringResource(com.example.common_ui.R.string.comparison),
-            com.example.common_ui.R.drawable.ic_comparison_24,
-            Routes.CryptoComparisonScreen.name
-        ),
-        SettingsItem(
-            stringResource(com.example.common_ui.R.string.accounts),
-            com.example.common_ui.R.drawable.ic_list_24,
-            Routes.CryptoAccountsScreen.name
-        ),
-        SettingsItem(
-            stringResource(com.example.common_ui.R.string.theme),
-            com.example.common_ui.R.drawable.ic_lightmode_24
-        ),
-        SettingsItem(
-            stringResource(com.example.common_ui.R.string.currency),
-            title = "USD",
-            route = Routes.CryptoCurrencyScreen.name
-        ),
-        SettingsItem(
-            stringResource(com.example.common_ui.R.string.info),
-            com.example.common_ui.R.drawable.ic_info_24,
-            Routes.CryptoAboutScreen.name
-        ),
-    )
+
+    val state = viewModel.items.collectAsState().value
 
     Column(
         modifier = modifier
@@ -79,15 +59,17 @@ fun SettingsScreen(
                 .clip(RoundedCornerShape(20.dp))
         ) {
             LazyColumn {
-                items(count = items.size) { index ->
-                    val item = items[index]
+                items(count = state.items.size) { index ->
+                    val item = state.items[index]
                     ListItem(
                         modifier = modifier.clickable {
-                            item.route?.let { route ->
-                                action(route)
+                            if(item.route != null) action(item.route)
+                            else {
+                                action(item.title)
+                                viewModel.changeThemeIcon()
                             }
                         },
-                        headlineContent = { Text(text = item.name) },
+                        headlineContent = { Text(text = stringResource(id = item.nameId)) },
                         leadingContent = {
                             item.imageId?.let {
                                 Icon(

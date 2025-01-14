@@ -5,12 +5,23 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
@@ -18,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.common_ui.R
 import com.example.common_ui.composable.CryptoBasicScaffold
+import com.example.common_ui.composable.DashedDivider
 import com.example.common_ui.composable.bottom_nav.BottomBarScreens
 import com.example.common_ui.composable.bottom_nav.CryptoBottomBar
 import com.example.common_ui.theme.CryptoScopeTheme
@@ -53,7 +65,9 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            CryptoScopeTheme {
+            var isDarkTheme by rememberSaveable { mutableStateOf(true) }  //TODO: полноценно сделать
+
+            CryptoScopeTheme(darkTheme = isDarkTheme) {
                 Surface {
 
                     val navController = rememberNavController()
@@ -84,7 +98,7 @@ class MainActivity : ComponentActivity() {
                         )
                     )
                     val currentIndex = rememberSaveable {
-                        mutableIntStateOf(1)
+                        mutableIntStateOf(3)
                     }
 
                     CryptoBasicScaffold(
@@ -102,7 +116,7 @@ class MainActivity : ComponentActivity() {
 
                         NavHost(
                             navController = navController,
-                            startDestination = Routes.CryptoListingsScreen.name
+                            startDestination = Routes.CryptoSettingsScreen.name
                         ) {
                             composable(Routes.CryptoListingsScreen.name) {
                                 CryptoListingsScreen(
@@ -151,8 +165,10 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Routes.CryptoSettingsScreen.name) {
                                 SettingsScreen(
+                                    getViewModelFactory,
                                     action = { route ->
-                                        route?.let { navController.navigate(it) }
+                                        if (route == null) isDarkTheme = !isDarkTheme
+                                        else navController.navigate(route)
                                     }
                                 )
                             }
@@ -161,13 +177,15 @@ class MainActivity : ComponentActivity() {
 
                             composable(com.example.settings.navigation.Routes.CryptoComparisonScreen.name) {
                                 CryptoComparisonScreen(
+                                    getViewModelFactory,
                                     onBack = { navController.navigateUp() },
-                                    onCompare = { /*TODO*/ })
+                                    )
                             }
 
                             composable(com.example.settings.navigation.Routes.CryptoCurrencyScreen.name) {}
 
-                            composable(com.example.settings.navigation.Routes.CryptoAboutScreen.name) {}
+                            composable(com.example.settings.navigation.Routes.CryptoAboutScreen.name) {
+                            }
                         }
                     }
                 }
