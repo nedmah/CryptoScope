@@ -78,6 +78,115 @@ internal fun computePointLocation(
     )
 }
 
+/**
+ * for comparison
+ */
+internal fun computePointLocation(
+    drawableArea: Rect,
+    lineChartData: LineChartData,
+    point: LineChartData.Point,
+    index: Int,
+    globalMinY: Float,
+    globalRange: Float,
+    scaleFactor: Float = 0.6f // scale (from 0 - 0%, 1 - 100%)
+): Offset {
+    val dx = index.toFloat() / (lineChartData.points.size - 1)
+    val dy = (point.value - globalMinY) / globalRange
+    val scaledHeight = drawableArea.height * scaleFactor
+    val verticalOffset = (drawableArea.height - scaledHeight) / 2
+
+    return Offset(
+        x = dx * drawableArea.width + drawableArea.left,
+        y = drawableArea.bottom - (dy * scaledHeight + verticalOffset)
+    )
+}
+/**
+ * for comparison
+ */
+internal fun computeLinePath(
+    drawableArea: Rect,
+    lineChartData: LineChartData,
+    transitionProgress: Float,
+    globalMinY: Float,
+    globalRange: Float
+): Path = Path().apply {
+    var prePointLocation: Offset? = null
+    lineChartData.points.forEachIndexed { index, point ->
+        withProgress(index, lineChartData, transitionProgress) { progress ->
+            val pointLocation = computePointLocation(
+                drawableArea = drawableArea,
+                lineChartData = lineChartData,
+                point = point,
+                index = index,
+                globalMinY = globalMinY,
+                globalRange = globalRange
+            )
+            if (index == 0) {
+                moveTo(pointLocation.x, pointLocation.y)
+            } else {
+                if (progress <= 1F) {
+                    val preX = prePointLocation?.x ?: 0F
+                    val preY = prePointLocation?.y ?: 0F
+                    val tx = (pointLocation.x - preX) * progress + preX
+                    val ty = (pointLocation.y - preY) * progress + preY
+                    lineTo(tx, ty)
+                } else {
+                    lineTo(pointLocation.x, pointLocation.y)
+                }
+            }
+            prePointLocation = pointLocation
+        }
+    }
+}
+/**
+ * for comparison
+ */
+internal fun computeFillPath(
+    drawableArea: Rect,
+    lineChartData: LineChartData,
+    transitionProgress: Float,
+    globalMinY: Float,
+    globalRange: Float
+): Path = Path().apply {
+    moveTo(drawableArea.left, drawableArea.bottom)
+    var prePointX: Float? = null
+    var prePointLocation: Offset? = null
+    lineChartData.points.forEachIndexed { index, point ->
+        withProgress(index, lineChartData, transitionProgress) { progress ->
+            val pointLocation = computePointLocation(
+                drawableArea = drawableArea,
+                lineChartData = lineChartData,
+                point = point,
+                index = index,
+                globalMinY = globalMinY,
+                globalRange = globalRange
+            )
+            if (index == 0) {
+                lineTo(drawableArea.left, pointLocation.y)
+                lineTo(pointLocation.x, pointLocation.y)
+            } else {
+                prePointX = if (progress <= 1F) {
+                    val preX = prePointLocation?.x ?: 0F
+                    val preY = prePointLocation?.y ?: 0F
+                    val tx = (pointLocation.x - preX) * progress + preX
+                    val ty = (pointLocation.y - preY) * progress + preY
+                    lineTo(tx, ty)
+                    tx
+                } else {
+                    lineTo(pointLocation.x, pointLocation.y)
+                    pointLocation.x
+                }
+            }
+            prePointLocation = pointLocation
+        }
+    }
+    prePointX?.let {
+        lineTo(it, drawableArea.bottom)
+        lineTo(drawableArea.left, drawableArea.bottom)
+    } ?: lineTo(drawableArea.left, drawableArea.bottom)
+}
+
+
 internal fun withProgress(
     index: Int,
     lineChartData: LineChartData,

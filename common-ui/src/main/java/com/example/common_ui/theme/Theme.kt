@@ -1,7 +1,11 @@
 package com.example.common_ui.theme
 
 import android.os.Build
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -11,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.common_ui.theme.model.CryptoColor
 import com.example.common_ui.theme.model.DarkChart
@@ -163,6 +168,49 @@ val MaterialTheme.extraColor: CryptoColor
     @ReadOnlyComposable
     get() = LocalExtraColor.current
 
+
+@Composable
+fun ColorScheme.switch(): ColorScheme = copy(
+    primary = animateColor(primary),
+    primaryContainer = animateColor(primaryContainer),
+    onPrimary = animateColor(onPrimary),
+    secondary = animateColor(secondary),
+    secondaryContainer = animateColor(secondaryContainer),
+    onSecondary = animateColor(onSecondary),
+    background = animateColor(background),
+    onBackground = animateColor(onBackground),
+    surface = animateColor(surface),
+    surfaceVariant = animateColor(surfaceVariant),
+    outline = animateColor(outline),
+    onSurface = animateColor(onSurface),
+    error = animateColor(error),
+    onError = animateColor(onError)
+)
+
+@Composable
+fun CryptoColor.switch(): CryptoColor = copy(
+    positive = animateColor(positive),
+    negative = animateColor(negative),
+    chart = animateColor(chart),
+    secondChart = animateColor(secondChart),
+    wallet = animateColor(wallet),
+    chartGradient = animateColor(chartGradient),
+    secondGradient = animateColor(secondGradient),
+    percentageCard = animateColor(percentageCard),
+    navIconColor = animateColor(navIconColor),
+    hyperlink = animateColor(hyperlink)
+)
+
+
+
+@Composable
+fun animateColor(targetValue: Color): Color {
+    return animateColorAsState(
+        targetValue = targetValue,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+    ).value
+}
+
 @Composable
 fun CryptoScopeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -176,11 +224,11 @@ fun CryptoScopeTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColors
-        else -> LightColors
+        darkTheme -> DarkColors.switch()
+        else -> LightColors.switch()
     }
 
-    val extraColors = if (darkTheme) darkExtraColor else lightExtraColor
+    val extraColors = if (darkTheme) darkExtraColor.switch() else lightExtraColor.switch()
 
     CompositionLocalProvider(
         LocalPaddings provides Paddings,

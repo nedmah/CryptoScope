@@ -23,13 +23,23 @@ data class SettingsScreenState(
         ),
         SettingsItem(
             com.example.common_ui.R.string.currency,
-            title = "USD",
-            route = Routes.CryptoCurrencyScreen.name
+            route = Routes.CryptoCurrencyScreen.name,
+            title = "usd"
+        ),
+        SettingsItem(
+            com.example.common_ui.R.string.language,
+            route = Routes.CryptoLanguageScreen.name,
+            title = "eng"
         ),
         SettingsItem(
             com.example.common_ui.R.string.info,
             com.example.common_ui.R.drawable.ic_info_24,
             Routes.CryptoAboutScreen.name
         ),
-    )
+    ),
+
+    val isDarkTheme: Boolean? = true,
+    val currency: String? = "usd",
+    val language: String? = "eng",
+
 )

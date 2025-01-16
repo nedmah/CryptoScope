@@ -45,6 +45,9 @@ dependencies {
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.paging)
 
+    //DataStore preferences
+    implementation(libs.androidx.datastore.preferences)
+
     //Navigation
     implementation(libs.compose.navigation)
     implementation(libs.kotlinx.serialization.json)

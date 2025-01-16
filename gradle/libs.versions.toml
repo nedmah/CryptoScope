@@ -1,5 +1,6 @@
 [versions]
 
+
 minSdk = "30"
 targetSdk = "34"
 compileSdk = "34"
@@ -15,6 +16,7 @@ composeBom = "2024.04.01"
 composeCharts = "0.2.1"
 core = "1.1.2-beta"
 coreKtx = "1.13.1"
+datastorePreferences = "1.1.1"
 espressoCore = "3.6.1"
 gson = "2.11.0"
 dagger = "2.51.1"
@@ -42,6 +44,7 @@ material = "1.12.0"
 
 androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

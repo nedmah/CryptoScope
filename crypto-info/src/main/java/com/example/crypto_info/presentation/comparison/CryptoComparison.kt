@@ -70,21 +70,22 @@ fun CryptoComparisonScreen(
         )
 
         if (state.loading) CircularProgressIndicator()
-        else if(!state.errorChart.isNullOrBlank()) Text(text = state.errorChart)
+        else if (!state.errorChart.isNullOrBlank()) Text(text = state.errorChart)
         else {
-            CompareLineCharts(
-                modifier = Modifier
-                    .fillMaxHeight(0.4f)
-                    .fillMaxWidth(),
-                lineChartData = listOf(state.cryptoChart1, state.cryptoChart2)
-            )
+            if (state.cryptoChart1.points.isNotEmpty() || state.cryptoChart2.points.isNotEmpty())
+                CompareLineCharts(
+                    modifier = Modifier
+                        .fillMaxHeight(0.4f)
+                        .fillMaxWidth(),
+                    lineChartData = listOf(state.cryptoChart1, state.cryptoChart2)
+                )
         }
 
         IntervalButtonGroup(
             modifier = Modifier.padding(
                 bottom = MaterialTheme.paddings.small
             ),
-            onIntervalChanged = {viewModel.onEvent(ComparisonEvents.OnIntervalPushed(it))}
+            onIntervalChanged = { viewModel.onEvent(ComparisonEvents.OnIntervalPushed(it)) }
         )
 
         LazyColumn(modifier = modifier.padding()) {
@@ -102,7 +103,7 @@ fun CryptoComparisonScreen(
                     background = backgroundColor
                 )
             }
-            item{
+            item {
                 Spacer(modifier = modifier.height(96.dp))
             }
         }

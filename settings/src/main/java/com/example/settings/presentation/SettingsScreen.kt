@@ -29,12 +29,12 @@ import com.example.common_ui.theme.paddings
 @Composable
 fun SettingsScreen(
     getViewModelFactory: () -> ViewModelProvider.Factory,
-    action: (String?) -> Unit,
+    navigate: (String?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = viewModel(factory = getViewModelFactory())
 ) {
 
-    val state = viewModel.items.collectAsState().value
+    val state = viewModel.settingsState.collectAsState().value
 
     Column(
         modifier = modifier
@@ -61,24 +61,24 @@ fun SettingsScreen(
             LazyColumn {
                 items(count = state.items.size) { index ->
                     val item = state.items[index]
+
                     ListItem(
                         modifier = modifier.clickable {
-                            if(item.route != null) action(item.route)
+                            if(item.route != null) navigate(item.route)
                             else {
-                                action(item.title)
-                                viewModel.changeThemeIcon()
+                                viewModel.onEvent(SettingsEvents.ChangeTheme)
                             }
                         },
                         headlineContent = { Text(text = stringResource(id = item.nameId)) },
                         leadingContent = {
                             item.imageId?.let {
-                                Icon(
-                                    painter = painterResource(id = it),
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    contentDescription = null
-                                )
+                                    Icon(
+                                        painter = painterResource(id = it),
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        contentDescription = null
+                                    )
                             } ?: Text(
-                                text = item.title!!,
+                                text = item.title!!.uppercase(),
                                 color = MaterialTheme.colorScheme.primary
                             )
                         },

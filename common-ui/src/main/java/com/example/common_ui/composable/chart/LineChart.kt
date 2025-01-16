@@ -254,8 +254,19 @@ fun CryptoLineChartsComparison(
         transitionAnimation.animateTo(1F, animationSpec = animation)
     }
 
+
+    val globalMax = lineChartDataList.flatMap { it.points.map { point -> point.value } }.maxOrNull() ?: 0f
+    val globalMin = lineChartDataList.flatMap { it.points.map { point -> point.value } }.minOrNull() ?: 0f
+
+    val allPoints = lineChartDataList.flatMap { it.points }
+    val globalMinY = allPoints.minOf { it.value }
+    val globalMaxY = allPoints.maxOf { it.value }
+
+    val globalRange = globalMaxY - globalMinY
+
     Canvas(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
         drawIntoCanvas { canvas ->
             val yAxisDrawableArea = computeYAxisDrawableArea(
@@ -287,7 +298,9 @@ fun CryptoLineChartsComparison(
                     linePath = computeLinePath(
                         drawableArea = chartDrawableArea,
                         lineChartData = lineChartData,
-                        transitionProgress = transitionAnimation.value
+                        transitionProgress = transitionAnimation.value,
+                        globalMinY = globalMinY,
+                        globalRange = globalRange
                     )
                 )
                 lineShader[index].fillLine(
@@ -296,7 +309,9 @@ fun CryptoLineChartsComparison(
                     fillPath = computeFillPath(
                         drawableArea = chartDrawableArea,
                         lineChartData = lineChartData,
-                        transitionProgress = transitionAnimation.value
+                        transitionProgress = transitionAnimation.value,
+                        globalMinY = globalMinY,
+                        globalRange = globalRange
                     )
                 )
                 if (lineChartData.points.isNotEmpty()) {
@@ -315,7 +330,9 @@ fun CryptoLineChartsComparison(
                                 drawableArea = chartDrawableArea,
                                 lineChartData = lineChartData,
                                 point = point,
-                                index = index
+                                index = index,
+                                globalMinY = globalMinY,
+                                globalRange = globalRange
                             )
                             pointDrawer.drawPoint(
                                 drawScope = this,

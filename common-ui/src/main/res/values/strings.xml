@@ -14,6 +14,7 @@
     <string name="accounts">Мои счета</string>
     <string name="theme">Тема</string>
     <string name="currency">Валюта</string>
+    <string name="language">Язык</string>
     <string name="info">О приложении</string>
 
 </resources>

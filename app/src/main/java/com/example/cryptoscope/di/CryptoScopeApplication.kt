@@ -8,6 +8,7 @@ import com.example.cryptoscope.MainActivity
 import com.example.cryptoscope.di.viewmodel.AppBindsModule
 import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.cryptoscope.di.viewmodel.ViewModelFactoryModule
+import com.example.di.db.DataStoreModule
 import com.example.di.db.DatabaseModule
 import com.example.di.network.NetworkModule
 import com.example.news.di.NewsModule
@@ -38,7 +39,8 @@ class CryptoScopeApplication : Application() {
         CryptoInfoModule::class,
         WalletModule::class,
         NewsModule::class,
-        ViewModelFactoryModule::class
+        ViewModelFactoryModule::class,
+        DataStoreModule::class
     ]
 )
 interface AppComponent {

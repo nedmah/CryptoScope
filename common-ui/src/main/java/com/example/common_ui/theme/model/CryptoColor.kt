@@ -16,7 +16,6 @@ internal val LightHyperlink = Color(0xFF0554AA)
 internal val LightNavIcon = Color(0xFF626E85)
 
 
-
 /* Custom dark colors */
 internal val DarkPositive = Color(0xFF18DD7D)
 internal val DarkNegative = Color(0xFFF15950)
@@ -29,15 +28,42 @@ internal val DarkPercentageCard = Color(0xFFDBFBEC)
 internal val DarkHyperlink = Color(0xFF1ECEC8)
 internal val DarkNavIcon = Color(0xFF626E85)
 
-class CryptoColor (
-    val positive : Color,
-    val negative : Color,
-    val chart : Color,
-    val secondChart : Color,
-    val wallet : Color,
-    val chartGradient : Color,
-    val secondGradient : Color,
-    val percentageCard : Color,
-    val navIconColor : Color,
-    val hyperlink : Color
-    )
+class CryptoColor(
+    val positive: Color,
+    val negative: Color,
+    val chart: Color,
+    val secondChart: Color,
+    val wallet: Color,
+    val chartGradient: Color,
+    val secondGradient: Color,
+    val percentageCard: Color,
+    val navIconColor: Color,
+    val hyperlink: Color
+) {
+
+    fun copy(
+        positive: Color = this.positive,
+        negative: Color = this.negative,
+        chart: Color = this.chart,
+        secondChart: Color = this.secondChart,
+        wallet: Color = this.wallet,
+        chartGradient: Color = this.chartGradient,
+        secondGradient: Color = this.secondGradient,
+        percentageCard: Color = this.percentageCard,
+        navIconColor: Color = this.navIconColor,
+        hyperlink: Color = this.hyperlink
+    ) : CryptoColor =
+        CryptoColor(
+            positive,
+            negative,
+            chart,
+            secondChart,
+            wallet,
+            chartGradient,
+            secondGradient,
+            percentageCard,
+            navIconColor,
+            hyperlink
+        )
+
+}

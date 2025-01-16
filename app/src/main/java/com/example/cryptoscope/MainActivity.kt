@@ -1,27 +1,17 @@
 package com.example.cryptoscope
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
@@ -29,14 +19,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.common_ui.R
 import com.example.common_ui.composable.CryptoBasicScaffold
-import com.example.common_ui.composable.DashedDivider
 import com.example.common_ui.composable.bottom_nav.BottomBarScreens
 import com.example.common_ui.composable.bottom_nav.CryptoBottomBar
 import com.example.common_ui.theme.CryptoScopeTheme
+import com.example.core.data.settings.SettingsConstants
 import com.example.core.util.extensions.navigate
 import com.example.crypto_info.presentation.crypto_info.CryptoInfoScreen
 import com.example.crypto_info.presentation.crypto_info.CryptoInfoViewModel
 import com.example.core.domain.model.CryptoListingsModel
+import com.example.core.domain.settings.SettingsDataStore
 import com.example.crypto_info.presentation.comparison.CryptoComparisonScreen
 import com.example.cryptolisting.presentation.CryptoListingsScreen
 import com.example.cryptoscope.di.appComponent
@@ -46,6 +37,8 @@ import com.example.news.presentation.CryptoNewsScreen
 import com.example.settings.presentation.SettingsScreen
 import com.example.wallet.presentation.CryptoWalletScreen
 import com.example.wallet.presentation.wallet_history.WalletHistoryScreen
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -57,17 +50,26 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var cryptoInfoViewModelFactory: CryptoInfoViewModel.CryptoInfoViewModelFactory.Factory
 
+    @Inject
+    lateinit var settingsDataStoreImpl: SettingsDataStore
+    private var isDarkThemeInitial: Boolean = true
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         appComponent.inject(this)
+        runBlocking {
+            isDarkThemeInitial = settingsDataStoreImpl.getBooleanFlow(SettingsConstants.THEME).first() ?: true
+        }
 
         enableEdgeToEdge()
         setContent {
-            var isDarkTheme by rememberSaveable { mutableStateOf(true) }  //TODO: полноценно сделать
 
-            CryptoScopeTheme(darkTheme = isDarkTheme) {
+            val themeFlow = settingsDataStoreImpl.getBooleanFlow(SettingsConstants.THEME)
+            val isDarkTheme by themeFlow.collectAsState(initial = isDarkThemeInitial)
+
+            CryptoScopeTheme(darkTheme = isDarkTheme ?: false, dynamicColor = false) {
                 Surface {
 
                     val navController = rememberNavController()
@@ -107,9 +109,7 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 bottomNavigationItems = bottomNavItems,
                                 initialIndex = currentIndex
-                            ) {
-                                Log.i("SELECTED_ITEM", "onCreate: Selected Item ${it.name}")
-                            }
+                            ){}
                         }
                     ) {
 
@@ -166,9 +166,8 @@ class MainActivity : ComponentActivity() {
                             composable(Routes.CryptoSettingsScreen.name) {
                                 SettingsScreen(
                                     getViewModelFactory,
-                                    action = { route ->
-                                        if (route == null) isDarkTheme = !isDarkTheme
-                                        else navController.navigate(route)
+                                    navigate = { route ->
+                                        route?.let { it1 -> navController.navigate(it1) }
                                     }
                                 )
                             }
@@ -179,7 +178,7 @@ class MainActivity : ComponentActivity() {
                                 CryptoComparisonScreen(
                                     getViewModelFactory,
                                     onBack = { navController.navigateUp() },
-                                    )
+                                )
                             }
 
                             composable(com.example.settings.navigation.Routes.CryptoCurrencyScreen.name) {}

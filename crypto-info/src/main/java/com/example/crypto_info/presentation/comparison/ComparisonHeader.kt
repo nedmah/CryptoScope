@@ -114,8 +114,8 @@ fun CryptoInfoPreview() {
     PreviewWrapper {
         Column {
             ComparisonHeader(
-                onBack = { /*TODO*/ },
-                onCompare = { /*TODO*/ },
+                onBack = {  },
+                onCompare = {  },
                 iconOne = "",
                 iconTwo = ""
             )
