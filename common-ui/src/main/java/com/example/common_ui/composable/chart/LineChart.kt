@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -88,7 +89,7 @@ fun CryptoLineChart(
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .pointerInput(Unit){
+            .pointerInput(Unit) {
                 detectTapGestures { tapOffset ->
                     val drawableArea = computeDrawableArea(
                         xAxisDrawableArea = computeXAxisDrawableArea(
@@ -240,6 +241,8 @@ fun CryptoLineChartsComparison(
     lineShader: List<ILineShader> = listOf(EmptyLineShader),
     xAxisDrawer: CryptoLabelDrawer,
     horizontalOffset: Float = 5F,
+    priceColor: Color = MaterialTheme.colorScheme.onBackground,
+    dotColor: Color = MaterialTheme.colorScheme.onBackground,
 ) {
     check(horizontalOffset in 0F..25F) {
         "Horizontal Offset is the percentage offset from side, and must be between 0 and 25, included."
@@ -249,14 +252,22 @@ fun CryptoLineChartsComparison(
         Animatable(initialValue = 0F)
     }
 
+    // Состояние для выбранной точки
+    val selectedPoint = remember { mutableStateOf<Offset?>(null) }
+    val selectedValue = remember { mutableStateOf<String?>(null) }
+    val selectedDate = remember { mutableStateOf<String?>(null) }
+    val selectedGraphIndex = remember { mutableStateOf<Int?>(null) }
+    val textMeasurer = rememberTextMeasurer()
+
     LaunchedEffect(lineChartDataList) {
         transitionAnimation.snapTo(0F)
         transitionAnimation.animateTo(1F, animationSpec = animation)
+        selectedPoint.value = null
+        selectedValue.value = null
+        selectedDate.value = null
+        selectedGraphIndex.value = null
     }
 
-
-    val globalMax = lineChartDataList.flatMap { it.points.map { point -> point.value } }.maxOrNull() ?: 0f
-    val globalMin = lineChartDataList.flatMap { it.points.map { point -> point.value } }.minOrNull() ?: 0f
 
     val allPoints = lineChartDataList.flatMap { it.points }
     val globalMinY = allPoints.minOf { it.value }
@@ -267,6 +278,68 @@ fun CryptoLineChartsComparison(
     Canvas(
         modifier = modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures { tapOffset ->
+                    // Рассчитываем область отрисовки
+                    val drawableArea = computeDrawableArea(
+                        xAxisDrawableArea = computeXAxisDrawableArea(
+                            yAxisWidth = 50.dp.toPx(),
+                            labelHeight = xAxisDrawer.requireHeight(CanvasDrawScope()),
+                            size = size.toSize()
+                        ),
+                        yAxisDrawableArea = computeYAxisDrawableArea(
+                            xAxisLabelSize = xAxisDrawer.requireHeight(CanvasDrawScope()),
+                            size = size.toSize()
+                        ),
+                        size = size.toSize(),
+                        offset = horizontalOffset
+                    )
+                    // Поиск ближайшей точки среди всех графиков
+                    var minDistance = Float.MAX_VALUE
+                    var closestPoint: LineChartData.Point? = null
+                    var selectedChartIndex: Int? = null
+
+                    lineChartDataList.forEachIndexed { chartIndex, lineChartData ->
+                        lineChartData.points.forEach { point ->
+                            val pointLocation = computePointLocation(
+                                drawableArea = drawableArea,
+                                lineChartData = lineChartData,
+                                point = point,
+                                index = lineChartData.points.indexOf(point),
+                                globalMinY = globalMinY,
+                                globalRange = globalRange
+                            )
+                            val distance = pointLocation.getDistanceTo(tapOffset)
+                            if (distance < minDistance) {
+                                minDistance = distance
+                                closestPoint = point
+                                selectedChartIndex = chartIndex
+                            }
+                        }
+                    }
+
+                    // Обновляем состояние
+                    if (closestPoint != null) {
+                        selectedPoint.value = computePointLocation(
+                            drawableArea = drawableArea,
+                            lineChartData = lineChartDataList.first { it.points.contains(closestPoint) },
+                            point = closestPoint!!,
+                            index = lineChartDataList.first { it.points.contains(closestPoint) }
+                                .points.indexOf(closestPoint),
+                            globalMinY = globalMinY,
+                            globalRange = globalRange
+                        )
+                        selectedValue.value = formatPriceString(closestPoint!!.value.toString())
+                        val date = closestPoint!!.label.toLongOrNull() ?: 0L
+                        selectedDate.value = formatTimestamp(date, milli = true)
+                    } else {
+                        selectedPoint.value = null
+                        selectedValue.value = null
+                        selectedDate.value = null
+                        selectedGraphIndex.value = null
+                    }
+                }
+            }
     ) {
         drawIntoCanvas { canvas ->
             val yAxisDrawableArea = computeYAxisDrawableArea(
@@ -351,6 +424,25 @@ fun CryptoLineChartsComparison(
                                 )
                             }
                         }
+                    }
+
+                    // Отрисовка выбранной точки и её данных
+                    selectedPoint.value?.let { pointOffset ->
+                        drawCircle(center = pointOffset, color = dotColor, radius = 7f)
+                        val offset = if (pointOffset.x > 700) Offset(pointOffset.x - 350, pointOffset.y)
+                        else pointOffset
+                        drawText(
+                            textMeasurer = textMeasurer,
+                            text = "${selectedValue.value ?: ""} (${selectedGraphIndex.value ?: ""})",
+                            topLeft = offset,
+                            style = TextStyle(color = priceColor)
+                        )
+                        drawText(
+                            textMeasurer = textMeasurer,
+                            text = selectedDate.value ?: "",
+                            topLeft = offset - Offset(0.dp.toPx(), 15.dp.toPx()),
+                            style = TextStyle(color = priceColor)
+                        )
                     }
                 }
             }

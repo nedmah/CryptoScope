@@ -203,7 +203,7 @@ fun CryptoComparisonItem(
 
             DashedDivider(
                 thickness = 0.2.dp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 phase = 0f, // Фаза для пунктирного эффекта
                 intervals = floatArrayOf(10f, 8f), // Интервалы для пунктиров
                 modifier = Modifier

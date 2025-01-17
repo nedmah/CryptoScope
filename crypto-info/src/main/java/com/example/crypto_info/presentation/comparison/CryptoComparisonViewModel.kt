@@ -132,11 +132,11 @@ class CryptoComparisonViewModel @Inject constructor(
                         val cryptoInfo2 = resource.data?.second
 
                         val chartData1 = cryptoInfo1?.prices?.mapIndexed { index, price ->
-                            LineChartData.Point(price, index.toString())
+                            LineChartData.Point(price, cryptoInfo1.time[index].toString())
                         }
 
                         val chartData2 = cryptoInfo2?.prices?.mapIndexed { index, price ->
-                            LineChartData.Point(price, index.toString())
+                            LineChartData.Point(price, cryptoInfo2.time[index].toString())
                         }
                         _state.value = _state.value.copy(
                             cryptoChart1 = chartData1?.let { LineChartData(it) }

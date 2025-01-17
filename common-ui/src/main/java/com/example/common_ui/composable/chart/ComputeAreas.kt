@@ -64,6 +64,7 @@ internal fun Density.computeYAxisDrawableArea(
     )
 }
 
+
 internal fun computePointLocation(
     drawableArea: Rect,
     lineChartData: LineChartData,
