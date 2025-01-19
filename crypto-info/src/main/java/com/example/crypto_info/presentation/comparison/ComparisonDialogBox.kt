@@ -29,6 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.example.common_ui.composable.CryptoDialogBox
 import com.example.common_ui.theme.extraColor
 
 @Composable
@@ -42,11 +43,9 @@ fun CompareDialog(
     selectedOption2: String,
     onOption2Selected: (String) -> Unit
 ) {
-    AlertDialog(
-        containerColor = MaterialTheme.colorScheme.surface,
-        onDismissRequest = onDismissRequest,
-        title = { Text("Compare") },
-        text = {
+
+    CryptoDialogBox(
+        content = {
             Column {
                 DropdownMenuField(
                     label = "Option 1",
@@ -62,30 +61,9 @@ fun CompareDialog(
                 )
             }
         },
-        confirmButton = {
-            TextButton(
-                onClick = onConfirm,
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.extraColor.positive,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Confirm")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismissRequest,
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.extraColor.negative,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Cancel")
-            }
-        }
+        title = "Compare",
+        onConfirm = onConfirm,
+        onCancel = onDismissRequest
     )
 }
 

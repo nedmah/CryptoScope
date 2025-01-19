@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common_ui.composable.CryptoDialogBox
 import com.example.common_ui.composable.chart.CompareLineCharts
 import com.example.common_ui.theme.paddings
 import com.example.common_ui.theme.spacers
@@ -111,6 +112,7 @@ fun CryptoComparisonScreen(
     }
 
     if (isDialogVisible) {
+
         CompareDialog(
             options1 = state.cryptoNames,
             options2 = state.cryptoNames,

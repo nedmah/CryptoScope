@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.common_ui.composable.DashedDivider
-import com.example.common_ui.composable.ElevatedCard
 import com.example.common_ui.composable.PreviewWrapper
 import com.example.common_ui.theme.extraColor
 import com.example.common_ui.theme.paddings
