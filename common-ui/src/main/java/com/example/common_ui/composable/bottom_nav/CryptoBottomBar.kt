@@ -145,16 +145,19 @@ fun previewBottomBar(){
     PreviewWrapper {
         val bottomNavItems = listOf(
             BottomBarScreens(
+                0,
                 "Routes.CryptoNewsScreen.name",
                 stringResource(id = R.string.news),
                 R.drawable.ic_news_24
             ),
             BottomBarScreens(
+                1,
                 "Routes.CryptoListingsScreen.name",
                 stringResource(id = R.string.market),
                 R.drawable.ic_market_24
             ),
             BottomBarScreens(
+                2,
                 "Routes.CryptoWalletScreen.name",
                 stringResource(id = R.string.wallet),
                 R.drawable.ic_wallet_24

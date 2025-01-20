@@ -3,6 +3,10 @@ package com.example.core.data.repository
 import com.example.core.data.db.daos.FavouritesDao
 import com.example.core.data.db.entities.FavouriteEntity
 import com.example.core.domain.repository.FavouritesRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import java.io.IOException
 import javax.inject.Inject
 
 class FavouritesRepositoryImpl @Inject constructor(
@@ -19,6 +23,10 @@ class FavouritesRepositoryImpl @Inject constructor(
 
     override suspend fun getFavourites(): List<String> {
         return dao.getAllFavorites()
+    }
+
+    override suspend fun getFavouritesFlow(): Flow<List<String>> {
+        return dao.getAllFavoritesFlow().flowOn(Dispatchers.IO)
     }
 
     override suspend fun isFavourite(cryptoId: String): Boolean {

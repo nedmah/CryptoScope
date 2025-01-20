@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +37,9 @@ fun CryptoListingsScreen(
     modifier: Modifier = Modifier,
     viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    val state = viewModel.state
+    val state = viewModel.state.collectAsState().value
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
-
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(CryptoListingsEvents.CheckFavourites)
-    }
 
     Column(
         modifier = modifier

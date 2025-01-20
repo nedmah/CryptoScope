@@ -79,28 +79,32 @@ class MainActivity : ComponentActivity() {
 
                     val bottomNavItems = listOf(
                         BottomBarScreens(
+                            0,
                             Routes.CryptoNewsScreen.name,
                             stringResource(id = R.string.news),
                             R.drawable.ic_news_24
                         ),
                         BottomBarScreens(
+                            1,
                             Routes.CryptoListingsScreen.name,
                             stringResource(id = R.string.market),
                             R.drawable.ic_market_24
                         ),
                         BottomBarScreens(
+                            2,
                             Routes.CryptoWalletScreen.name,
                             stringResource(id = R.string.wallet),
                             R.drawable.ic_wallet_24
                         ),
                         BottomBarScreens(
+                            3,
                             Routes.CryptoSettingsScreen.name,
                             stringResource(id = R.string.settings),
                             R.drawable.ic_settings_24
                         )
                     )
                     val currentIndex = rememberSaveable {
-                        mutableIntStateOf(3)
+                        mutableIntStateOf(1)
                     }
 
                     CryptoBasicScaffold(
@@ -109,14 +113,16 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 bottomNavigationItems = bottomNavItems,
                                 initialIndex = currentIndex
-                            ){}
+                            ){
+                                currentIndex.intValue = it.id
+                            }
                         }
                     ) {
 
 
                         NavHost(
                             navController = navController,
-                            startDestination = Routes.CryptoSettingsScreen.name
+                            startDestination = Routes.CryptoListingsScreen.name
                         ) {
                             composable(Routes.CryptoListingsScreen.name) {
                                 CryptoListingsScreen(

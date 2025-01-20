@@ -14,29 +14,15 @@ import com.example.news.data.toCryptoNewsModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NewsViewModel @Inject constructor(
     pager: CryptoNewsPager
-): ViewModel() {
+) : ViewModel() {
 
-    val pageFlow = pager.pager.flow.map { it.map {entity -> entity.toCryptoNewsModel() } }.cachedIn(viewModelScope)
+    val pageFlow = pager.pager.flow.map { it.map { entity -> entity.toCryptoNewsModel() } }
+        .cachedIn(viewModelScope)
 
-//    class CryptoNewsViewModelFactory
-//    @AssistedInject constructor(
-//        @Assisted private val pager: Pager<Int, CryptoNewsEntity>,
-//    ) : ViewModelProvider.Factory {
-//
-//        @Suppress("UNCHECKED_CAST")
-//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//            require(modelClass == NewsViewModel::class.java)
-//            return NewsViewModel(pager) as T
-//        }
-//
-//        @AssistedFactory
-//        interface Factory {
-//            fun create(@Assisted pager: Pager<Int, CryptoNewsEntity>): NewsViewModel
-//        }
-//    }
 }

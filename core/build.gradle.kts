@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
 
+    //Coroutines
+    implementation(libs.kotlinxCoroutines)
+
     // Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)

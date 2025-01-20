@@ -14,6 +14,8 @@ import com.example.core.domain.repository.FavouritesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,19 +25,21 @@ class CryptoListingViewModel @Inject constructor(
     private val favouritesRepository: FavouritesRepository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(CryptoListingsState())
+    private var _state = MutableStateFlow(CryptoListingsState())
+    val state = _state.asStateFlow()
 
     private var searchJob: Job? = null
 
     init {
         getCryptoListings()
+        updateCryptoListFlow()
     }
 
     fun onEvent(event: CryptoListingsEvents) {
         when (event) {
 
             is CryptoListingsEvents.OnSearchQueryChange -> {
-                state = state.copy(searchQuery = event.query)
+                _state.value = _state.value.copy(searchQuery = event.query)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch {
                     delay(500L)
@@ -46,22 +50,21 @@ class CryptoListingViewModel @Inject constructor(
             CryptoListingsEvents.Refresh -> getCryptoListings(fetchFromNetwork = true)
 
             is CryptoListingsEvents.Filter -> {
-                state = state.copy(
+                _state.value = _state.value.copy(
                     cryptos = when(event.filter){
-                        Filters.RANK -> state.cryptos.sortedBy { it.rank }
-                        Filters.PRICE_INC -> state.cryptos.sortedBy { it.price.toDouble() }
-                        Filters.PRICE_DEC -> state.cryptos.sortedByDescending { it.price.toDouble() }
-                        Filters.PERCENTAGE_INC -> state.cryptos.sortedBy { it.percentage.toDouble() }
-                        Filters.PERCENTAGE_DEC -> state.cryptos.sortedByDescending { it.percentage.toDouble() }
-                        Filters.NAME -> state.cryptos.sortedBy { it.name }
+                        Filters.RANK -> _state.value.cryptos.sortedBy { it.rank }
+                        Filters.PRICE_INC -> _state.value.cryptos.sortedBy { it.price.toDouble() }
+                        Filters.PRICE_DEC -> _state.value.cryptos.sortedByDescending { it.price.toDouble() }
+                        Filters.PERCENTAGE_INC -> _state.value.cryptos.sortedBy { it.percentage.toDouble() }
+                        Filters.PERCENTAGE_DEC -> _state.value.cryptos.sortedByDescending { it.percentage.toDouble() }
+                        Filters.NAME -> _state.value.cryptos.sortedBy { it.name }
                     }
                 )
             }
-            CryptoListingsEvents.OnFilterIconPushed -> state = state.copy(isBottomDialogOpened = true)
-            CryptoListingsEvents.OnFilterDismiss -> state= state.copy(isBottomDialogOpened = false)
+            CryptoListingsEvents.OnFilterIconPushed -> _state.value = _state.value.copy(isBottomDialogOpened = true)
+            CryptoListingsEvents.OnFilterDismiss -> _state.value = _state.value.copy(isBottomDialogOpened = false)
 
             is CryptoListingsEvents.OnFavourite -> toggleFavorite(event.cryptoId)
-            CryptoListingsEvents.CheckFavourites -> viewModelScope.launch(Dispatchers.IO) { updateCryptoList() }
         }
     }
 
@@ -78,29 +81,28 @@ class CryptoListingViewModel @Inject constructor(
 
 
     private fun getCryptoListings(
-        query: String = state.searchQuery,
+        query: String = _state.value.searchQuery,
         fetchFromNetwork: Boolean = false
     ) {
             viewModelScope.launch() {
                 listingsRepository.getListings(fetchFromNetwork, query).collect { result ->
                     when (result) {
                         is Resource.Error -> {
-                            state = state.copy(
+                            _state.value = _state.value.copy(
                                 error = "An error has occured"
                             )
                         }
 
                         is Resource.Loading -> {
-                            state = state.copy(isLoading = result.isLoading)
+                            _state.value = _state.value.copy(isLoading = result.isLoading)
                         }
 
                         is Resource.Success -> {
-                            state = state.copy(
+                            _state.value = _state.value.copy(
                                 isLoading = false,
                                 isRefreshing = false,
                                 cryptos = result.data ?: emptyList()
                             )
-                            updateCryptoList()
                         }
                     }
             }
@@ -110,22 +112,24 @@ class CryptoListingViewModel @Inject constructor(
     private fun toggleFavorite(cryptoId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val isFavourite = favouritesRepository.isFavourite(cryptoId)
-            if (isFavourite) {
-                favouritesRepository.removeFavourite(cryptoId)
-            } else {
-                favouritesRepository.addFavourite(cryptoId)
-            }
-            updateCryptoList()
+
+            if (isFavourite) favouritesRepository.removeFavourite(cryptoId)
+            else favouritesRepository.addFavourite(cryptoId)
         }
     }
 
-    private suspend fun updateCryptoList() {
-        val favoriteIds = favouritesRepository.getFavourites()
-        Log.d("TAG", "updateCryptoList: $favoriteIds")
-        val updatedCryptos = state.cryptos.map { crypto ->
-            crypto.copy(isFavorite = favoriteIds.contains(crypto.cryptoId))
+
+    private fun updateCryptoListFlow() {
+        viewModelScope.launch {
+            favouritesRepository.getFavouritesFlow().collect{ idList ->
+
+                val updatedCryptos = _state.value.cryptos.map { crypto ->
+                    crypto.copy(isFavorite = idList.contains(crypto.cryptoId))
+                }
+                _state.value = _state.value.copy(cryptos = updatedCryptos)
+            }
+
         }
-        state = state.copy(cryptos = updatedCryptos)
     }
 
 }
