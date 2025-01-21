@@ -1,6 +1,7 @@
 package com.example.cryptoscope.di.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.accounts.presentation.AccountsViewModel
 import com.example.crypto_info.presentation.comparison.CryptoComparisonViewModel
 import com.example.cryptolisting.presentation.CryptoListingViewModel
 import com.example.news.presentation.NewsViewModel
@@ -43,5 +44,10 @@ interface AppBindsModule {
     @IntoMap
     @ViewModelKey(CryptoComparisonViewModel::class)
     fun provideCryptoComparisonViewModel(cryptoComparisonViewModel: CryptoComparisonViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountsViewModel::class)
+    fun provideAccountsViewModel(accountsViewModel: AccountsViewModel): ViewModel
 
 }

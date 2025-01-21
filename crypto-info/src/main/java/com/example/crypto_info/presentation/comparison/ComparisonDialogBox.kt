@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.example.common_ui.composable.CryptoDialogBox
+import com.example.common_ui.composable.DropdownMenuField
 import com.example.common_ui.theme.extraColor
 
 @Composable
@@ -67,54 +68,3 @@ fun CompareDialog(
     )
 }
 
-@Composable
-fun DropdownMenuField(
-    label: String,
-    selectedOption: String,
-    onOptionSelected: (String) -> Unit,
-    options: List<String>,
-    modifier: Modifier = Modifier
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column {
-        Text(text = label, style = MaterialTheme.typography.bodyMedium)
-        Box(
-            modifier = modifier.align(Alignment.Start)
-        ) {
-            TextButton(
-                onClick = { expanded = true },
-                modifier = modifier
-            ) {
-                Text(
-                    if (selectedOption.isEmpty()) "Select" else selectedOption,
-                    textDecoration = TextDecoration.Underline
-                )
-            }
-
-            DropdownMenu(
-                modifier = modifier
-                    .background(color = MaterialTheme.colorScheme.background),
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                Box(modifier = Modifier.size(width = 100.dp, height = 300.dp)) {
-                    LazyColumn {
-                        items(options.size) { index ->
-                            val option = options[index]
-                            DropdownMenuItem(
-                                text = { Text(option) },
-                                onClick = {
-                                    onOptionSelected(option)
-                                    expanded = false
-                                }
-                            )
-                            HorizontalDivider()
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-}

@@ -22,7 +22,6 @@ class NewsViewModel @Inject constructor(
     pager: CryptoNewsPager
 ) : ViewModel() {
 
-    val pageFlow = pager.pager.flow.map { it.map { entity -> entity.toCryptoNewsModel() } }
-        .cachedIn(viewModelScope)
+    val pageFlow = pager.pager.flow.map { it.map { entity -> entity.toCryptoNewsModel() } }.cachedIn(viewModelScope)
 
 }

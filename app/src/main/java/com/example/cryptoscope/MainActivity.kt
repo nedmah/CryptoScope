@@ -17,6 +17,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.accounts.presentation.AccountsScreen
 import com.example.common_ui.R
 import com.example.common_ui.composable.CryptoBasicScaffold
 import com.example.common_ui.composable.bottom_nav.BottomBarScreens
@@ -178,7 +179,11 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable(com.example.settings.navigation.Routes.CryptoAccountsScreen.name) {}
+                            composable(com.example.settings.navigation.Routes.CryptoAccountsScreen.name) {
+                                AccountsScreen(
+                                    getViewModelFactory = getViewModelFactory,
+                                    onBack = { navController.navigateUp() })
+                            }
 
                             composable(com.example.settings.navigation.Routes.CryptoComparisonScreen.name) {
                                 CryptoComparisonScreen(

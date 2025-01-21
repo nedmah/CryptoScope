@@ -42,4 +42,19 @@ dependencies {
 
     //viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+
+    // Room
+    implementation (libs.androidx.room.ktx)
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.paging)
+
+    // Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.moshi)
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+
+    // Coil Compose
+    implementation (libs.coil)
 }

@@ -26,5 +26,4 @@ object NetworkModule {
             .client(okHttpClientProvider.provideOkHttpClient())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-//            .create()
 }

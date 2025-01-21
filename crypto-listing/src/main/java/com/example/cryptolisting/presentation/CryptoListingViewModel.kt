@@ -120,7 +120,7 @@ class CryptoListingViewModel @Inject constructor(
 
 
     private fun updateCryptoListFlow() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             favouritesRepository.getFavouritesFlow().collect{ idList ->
 
                 val updatedCryptos = _state.value.cryptos.map { crypto ->
