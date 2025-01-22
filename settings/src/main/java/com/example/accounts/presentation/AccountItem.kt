@@ -1,6 +1,9 @@
 package com.example.accounts.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -58,69 +62,78 @@ fun AccountItem(
     var contextMenuWidth by remember { mutableFloatStateOf(0f) }
     val offset = remember { Animatable(initialValue = 0f) }
     val scope = rememberCoroutineScope()
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .clip(RoundedCornerShape(30))
-    ) {
-        Row(
-            modifier = Modifier
-                .onSizeChanged {
-                    contextMenuWidth = it.width.toFloat()
-                }
-                .align(Alignment.CenterEnd),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = modifier.clickable {
-                    onDelete()
-                    scope.launch {
-                        offset.animateTo(0f)
-                    }
-                },
-                painter = painterResource(id = com.example.common_ui.R.drawable.ic_delete_24),
-                contentDescription = null
-            )
-        }
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset { IntOffset(offset.value.roundToInt(), 0) }
-                .pointerInput(contextMenuWidth) {
-                    detectHorizontalDragGestures(
-                        onHorizontalDrag = { _, dragAmount ->
-                            scope.launch {
-                                val newOffset = (offset.value + dragAmount)
-                                    .coerceIn(-contextMenuWidth, 0f)
-                                offset.snapTo(newOffset)
-                            }
-                        },
-                        onDragEnd = {
-                            when {
-                                offset.value <= -contextMenuWidth / 2f -> {
-                                    scope.launch {
-                                        offset.animateTo(-contextMenuWidth)
-                                    }
-                                }
 
-                                else -> {
-                                    scope.launch {
-                                        offset.animateTo(0f)
+    var isVisible by remember { mutableStateOf(true) }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        exit = shrinkVertically() + fadeOut(),
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .clip(RoundedCornerShape(30))
+        ) {
+            Row(
+                modifier = Modifier
+                    .onSizeChanged {
+                        contextMenuWidth = it.width.toFloat()
+                    }
+                    .align(Alignment.CenterEnd),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = modifier.clickable {
+                        onDelete()
+                        isVisible = false
+                        scope.launch {
+                            offset.animateTo(0f)
+                        }
+                    },
+                    painter = painterResource(id = com.example.common_ui.R.drawable.ic_delete_24),
+                    contentDescription = null
+                )
+            }
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset { IntOffset(offset.value.roundToInt(), 0) }
+                    .pointerInput(contextMenuWidth) {
+                        detectHorizontalDragGestures(
+                            onHorizontalDrag = { _, dragAmount ->
+                                scope.launch {
+                                    val newOffset = (offset.value + dragAmount)
+                                        .coerceIn(-contextMenuWidth, 0f)
+                                    offset.snapTo(newOffset)
+                                }
+                            },
+                            onDragEnd = {
+                                when {
+                                    offset.value <= -contextMenuWidth / 2f -> {
+                                        scope.launch {
+                                            offset.animateTo(-contextMenuWidth)
+                                        }
+                                    }
+
+                                    else -> {
+                                        scope.launch {
+                                            offset.animateTo(0f)
+                                        }
                                     }
                                 }
                             }
-                        }
-                    )
-                }
-        ) {
-            AccountNonSwipeableItem(
-                address = address,
-                onClick = onClick,
-                isSelected = isSelected,
-                image = image,
-                blockchain = blockchain
-            )
+                        )
+                    }
+            ) {
+                AccountNonSwipeableItem(
+                    address = address,
+                    onClick = onClick,
+                    isSelected = isSelected,
+                    image = image,
+                    blockchain = blockchain
+                )
+            }
         }
     }
 
@@ -170,16 +183,20 @@ private fun AccountNonSwipeableItem(
             }
 
             Text(
+                modifier = modifier.weight(1f),
                 text = blockchain?.let { truncateText(address, 20) } ?: truncateText(address, 35),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            if (isSelected) Icon(
-                painter = painterResource(id = com.example.common_ui.R.drawable.ic_select_16),
-                tint = MaterialTheme.extraColor.chart,
-                contentDescription = null
-            )
+                AnimatedVisibility(visible = isSelected){
+                    Icon(
+                        modifier = modifier.weight(1f),
+                        painter = painterResource(id = com.example.common_ui.R.drawable.ic_select_16),
+                        tint = MaterialTheme.extraColor.chart,
+                        contentDescription = null
+                    )
+                }
         }
     }
 
@@ -203,7 +220,7 @@ fun ItemPreview() {
                 address = "abcdefghijklmnopqrstuxyzaaaaaaaa",
                 onClick = { /*TODO*/ },
                 onDelete = { /*TODO*/ },
-                isSelected = false,
+                isSelected = true,
                 image = "",
                 blockchain = "TON"
             )

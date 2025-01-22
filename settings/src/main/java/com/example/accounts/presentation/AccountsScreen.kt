@@ -83,7 +83,7 @@ fun AccountsScreen(
 
                 AccountItem(
                     address = item.address,
-                    onClick = { /*TODO*/ },
+                    onClick = { viewModel.onEvent(AccountsEvents.OnAccountSelect(item)) },
                     onDelete = { viewModel.onEvent(AccountsEvents.DeleteAccount(item)) },
                     isSelected = item.isSelected,
                     image = item.imageUrl,

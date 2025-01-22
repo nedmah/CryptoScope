@@ -11,6 +11,8 @@ import com.example.core.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,60 +33,89 @@ class AccountsViewModel @Inject constructor(
             is AccountsEvents.AddAccount -> addAccount(events.name, events.address)
             is AccountsEvents.DeleteAccount -> deleteAccount(events.model)
             AccountsEvents.OnAddPush -> getBlockchains()
-            is AccountsEvents.OnAccountSelect -> TODO()
+            is AccountsEvents.OnAccountSelect -> saveSelectedAccount(events.model)
         }
     }
 
     private fun getAccounts() {
         viewModelScope.launch {
-            repository.getAllAccounts().collect { data ->
+
+            combine(
+                repository.getAllAccounts(),
+                settingsDataStore.getStringFlow(SettingsConstants.SELECTED_WALLET_ADDRESS)
+            ) { accounts, selectedAddress ->
+
+                if (accounts.size == 1) {
+                    val item = accounts.first()
+                    settingsDataStore.putString(
+                        SettingsConstants.SELECTED_WALLET_ADDRESS,
+                        item.address
+                    )
+                    item.blockChain?.let {
+                        settingsDataStore.putString(SettingsConstants.SELECTED_BLOCKCHAIN, it)
+                    }
+                    accounts.map { it.copy(isSelected = true) }
+                } else {
+                    accounts.map { account ->
+                        account.copy(isSelected = account.address == selectedAddress)
+                    }
+                }
+            }.collect { updatedAccounts ->
                 _state.value = _state.value.copy(
-                    accounts = data
+                    accounts = updatedAccounts
                 )
             }
         }
     }
 
-    private fun getBlockchains(){
+    private fun getBlockchains() {
         viewModelScope.launch(Dispatchers.IO) {
-            when(val data = repository.loadBlockchains()){
+            when (val data = repository.loadBlockchains()) {
                 is Resource.Error -> _state.value = _state.value.copy(
                     blockchainsError = data.message ?: "error"
                 )
+
                 is Resource.Loading -> TODO()
                 is Resource.Success -> _state.value = _state.value.copy(
-                   blockchains = data.data ?: emptyList()
+                    blockchains = data.data ?: emptyList()
                 )
             }
         }
     }
 
-    private fun addAccount(name: String?, address : String){
+    private fun addAccount(name: String?, address: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            name?.let{
+            name?.let {
                 val blockchain = repository.getBlockchainByName(name)
-                val account = AccountsModel(address,blockchain.name,blockchain.icon)
+                val account = AccountsModel(address, blockchain.name, blockchain.icon)
                 repository.addAccount(account)
             } ?: repository.addAccount(AccountsModel(address))
         }
     }
 
-    private fun saveSelectedAccount(address: String, name: String?){
-        name?.let {
-            saveSelectedBlockchain(it)
-        }
-    }
-
-    private fun saveSelectedBlockchain(name: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val blockchain = repository.getBlockchainByName(name)
-            settingsDataStore.putString(SettingsConstants.SELECTED_BLOCKCHAIN,blockchain.connectionId)
-        }
-    }
-
-    private fun deleteAccount(account : AccountsModel){
+    private fun deleteAccount(account: AccountsModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAccount(account)
         }
     }
+
+    private fun saveSelectedAccount(account: AccountsModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            account.blockChain?.let { name ->
+                val blockchain = repository.getBlockchainByName(name)
+                settingsDataStore.putString(
+                    SettingsConstants.SELECTED_BLOCKCHAIN,
+                    blockchain.connectionId
+                )
+            }
+            settingsDataStore.putString(
+                SettingsConstants.SELECTED_WALLET_ADDRESS,
+                account.address
+            )
+
+        }
+    }
+
+
 }
