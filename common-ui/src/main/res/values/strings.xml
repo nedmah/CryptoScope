@@ -17,4 +17,42 @@
     <string name="language">Язык</string>
     <string name="info">О приложении</string>
 
+    <string name="select">Выбрать</string>
+    <string name="compare">Сравнить</string>
+
+    <string name="market_cap">Капитализация</string>
+    <string name="total_supply">Общий объём</string>
+
+    <string name="sorting">Упорядочить</string>
+
+    <string name="by_rank">Ранг</string>
+    <string name="by_price_ascending">Цена по возрастанию</string>
+    <string name="by_price_descending">Цена по убыванию</string>
+    <string name="by_percentage_ascending">Процент по возрастанию</string>
+    <string name="by_percentage_descending">Процент по убыванию</string>
+    <string name="by_name">Название</string>
+
+    <string name="blockchain">Блокчейн</string>
+    <string name="address">Адрес</string>
+    <string name="add_account">Добавить аккаунт</string>
+
+    <string name="my_accounts">Мои счета</string>
+
+    <string name="my_coins">Мои монеты</string>
+    <string name="open">Открыть</string>
+    <string name="favorite_coins">Избранные монеты</string>
+    <string name="coins_missing">Монеты отсутствуют</string>
+
+    <string name="balance">Баланс</string>
+    <string name="profit">Прибыль за сегодня</string>
+    <string name="balance_history">История баланса</string>
+
+    <string name="select_language">Выбрать язык</string>
+    <string name="locale_russian">ru</string>
+    <string name="locale_english">en</string>
+    <string name="locale_kazakh">kk</string>
+    <string name="russian">русский</string>
+    <string name="english">английский</string>
+    <string name="kazakh">казахский</string>
+
 </resources>

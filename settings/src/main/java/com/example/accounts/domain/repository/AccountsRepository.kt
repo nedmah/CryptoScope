@@ -17,4 +17,6 @@ interface AccountsRepository {
     suspend fun deleteAccount(account: AccountsModel)
 
     suspend fun getBlockchainByName(name: String) : BlockchainModel
+
+    suspend fun clearMyCoins()
 }

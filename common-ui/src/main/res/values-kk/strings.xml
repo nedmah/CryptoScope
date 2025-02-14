@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preview_headline_text">Тақырып</string>
+    <string name="preview_support_text">Маңызды нәрсені сипаттайтын қосымша тақырып</string>
+    <string name="preview_extra_headline_text">25</string>
+
+    <string name="news">Жаңалықтар</string>
+    <string name="wallet">Әмиян</string>
+    <string name="market">Нарық</string>
+    <string name="settings">Баптаулар</string>
+
+    <string name="comparison">Салыстыру</string>
+    <string name="accounts">Менің есепшоттарым</string>
+    <string name="theme">Тақырып</string>
+    <string name="currency">Валюта</string>
+    <string name="language">Тіл</string>
+    <string name="info">Қолданба туралы</string>
+
+    <string name="select">Таңдау</string>
+    <string name="compare">Салыстыру</string>
+
+    <string name="market_cap">Капитализация</string>
+    <string name="total_supply">Жалпы көлем</string>
+
+    <string name="sorting">Сұрыптау</string>
+
+    <string name="by_rank">Ранк</string>
+    <string name="by_price_ascending">Баға өсу бойынша</string>
+    <string name="by_price_descending">Баға кему бойынша</string>
+    <string name="by_percentage_ascending">Процент өсу бойынша</string>
+    <string name="by_percentage_descending">Процент кему бойынша</string>
+    <string name="by_name">Атауы</string>
+
+    <string name="blockchain">Блокчейн</string>
+    <string name="address">Мекенжай</string>
+    <string name="add_account">Есепшот қосу</string>
+
+    <string name="my_accounts">Менің есепшоттарым</string>
+
+    <string name="my_coins">Менің монеталарым</string>
+    <string name="open">Ашу</string>
+    <string name="favorite_coins">Таңдаулы монеталар</string>
+    <string name="coins_missing">Монеталар жоқ</string>
+
+    <string name="balance">Баланс</string>
+    <string name="profit">Бүгінгі пайда</string>
+    <string name="balance_history">Баланс тарихы</string>
+
+    <string name="select_language">Тілді таңдау</string>
+    <string name="locale_russian">ru</string>
+    <string name="locale_english">en</string>
+    <string name="locale_kazakh">kk</string>
+    <string name="russian">Орыс</string>
+    <string name="english">Ағылшын</string>
+    <string name="kazakh">Қазақ</string>
+
+</resources>

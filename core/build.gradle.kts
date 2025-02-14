@@ -55,6 +55,9 @@ dependencies {
     //Coroutines
     implementation(libs.kotlinxCoroutines)
 
+    //Paging
+    implementation(libs.androidx.paging.compose)
+
     // Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)

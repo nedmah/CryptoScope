@@ -55,7 +55,7 @@ private fun Offset.getDistanceTo(other: Offset): Float {
 }
 
 @Composable
-fun CryptoLineChart(
+internal fun CryptoLineChart(
     lineChartData: LineChartData,
     modifier: Modifier = Modifier,
     priceColor : Color = Color.Black,
@@ -232,7 +232,7 @@ fun CryptoLineChart(
 
 
 @Composable
-fun CryptoLineChartsComparison(
+internal fun CryptoLineChartsComparison(
     lineChartDataList: List<LineChartData>, // Список данных для нескольких графиков
     modifier: Modifier = Modifier,
     animation: AnimationSpec<Float> = simpleChartAnimation(),

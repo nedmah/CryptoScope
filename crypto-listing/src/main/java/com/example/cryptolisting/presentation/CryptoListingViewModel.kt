@@ -68,18 +68,6 @@ class CryptoListingViewModel @Inject constructor(
         }
     }
 
-    fun navigateWithBundle(
-        model: CryptoListingsModel,
-        navigate: (Bundle) -> Unit
-    ) {
-        val bundle = Bundle().apply {
-            putParcelable("cryptoInfo", model)
-        }
-        navigate(bundle)
-    }
-
-
-
     private fun getCryptoListings(
         query: String = _state.value.searchQuery,
         fetchFromNetwork: Boolean = false
@@ -112,7 +100,6 @@ class CryptoListingViewModel @Inject constructor(
     private fun toggleFavorite(cryptoId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val isFavourite = favouritesRepository.isFavourite(cryptoId)
-
             if (isFavourite) favouritesRepository.removeFavourite(cryptoId)
             else favouritesRepository.addFavourite(cryptoId)
         }

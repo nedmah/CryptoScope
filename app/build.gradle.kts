@@ -58,7 +58,6 @@ android {
 dependencies {
 
     implementation(project(":common-ui"))
-    implementation(project(":core"))
     implementation(project(":crypto-listing"))
     implementation(project(":crypto-info"))
     implementation(project(":wallet"))

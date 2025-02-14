@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.core.data.settings.SettingsConstants.SETTINGS_DATASTORE
@@ -19,7 +21,10 @@ import javax.inject.Inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = SETTINGS_DATASTORE)
 
-class SettingsDataStoreImpl @Inject constructor(private val context: Context) : SettingsDataStore {
+class SettingsDataStoreImpl @Inject constructor(
+    private val context: Context
+) : SettingsDataStore {
+
     override suspend fun putBoolean(key: String, value: Boolean) {
         val preferencesKey = booleanPreferencesKey(key)
         context.dataStore.edit {
@@ -34,8 +39,22 @@ class SettingsDataStoreImpl @Inject constructor(private val context: Context) : 
         }
     }
 
+    override suspend fun putDouble(key: String, value: Double) {
+        val preferencesKey = doublePreferencesKey(key)
+        context.dataStore.edit {
+            it[preferencesKey] = value
+        }
+    }
+
     override suspend fun putInt(key: String, value: Int) {
         val preferencesKey = intPreferencesKey(key)
+        context.dataStore.edit {
+            it[preferencesKey] = value
+        }
+    }
+
+    override suspend fun putLong(key: String, value: Long) {
+        val preferencesKey = longPreferencesKey(key)
         context.dataStore.edit {
             it[preferencesKey] = value
         }
@@ -58,11 +77,33 @@ class SettingsDataStoreImpl @Inject constructor(private val context: Context) : 
         }
     }
 
+    override suspend fun getDouble(key: String): Double? {
+        return try {
+            val head = context.dataStore.data.first()
+            val preferencesKey = doublePreferencesKey(key)
+            head[preferencesKey]?.toDouble()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            null
+        }
+    }
+
     override suspend fun getInt(key: String): Int? {
         return try {
             val head = context.dataStore.data.first()
             val preferencesKey = intPreferencesKey(key)
             head[preferencesKey]?.toInt()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            null
+        }
+    }
+
+    override suspend fun getLong(key: String): Long? {
+        return try {
+            val head = context.dataStore.data.first()
+            val preferencesKey = longPreferencesKey(key)
+            head[preferencesKey]?.toLong()
         } catch (exception: Exception) {
             exception.printStackTrace()
             null
@@ -94,6 +135,15 @@ class SettingsDataStoreImpl @Inject constructor(private val context: Context) : 
         }
         .map { preferences ->
             preferences[intPreferencesKey(key)]
+        }
+
+    override fun getDoubleFlow(key: String): Flow<Double?> = context.dataStore.data
+        .catch { exception ->
+            exception.printStackTrace()
+            emit(emptyPreferences())
+        }
+        .map { preferences ->
+            preferences[doublePreferencesKey(key)]
         }
 
     override suspend fun deleteBoolean(key: String) {

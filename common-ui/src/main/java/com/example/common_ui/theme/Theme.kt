@@ -180,10 +180,13 @@ fun ColorScheme.switch(): ColorScheme = copy(
     background = animateColor(background),
     onBackground = animateColor(onBackground),
     surface = animateColor(surface),
+    onTertiary = animateColor(onTertiary),
     surfaceVariant = animateColor(surfaceVariant),
+    onSurfaceVariant = animateColor(onSurfaceVariant),
     outline = animateColor(outline),
     onSurface = animateColor(onSurface),
     error = animateColor(error),
+    outlineVariant = animateColor(outlineVariant),
     onError = animateColor(onError)
 )
 
@@ -207,7 +210,7 @@ fun CryptoColor.switch(): CryptoColor = copy(
 fun animateColor(targetValue: Color): Color {
     return animateColorAsState(
         targetValue = targetValue,
-        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
     ).value
 }
 

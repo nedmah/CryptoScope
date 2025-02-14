@@ -19,11 +19,12 @@ import com.example.common_ui.theme.paddings
 
 @Composable
 fun CryptoInfoHeader(
-    modifier: Modifier = Modifier,
     name: String,
     isFavourite: Boolean,
     onFavouritePushed: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    isFavouriteEnabled: Boolean = true
 ) {
     Row(
         modifier = modifier
@@ -53,6 +54,6 @@ fun CryptoInfoHeader(
             )
         }
 
-        FavoriteIcon(isFavourite = isFavourite, onValueChanged = onFavouritePushed)
+        if (isFavouriteEnabled) FavoriteIcon(isFavourite = isFavourite, onValueChanged = onFavouritePushed)
     }
 }

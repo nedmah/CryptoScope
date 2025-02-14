@@ -15,8 +15,12 @@ sealed interface Routes {
         val name : String = "CryptoWalletScreen"
     }
 
-    data object CryptoWalletBalanceScreen : Routes{
-        val name : String = "CryptoWalletBalanceScreen"
+    data object CryptoMyCoinsScreen : Routes{
+        val name : String = "CryptoMyCoinsScreen"
+    }
+
+    data object CryptoWalletHistoryScreen : Routes{
+        val name : String = "CryptoWalletHistoryScreen"
     }
 
     data object CryptoNewsScreen : Routes{

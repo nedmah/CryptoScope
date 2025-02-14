@@ -22,7 +22,6 @@ android {
 
 dependencies {
 
-    implementation(project(":core"))
     implementation(project(":common-ui"))
 
     implementation(libs.androidx.core.ktx)

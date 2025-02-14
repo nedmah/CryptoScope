@@ -1,6 +1,5 @@
 package com.example.common_ui.composable
 
-import android.graphics.Point
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,15 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.common_ui.R
 import com.example.common_ui.theme.extraColor
 import com.example.common_ui.theme.paddings
-import com.example.common_ui.theme.spacers
-import com.example.core.util.extensions.boxShadow
+import com.example.common_ui.composable.extensions.boxShadow
 
 
 @Composable
@@ -72,7 +70,10 @@ fun WalletCard(
                 offsetY = height,
                 spread = (-6).dp
             )
-            .padding(horizontal = MaterialTheme.paddings.medium, vertical = MaterialTheme.paddings.extraLarge),
+            .padding(
+                horizontal = MaterialTheme.paddings.medium,
+                vertical = MaterialTheme.paddings.extraLarge
+            ),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -89,7 +90,7 @@ fun WalletCard(
                 Column {
                     Text(
                         modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraSmall),
-                        text = "Баланс",
+                        text = stringResource(id = R.string.balance),
                         color = contentColor,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -102,7 +103,7 @@ fun WalletCard(
                 Column {
                     Text(
                         modifier = Modifier.padding(bottom = MaterialTheme.paddings.extraSmall),
-                        text = "Прибыль за сегодня",
+                        text = stringResource(id = R.string.profit),
                         color = contentColor,
                         style = MaterialTheme.typography.bodyMedium
                     )

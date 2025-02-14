@@ -29,7 +29,7 @@ data class SettingsScreenState(
         SettingsItem(
             com.example.common_ui.R.string.language,
             route = Routes.CryptoLanguageScreen.name,
-            title = "eng"
+            title = "ru"
         ),
         SettingsItem(
             com.example.common_ui.R.string.info,
@@ -40,6 +40,6 @@ data class SettingsScreenState(
 
     val isDarkTheme: Boolean? = true,
     val currency: String? = "usd",
-    val language: String? = "eng",
+    val language: String? = "ru",
 
 )

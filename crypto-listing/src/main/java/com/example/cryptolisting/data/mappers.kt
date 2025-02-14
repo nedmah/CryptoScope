@@ -11,7 +11,7 @@ fun CryptoListingDataDto.toCryptoEntity() : CryptoListingEntity {
         iconUrl = icon,
         name = name,
         symbol = symbol,
-        price = price.toString(),
+        price = price,
         percentage = percentage,
         percentageOneHour = percentageOneHour.toString(),
         percentageOneWeek = percentageOneWeek.toString(),

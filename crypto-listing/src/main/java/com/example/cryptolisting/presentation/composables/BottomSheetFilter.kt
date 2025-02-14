@@ -27,10 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.common_ui.composable.BottomDialog
 import com.example.common_ui.theme.paddings
 import com.example.common_ui.theme.spacers
+import com.example.cryptolisting.R
 import com.example.cryptolisting.presentation.Filters
 
 @Composable
@@ -61,7 +63,7 @@ fun FilterBottomSheet(
                         top = MaterialTheme.paddings.small
                     )
             )
-            Text(style = MaterialTheme.typography.headlineSmall, text = "Sorting", modifier = Modifier.padding(vertical = MaterialTheme.paddings.medium))
+            Text(style = MaterialTheme.typography.headlineSmall, text = stringResource(id = com.example.common_ui.R.string.sorting), modifier = Modifier.padding(vertical = MaterialTheme.paddings.medium))
             HorizontalDivider()
             filterOptions.forEachIndexed { index, filter ->
                 FilterOptionItem(
@@ -94,7 +96,7 @@ fun FilterOptionItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = filter.text,
+            text = stringResource(id = filter.text),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.weight(1f)
         )

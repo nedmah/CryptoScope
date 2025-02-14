@@ -14,17 +14,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.theme.paddings
 import com.example.core.util.openCustomTab
+import com.example.news.R
 import com.example.news.domain.model.CryptoNewsModel
 
 @Composable
@@ -48,30 +55,31 @@ fun CryptoNewsScreen(
         }
     }
 
+
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         if (news.loadState.refresh is LoadState.Loading) {
             CircularProgressIndicator(
-                modifier = Modifier
+                modifier = modifier
             )
         } else {
             Column(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(horizontal = MaterialTheme.paddings.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 Text(
-                    modifier = modifier.padding(top = MaterialTheme.paddings.xxLarge, bottom = MaterialTheme.paddings.xxLarge),
-                    text = "Новости",
+                    modifier = modifier.padding(top = MaterialTheme.paddings.extraLarge, bottom = MaterialTheme.paddings.extraLarge),
+                    text = stringResource(id = com.example.common_ui.R.string.news),
                     style = MaterialTheme.typography.headlineSmall
                 )
 
                 LazyColumn(
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.paddings.medium),
+                    modifier = modifier,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

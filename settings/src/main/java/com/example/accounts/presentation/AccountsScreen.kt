@@ -26,10 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.common_ui.theme.paddings
+import com.example.settings.R
 
 @Composable
 fun AccountsScreen(
@@ -56,7 +58,7 @@ fun AccountsScreen(
         Icon(
             modifier = modifier
                 .align(Alignment.Start)
-                .padding(top = MaterialTheme.paddings.large)
+                .padding(top = MaterialTheme.paddings.extraLarge)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
@@ -72,7 +74,7 @@ fun AccountsScreen(
                 top = MaterialTheme.paddings.xxLarge,
                 bottom = MaterialTheme.paddings.xxLarge
             ),
-            text = "Мои счета",
+            text = stringResource(id = com.example.common_ui.R.string.my_accounts),
             style = MaterialTheme.typography.headlineSmall
         )
 

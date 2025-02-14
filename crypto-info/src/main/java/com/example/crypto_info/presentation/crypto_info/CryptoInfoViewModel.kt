@@ -125,7 +125,7 @@ class CryptoInfoViewModel (
     }
 
     class CryptoInfoViewModelFactory@AssistedInject constructor(
-        @Assisted private val cryptoListingsModel: CryptoListingsModel,
+        @Assisted private val cryptoListingsModel: CryptoListingsModel?,
         private val getCryptoInfoChartUseCase: GetCryptoInfoChartUseCase,
         private val getCryptoInfoUseCase: GetCryptoInfoUseCase,
         private val repository: FavouritesRepository
@@ -139,7 +139,7 @@ class CryptoInfoViewModel (
 
         @AssistedFactory
         interface Factory {
-            fun create(@Assisted cryptoListingsModel: CryptoListingsModel): CryptoInfoViewModelFactory
+            fun create(@Assisted cryptoListingsModel: CryptoListingsModel?): CryptoInfoViewModelFactory
         }
     }
 

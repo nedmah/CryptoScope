@@ -19,7 +19,7 @@ import me.bytebeats.views.charts.toLegacyInt
 private const val Y_OFFSET = 20f
 
 
-data class CryptoLabelsDrawer(
+internal data class CryptoLabelsDrawer(
     val labelTextSize: TextUnit = 12.sp,
     val lowestTextColor: Color = Color.Black,
     val highestTextColor: Color = Color.Black,

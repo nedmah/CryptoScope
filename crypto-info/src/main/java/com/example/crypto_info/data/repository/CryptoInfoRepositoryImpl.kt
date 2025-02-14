@@ -6,7 +6,9 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.example.core.data.db.daos.CryptoListingsDao
 import com.example.core.data.mappers.toCryptoListingsModel
+import com.example.core.data.settings.SettingsConstants
 import com.example.core.domain.model.CryptoListingsModel
+import com.example.core.domain.settings.SettingsDataStore
 import com.example.core.util.Resource
 import com.example.crypto_info.data.remote.CryptoInfoApi
 import com.example.crypto_info.data.toCryptoInfo
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 class CryptoInfoRepositoryImpl @Inject constructor(
     private val api: CryptoInfoApi,
-    private val dao: CryptoListingsDao
+    private val dao: CryptoListingsDao,
+    private val dataStore: SettingsDataStore
 ) : CryptoInfoRepository {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -52,14 +55,17 @@ class CryptoInfoRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading(true))
 
-            val cryptoInfo = dao.getCryptoListingById(coinId)?.toCryptoListingsModel()
+            val currencyCode = dataStore.getString(SettingsConstants.CURRENCY) ?: "USD"
+            val currencyRate = dataStore.getDouble(SettingsConstants.CURRENCY_RATE) ?: 1.0
+
+            val cryptoInfo = dao.getCryptoListingById(coinId)?.toCryptoListingsModel(currencyCode, currencyRate)
             if (cryptoInfo != null) {
                 emit(Resource.Success(data = cryptoInfo))
                 emit(Resource.Loading(false))
             } else {
                 val remoteCryptoInfo = try {
                     api.getCryptoInfo(coinId)
-                } catch (e: HttpException) {
+                } catch (e: retrofit2.HttpException) {
                     e.printStackTrace()
                     emit(Resource.Error(message = "Couldn't retrieve data"))
                     null
@@ -69,7 +75,7 @@ class CryptoInfoRepositoryImpl @Inject constructor(
                     null
                 }
                 remoteCryptoInfo?.let {
-                    emit(Resource.Success(data = remoteCryptoInfo.toCryptoListingsModel()))
+                    emit(Resource.Success(data = it.toCryptoListingsModel()))
                     emit(Resource.Loading(false))
                 }
             }
@@ -90,7 +96,11 @@ class CryptoInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLocalCryptoInfoByName(name: String): Resource<CryptoListingsModel> {
-        val cryptoInfo = dao.getCryptoByName(name)?.toCryptoListingsModel()
+
+        val currencyCode = dataStore.getString(SettingsConstants.CURRENCY) ?: "USD"
+        val currencyRate = dataStore.getDouble(SettingsConstants.CURRENCY_RATE) ?: 1.0
+
+        val cryptoInfo = dao.getCryptoByName(name)?.toCryptoListingsModel(currencyCode, currencyRate)
         return cryptoInfo?.let {
             Resource.Success(data = it)
         } ?: Resource.Error(message = "can't retrieve crypto data")

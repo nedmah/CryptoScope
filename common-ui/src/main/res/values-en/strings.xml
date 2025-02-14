@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preview_headline_text">Headline</string>
+    <string name="preview_support_text">Subtitle with some important description</string>
+    <string name="preview_extra_headline_text">25</string>
+
+    <string name="news">News</string>
+    <string name="wallet">Wallet</string>
+    <string name="market">Market</string>
+    <string name="settings">Settings</string>
+
+    <string name="comparison">Comparison</string>
+    <string name="accounts">My Accounts</string>
+    <string name="theme">Theme</string>
+    <string name="currency">Currency</string>
+    <string name="language">Language</string>
+    <string name="info">About</string>
+
+    <string name="select">Select</string>
+    <string name="compare">Compare</string>
+
+    <string name="market_cap">Market Cap</string>
+    <string name="total_supply">Total Supply</string>
+
+    <string name="sorting">Sorting</string>
+
+    <string name="by_rank">Rank</string>
+    <string name="by_price_ascending">Price Ascending</string>
+    <string name="by_price_descending">Price Descending</string>
+    <string name="by_percentage_ascending">Percentage Ascending</string>
+    <string name="by_percentage_descending">Percentage Descending</string>
+    <string name="by_name">Name</string>
+
+    <string name="blockchain">Blockchain</string>
+    <string name="address">Address</string>
+    <string name="add_account">Add Account</string>
+
+    <string name="my_accounts">My Accounts</string>
+
+    <string name="my_coins">My Coins</string>
+    <string name="open">Open</string>
+    <string name="favorite_coins">Favorite Coins</string>
+    <string name="coins_missing">Coins Missing</string>
+
+    <string name="balance">Balance</string>
+    <string name="profit">Profit</string>
+    <string name="balance_history">Balance History</string>
+
+    <string name="select_language">Select Language</string>
+    <string name="locale_russian">ru</string>
+    <string name="locale_english">en</string>
+    <string name="locale_kazakh">kk</string>
+    <string name="russian">Russian</string>
+    <string name="english">English</string>
+    <string name="kazakh">Kazakh</string>
+
+</resources>

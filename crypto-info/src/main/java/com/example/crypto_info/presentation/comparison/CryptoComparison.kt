@@ -100,7 +100,6 @@ fun CryptoComparisonScreen(
                     title = title,
                     text1 = values.first,
                     text2 = values.second,
-                    formatPrice = { formatPriceString(it) },
                     background = backgroundColor
                 )
             }

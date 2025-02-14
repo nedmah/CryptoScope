@@ -2,6 +2,9 @@ package com.example.cryptoscope.di
 
 import android.app.Application
 import android.content.Context
+import com.example.core.data.settings.SettingsConstants
+import com.example.core.domain.settings.SettingsDataStore
+import com.example.core.util.LocaleHelper
 import com.example.crypto_info.di.CryptoInfoModule
 import com.example.cryptolisting.di.ListingsModule
 import com.example.cryptoscope.MainActivity
@@ -16,6 +19,10 @@ import com.example.news.di.NewsModule
 import com.example.wallet.di.WalletModule
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
@@ -23,10 +30,11 @@ class CryptoScopeApplication : Application() {
 
     lateinit var appComponent: AppComponent
 
-
     override fun onCreate() {
         super.onCreate()
+
         appComponent = DaggerAppComponent.factory().create(this)
+        appComponent.inject(this)
     }
 }
 
@@ -48,6 +56,8 @@ class CryptoScopeApplication : Application() {
 interface AppComponent {
 
     fun inject(activity: MainActivity)
+
+    fun inject(app: CryptoScopeApplication)
 
     val factory: MultiViewModelFactory
 

@@ -102,6 +102,9 @@ class AccountsViewModel @Inject constructor(
     private fun saveSelectedAccount(account: AccountsModel) {
         viewModelScope.launch(Dispatchers.IO) {
 
+            settingsDataStore.clear(listOf(SettingsConstants.WALLET_LAST_UPDATED, SettingsConstants.SELECTED_BLOCKCHAIN))
+            repository.clearMyCoins()
+
             account.blockChain?.let { name ->
                 val blockchain = repository.getBlockchainByName(name)
                 settingsDataStore.putString(
@@ -113,6 +116,7 @@ class AccountsViewModel @Inject constructor(
                 SettingsConstants.SELECTED_WALLET_ADDRESS,
                 account.address
             )
+
 
         }
     }

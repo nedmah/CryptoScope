@@ -1,17 +1,24 @@
 package com.example.wallet.presentation
 
-import android.util.Log
+import android.os.Bundle
+import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,27 +27,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.common_ui.composable.CryptoItem
-import com.example.common_ui.composable.CryptoItemSmall
-import com.example.common_ui.composable.CryptoItemWallet
-import com.example.common_ui.composable.CryptoSwipeableItem
-import com.example.common_ui.composable.PreviewWrapper
+import com.example.common_ui.composable.MyCoinsItemSmall
 import com.example.common_ui.composable.WalletCard
 import com.example.common_ui.theme.extraColor
-import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
+import com.example.common_ui.theme.spacers
+import com.example.core.util.extensions.navigateCryptoListingModelWithBundle
 import com.example.core.util.formatPriceString
+import com.example.core.util.truncateMiddleText
 import com.example.wallet.R
-import com.example.wallet.domain.model.CryptoWalletModel
 
 @Composable
 fun CryptoWalletScreen(
     getViewModelFactory: () -> ViewModelProvider.Factory,
+    navigateWithBundle: (Bundle) -> Unit,
+    navigateToMyCoins : () -> Unit,
+    navigateToWalletHistory : () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CryptoWalletViewModel = viewModel(factory = getViewModelFactory()),
 ) {
@@ -54,18 +67,28 @@ fun CryptoWalletScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        WalletHeader(
+            modifier = modifier,
+            address = state.currentAddress,
+            blockchain = state.currentBlockchain,
+            imgUrl = state.currentBlockchainImage
+        )
+
         Text(
-            modifier = modifier.padding(top = MaterialTheme.paddings.xxLarge, bottom = MaterialTheme.paddings.xxLarge),
-            text = "Кошелёк",
+            modifier = modifier.padding(
+                top = MaterialTheme.paddings.large,
+                bottom = MaterialTheme.paddings.medium
+            ),
+            text = stringResource(id = com.example.common_ui.R.string.wallet),
             style = MaterialTheme.typography.headlineSmall
         )
 
         WalletCard(
-            balance = formatPriceString(state.wallet.balance),
-            profit = formatPriceString(state.wallet.profitOrAddition),
+            balance = state.wallet.balance,
+            profit = state.wallet.profit,
             percentage = state.wallet.percentage
         ) {
-            //TODO: навигация
+            navigateToWalletHistory()
         }
 
         Row(
@@ -75,16 +98,16 @@ fun CryptoWalletScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Мои монеты", style = MaterialTheme.typography.bodyMedium)
+            Text(text = stringResource(id = com.example.common_ui.R.string.my_coins), style = MaterialTheme.typography.bodyMedium)
             Row(
                 modifier = modifier.clickable {
-                //TODO кнопка открыть
-            },
+                    navigateToMyCoins()
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     modifier = modifier.padding(horizontal = MaterialTheme.paddings.small),
-                    text = "Открыть",
+                    text = stringResource(id = com.example.common_ui.R.string.open),
                     color = MaterialTheme.extraColor.chart,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -105,12 +128,19 @@ fun CryptoWalletScreen(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium
                 )
-            }
+            } ?:
             LazyRow {
                 items(state.myCoins.size) { index ->
                     val crypto = state.myCoins[index]
-                    CryptoItemSmall(cryptoModel = crypto) {
-                        //TODO навигация
+                    MyCoinsItemSmall(
+                        modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraSmall),
+                        imgUrl = crypto.imgUrl,
+                        symbol = crypto.symbol,
+                        name = crypto.name,
+                        price = crypto.price.toString(),
+                        percentOneDay = crypto.percentOneDay.toString()
+                    ) {
+
                     }
                 }
             }
@@ -121,44 +151,104 @@ fun CryptoWalletScreen(
             modifier = modifier
                 .align(Alignment.Start)
                 .padding(top = MaterialTheme.paddings.large),
-            text = "Избранные монеты",
+            text = stringResource(id = com.example.common_ui.R.string.favorite_coins),
             style = MaterialTheme.typography.bodyMedium
         )
 
-        if (state.myCoinsLoading) {
-            CircularProgressIndicator()
-        } else {
-            state.favouriteCoinsError?.let {
-                Text(
-                    modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+        state.favouriteCoinsError?.let {
+            Text(
+                modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
+                text = it,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        if (state.favouriteCoins.isNotEmpty()) {
             LazyColumn {
                 items(state.favouriteCoins.size) { index ->
                     val crypto = state.favouriteCoins[index]
                     CryptoItem(
                         cryptoModel = crypto,
                         onClick = {
-                            //TODO навигация
+                            navigateCryptoListingModelWithBundle(crypto, navigateWithBundle)
                         }
                     )
                 }
             }
+            Spacer(modifier = modifier.height(MaterialTheme.spacers.xxLarge))
         }
+        else
+            Text(
+                modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
+                text = stringResource(id = com.example.common_ui.R.string.coins_missing),
+                style = MaterialTheme.typography.bodyMedium
+            )
 
     }
 }
 
 @Composable
-@PreviewLightDark
-fun PreviewWallet(
-
+private fun WalletHeader(
+    modifier: Modifier = Modifier,
+    address: String?,
+    blockchain: String?,
+    imgUrl: String?
 ) {
-//    PreviewWrapper {
-//        CryptoWalletScreen(
-//            walletModel = CryptoWalletModel("2,549.370",false, "75.982", "0.12")
-//        )
-//    }
+
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = MaterialTheme.paddings.xxLarge),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        address?.let {
+            Row(
+                modifier = modifier.clickable {
+                    clipboardManager.setText(AnnotatedString(it))
+                    Toast.makeText(context, "Скопировано", Toast.LENGTH_SHORT).show()
+                },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = truncateMiddleText(it,35),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.width(MaterialTheme.spacers.extraSmall))
+                Icon(
+                    modifier = modifier.size(12.dp,14.dp),
+                    painter = painterResource(id = com.example.common_ui.R.drawable.ic_copy_24),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    contentDescription = null
+                )
+            }
+        }
+
+        blockchain?.let {
+            Box(
+                modifier = modifier.border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    RoundedCornerShape(15.dp)
+                )
+            ) {
+                Row(
+                    modifier = modifier.padding(MaterialTheme.paddings.extraSmall)
+                ) {
+                    AsyncImage(
+                        modifier = modifier
+                            .size(20.dp)
+                            .clip(CircleShape),
+                        model = imgUrl,
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacers.extraSmall))
+                    Text(text = blockchain)
+                }
+            }
+        }
+    }
 }

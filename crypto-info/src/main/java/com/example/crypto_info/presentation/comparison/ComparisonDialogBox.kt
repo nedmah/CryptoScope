@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -32,6 +33,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.common_ui.composable.CryptoDialogBox
 import com.example.common_ui.composable.DropdownMenuField
 import com.example.common_ui.theme.extraColor
+import com.example.crypto_info.R
 
 @Composable
 fun CompareDialog(
@@ -62,7 +64,7 @@ fun CompareDialog(
                 )
             }
         },
-        title = "Compare",
+        title = stringResource(id = com.example.common_ui.R.string.compare),
         onConfirm = onConfirm,
         onCancel = onDismissRequest
     )

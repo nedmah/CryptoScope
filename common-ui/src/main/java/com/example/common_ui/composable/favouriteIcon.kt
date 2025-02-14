@@ -27,6 +27,7 @@ fun FavoriteIcon(
 ) {
     var isFavorite by remember { mutableStateOf(isFavourite) }
 
+
     Icon(
         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
         contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",

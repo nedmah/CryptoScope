@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.PercentageTextCard
@@ -29,6 +30,7 @@ import com.example.common_ui.theme.model.Paddings
 import com.example.common_ui.theme.paddings
 import com.example.core.util.formatPriceString
 import com.example.core.util.openCustomTab
+import com.example.crypto_info.R
 import com.example.crypto_info.presentation.IntervalButtonGroup
 import com.example.crypto_info.presentation.composables.CryptoInfoHeader
 import com.example.crypto_info.presentation.composables.CryptoInfoItem
@@ -82,13 +84,17 @@ fun CryptoInfoScreen(
 
         Text(
             modifier = modifier.padding(Paddings.extraMedium),
-            text = formatPriceString(state.price),
+            text = state.price,
             style = MaterialTheme.typography.headlineSmall
         )
 
         PercentageTextCard(percent = state.percentage)
 
-        if (state.loading || chartDataState.points.isEmpty()) CircularProgressIndicator(modifier.padding(top = MaterialTheme.paddings.medium))
+        if (state.loading || chartDataState.points.isEmpty()) CircularProgressIndicator(
+            modifier.padding(
+                top = MaterialTheme.paddings.medium
+            )
+        )
         else {
             CustomLineChart(
                 modifier = Modifier
@@ -110,12 +116,21 @@ fun CryptoInfoScreen(
         Column(
             modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraMedium)
         ) {
-            CryptoInfoItem(text = "Market cap", value = state.marketCap)
-            CryptoInfoItem(text = "Total supply", value = state.totalSupply)
-            ExternalUrl(url = state.twitterUrl, imageId = com.example.common_ui.R.drawable.x_logo){
+            CryptoInfoItem(
+                text = stringResource(id = com.example.common_ui.R.string.market_cap),
+                value = state.marketCap
+            )
+            CryptoInfoItem(
+                text = stringResource(id = com.example.common_ui.R.string.total_supply),
+                value = state.totalSupply
+            )
+            ExternalUrl(url = state.twitterUrl, imageId = com.example.common_ui.R.drawable.x_logo) {
                 openCustomTab(context, state.twitterUrl)
             }
-            ExternalUrl(url = state.redditUrl, imageId = com.example.common_ui.R.drawable.reddit_logo){
+            ExternalUrl(
+                url = state.redditUrl,
+                imageId = com.example.common_ui.R.drawable.reddit_logo
+            ) {
                 openCustomTab(context, state.redditUrl)
             }
         }

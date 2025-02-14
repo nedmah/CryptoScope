@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -148,11 +149,11 @@ fun CryptoItem(
                 AsyncImage(
                     modifier = modifier.size(35.dp),
                     model = cryptoModel.icon,
-                    error = painterResource(id = com.example.common_ui.R.drawable.ic_error_24),
+                    error = painterResource(id = R.drawable.ic_error_24),
                     contentDescription = null,
                 )
 
-                CryptoNameSymbol(symbol = cryptoModel.symbol, name = cryptoModel.name)
+                CryptoNameSymbolColumn(symbol = cryptoModel.symbol, name = cryptoModel.name)
             }
 
             Column(
@@ -163,7 +164,7 @@ fun CryptoItem(
                     percent = cryptoModel.percentage
                 )
                 Text(
-                    text = formatPriceString(cryptoModel.price),
+                    text = cryptoModel.price,
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -201,7 +202,7 @@ fun CryptoItemSmall(
                     error = painterResource(id = com.example.common_ui.R.drawable.ic_error_24),
                     contentDescription = null,
                 )
-                CryptoNameSymbol(
+                CryptoNameSymbolColumn(
                     symbol = cryptoModel.symbol,
                     name = cryptoModel.name,
                     padding = MaterialTheme.paddings.extraSmall
@@ -214,7 +215,7 @@ fun CryptoItemSmall(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = formatPriceString(cryptoModel.price),
+                    text = cryptoModel.price,
                     style = MaterialTheme.typography.titleSmall
                 )
 
@@ -225,6 +226,139 @@ fun CryptoItemSmall(
         }
     }
 }
+
+@Composable
+fun MyCoinsItem(
+    modifier: Modifier = Modifier,
+    icon : String,
+    symbol : String,
+    name : String,
+    price : String,
+    percentage : String,
+    amount : String,
+    sum: String,
+    onClick: () -> Unit
+) {
+
+    androidx.compose.material3.ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = MaterialTheme.paddings.extraMedium)
+            .clickable { onClick() },
+    ) {
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.paddings.extraMedium, vertical = MaterialTheme.paddings.medium),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row {
+                AsyncImage(
+                    modifier = modifier.size(35.dp).clip(CircleShape),
+                    model = icon,
+                    error = painterResource(id = R.drawable.ic_error_24),
+                    contentDescription = null,
+                )
+
+                Column(
+                    modifier.padding(start = MaterialTheme.paddings.medium)
+                ) {
+                    CryptoNameSymbolRow(symbol = symbol, name = name)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = price,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        PercentageText(percent = percentage, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+
+            Column(
+                modifier = modifier.padding(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = sum,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    text = amount,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MyCoinsItemSmall(
+    imgUrl : String,
+    symbol : String,
+    name : String,
+    price : String,
+    percentOneDay : String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+
+    androidx.compose.material3.ElevatedCard(
+        modifier = modifier
+            .width(180.dp)
+            .padding(vertical = MaterialTheme.paddings.extraMedium)
+            .clickable { onClick() },
+    ) {
+
+        Column(
+            modifier = modifier.padding(
+                start = MaterialTheme.paddings.extraSmall,
+                end = MaterialTheme.paddings.small,
+                top = MaterialTheme.paddings.small,
+                bottom = MaterialTheme.paddings.extraSmall
+            )
+        ) {
+            Row {
+                AsyncImage(
+                    modifier = modifier
+                        .size(35.dp)
+                        .clip(CircleShape)
+                    ,
+                    model = imgUrl,
+                    error = painterResource(id = R.drawable.ic_error_24),
+                    contentDescription = null,
+                )
+                CryptoNameSymbolColumn(
+                    symbol = symbol,
+                    name = name,
+                    padding = MaterialTheme.paddings.extraSmall
+                )
+            }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = MaterialTheme.paddings.extraMedium),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = price,
+                    style = MaterialTheme.typography.titleSmall
+                )
+
+                PercentageText(
+                    percent = percentOneDay
+                )
+            }
+        }
+    }
+}
+
 
 
 @Composable
@@ -325,7 +459,7 @@ fun CryptoItemWallet(
                 AsyncImage(
                     modifier = modifier.size(35.dp),
                     model = cryptoModel.icon,
-                    error = painterResource(id = com.example.common_ui.R.drawable.ic_error_24),
+                    error = painterResource(id = R.drawable.ic_error_24),
                     contentDescription = null,
                 )
 
@@ -361,8 +495,7 @@ fun BalanceHistoryItem(
     balance : String,
     date : String,
     profit : String,
-    percentOrName : String,
-    isPercent : Boolean
+    percent : String,
 ){
     Row(
         modifier = modifier
@@ -376,7 +509,7 @@ fun BalanceHistoryItem(
         ) {
             Text(
                 modifier = modifier.padding(bottom = MaterialTheme.paddings.small),
-                text = formatPriceString(balance),
+                text = balance,
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -392,15 +525,10 @@ fun BalanceHistoryItem(
         ) {
             Text(
                 modifier = modifier.padding(bottom = MaterialTheme.paddings.extraSmall),
-                text = formatPriceString(profit),
+                text = profit,
                 style = MaterialTheme.typography.titleMedium
             )
-            if (isPercent) Text(
-                text = "Пополнение: $percentOrName",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-             else PercentageText(percent = percentOrName)
+            PercentageText(modifier = modifier.align(Alignment.End),percent = percent)
         }
     }
 }
@@ -438,8 +566,7 @@ fun ItemPreview() {
                 balance = "2421.026",
                 date = "11.11.2024",
                 profit = "75.982",
-                percentOrName = "bitcoin",
-                isPercent = true
+                percent = "bitcoin"
             )
         }
     }

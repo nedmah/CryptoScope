@@ -8,6 +8,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import com.example.core.domain.model.CryptoListingsModel
 
 @SuppressLint("RestrictedApi")
 fun NavController.navigate(
@@ -29,4 +30,14 @@ fun NavController.navigate(
     } else {
         navigate(route, navOptions, navigatorExtras)
     }
+}
+
+fun navigateCryptoListingModelWithBundle(
+    model: CryptoListingsModel,
+    navigate: (Bundle) -> Unit
+) {
+    val bundle = Bundle().apply {
+        putParcelable("cryptoInfo", model)
+    }
+    navigate(bundle)
 }

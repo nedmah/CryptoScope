@@ -17,6 +17,10 @@ interface BlockchainsDao {
     @Query("SELECT * FROM blockchainsentity WHERE name = :name")
     suspend fun getBlockchainByName(name : String) : BlockchainsEntity
 
+    @Query("SELECT * FROM blockchainsentity WHERE connectionId = :id")
+    suspend fun getBlockchainById(id : String) : BlockchainsEntity
+
+
     @Query("DELETE FROM blockchainsentity")
     suspend fun clearAllData()
 }

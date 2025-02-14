@@ -106,7 +106,7 @@ fun CryptoInfoItem(
 
         Text(
             modifier = modifier,
-            text = formatPriceString(value),
+            text = value,
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -119,7 +119,6 @@ fun CryptoComparisonItem(
     text2: String,
     background: Color,
     modifier: Modifier = Modifier,
-    formatPrice: (String) -> String = { it }, // Функция форматирования (можно передать извне)
     circleColor1: Color = MaterialTheme.extraColor.chart, // Цвет кружка для text1
     circleColor2: Color = MaterialTheme.extraColor.secondChart // Цвет кружка для text2
 ) {
@@ -134,17 +133,6 @@ fun CryptoComparisonItem(
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        val needsFormatting = title.equals("Price", ignoreCase = true) ||
-                title.equals("Total supply", ignoreCase = true) ||
-                title.equals("Market cap", ignoreCase = true)
-
-        val text1Formatted = if (needsFormatting) {
-            text1.toDoubleOrNull()?.let { formatPrice(it.toString()) } ?: text1
-        } else text1
-
-        val text2Formatted = if (needsFormatting) {
-            text2.toDoubleOrNull()?.let { formatPrice(it.toString()) } ?: text2
-        } else text2
 
         val text1Value = text1.toDoubleOrNull()
         val text2Value = text2.toDoubleOrNull()
@@ -193,7 +181,7 @@ fun CryptoComparisonItem(
             ) {
                 Text(
                     modifier = modifier,
-                    text = text1Formatted,
+                    text = text1,
                     color = textColor1,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -218,7 +206,7 @@ fun CryptoComparisonItem(
             ) {
                 Text(
                     modifier = modifier,
-                    text = text2Formatted,
+                    text = text2,
                     color = textColor2,
                     style = MaterialTheme.typography.bodyMedium
                 )

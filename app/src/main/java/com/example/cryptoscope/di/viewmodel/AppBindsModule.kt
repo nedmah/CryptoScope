@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.example.accounts.presentation.AccountsViewModel
 import com.example.crypto_info.presentation.comparison.CryptoComparisonViewModel
 import com.example.cryptolisting.presentation.CryptoListingViewModel
+import com.example.currency.presentation.CurrencyRatesViewModel
+import com.example.language.LanguageViewModel
 import com.example.news.presentation.NewsViewModel
 import com.example.settings.presentation.SettingsViewModel
 import com.example.wallet.presentation.CryptoWalletViewModel
+import com.example.wallet.presentation.my_coins.MyCoinsViewModel
 import com.example.wallet.presentation.wallet_history.WalletHistoryViewModel
 import dagger.Binds
 import dagger.Module
@@ -49,5 +52,20 @@ interface AppBindsModule {
     @IntoMap
     @ViewModelKey(AccountsViewModel::class)
     fun provideAccountsViewModel(accountsViewModel: AccountsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyCoinsViewModel::class)
+    fun provideMyCoinsViewModel(myCoinsViewModel: MyCoinsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LanguageViewModel::class)
+    fun provideLanguageViewModel(languageViewModel: LanguageViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CurrencyRatesViewModel::class)
+    fun provideCurrencyRatesViewModel(currencyRatesViewModel: CurrencyRatesViewModel): ViewModel
 
 }

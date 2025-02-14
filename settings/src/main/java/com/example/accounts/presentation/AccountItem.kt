@@ -167,7 +167,8 @@ private fun AccountNonSwipeableItem(
         ) {
 
             Row(
-                modifier = modifier.padding(end = MaterialTheme.paddings.medium)
+                modifier = modifier.padding(end = MaterialTheme.paddings.medium),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 blockchain?.let {
                     AsyncImage(

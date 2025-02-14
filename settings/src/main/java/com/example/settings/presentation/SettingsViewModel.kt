@@ -46,8 +46,8 @@ class SettingsViewModel @Inject constructor(
                 SettingsScreenState(
                     isDarkTheme = theme ?: true,
                     currency = currency ?: "usd",
-                    language = language ?: "eng",
-                    items = updateItemsWithTitles(theme ?: true, currency ?: "usd", language ?: "eng")
+                    language = language ?: "ru",
+                    items = updateItemsWithTitles(theme ?: true, currency ?: "usd", language ?: "ru")
                 )
             }.collect { updatedState ->
                 _settingsState.value = updatedState

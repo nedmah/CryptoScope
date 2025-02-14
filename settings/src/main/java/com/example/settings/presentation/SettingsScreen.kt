@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.theme.paddings
+import com.example.settings.R
 
 @Composable
 fun SettingsScreen(
@@ -47,7 +48,7 @@ fun SettingsScreen(
                 top = MaterialTheme.paddings.xxLarge,
                 bottom = MaterialTheme.paddings.xxLarge
             ),
-            text = "Настройки",
+            text = stringResource(id = com.example.common_ui.R.string.settings),
             style = MaterialTheme.typography.headlineSmall
         )
 

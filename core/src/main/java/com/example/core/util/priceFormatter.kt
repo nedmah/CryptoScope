@@ -34,3 +34,32 @@ fun formatChartPrice(price: String): String {
 
     return decimalFormat.format(floatPrice)
 }
+
+
+fun formatPriceWithCurrency(priceInUsd: Double, currencyCode: String, currencyRate: Double): String {
+    val convertedPrice = priceInUsd * currencyRate
+
+    val decimalFormat = when {
+        convertedPrice < 0.01 -> DecimalFormat("#,###,##0.#######")
+        convertedPrice in 0.9..1.1 -> DecimalFormat("#,###,##0.######")
+        else -> DecimalFormat("#,###,##0.###")
+    }
+
+    val currencySymbol = getCurrencySymbol(currencyCode)
+    return "$currencySymbol${decimalFormat.format(convertedPrice)}"
+}
+
+
+fun getCurrencySymbol(currencyCode: String): String {
+    return when (currencyCode.uppercase()) {
+        "USD" -> "$"
+        "EUR" -> "€"
+        "RUB" -> "₽"
+        "GBP" -> "£"
+        "JPY" -> "¥"
+        "CNY" -> "¥"
+        "INR" -> "₹"
+        "KRW" -> "₩"
+        else -> "$currencyCode "
+    }
+}

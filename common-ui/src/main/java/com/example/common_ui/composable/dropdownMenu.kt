@@ -18,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.example.common_ui.R
 
 @Composable
 fun DropdownMenuField(
@@ -41,7 +43,7 @@ fun DropdownMenuField(
                 modifier = modifier
             ) {
                 Text(
-                    if (selectedOption.isEmpty()) "Select" else selectedOption,
+                    selectedOption.ifEmpty { stringResource(id = R.string.select) },
                     textDecoration = TextDecoration.Underline
                 )
             }
