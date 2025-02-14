@@ -1,3 +1,4 @@
+NOT FINISHED YET
 # CryptoScope
 An app for tracking cryptocurrencies with the ability to add to favorites, set notifications and view charts.
 
