@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 LocaleHelper.initializeLocale(viewModel.settingsDataStore, this@MainActivity)
             }
-            val isDarkTheme by viewModel.themeFlow.collectAsState(initial = null)
+            val isDarkTheme by viewModel.themeFlow.collectAsState(initial = true)
 
             if (isDarkTheme != null) {
                 CryptoScopeTheme(darkTheme = isDarkTheme ?: true, dynamicColor = true) {

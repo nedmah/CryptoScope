@@ -1,5 +1,6 @@
 package com.example.currency.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -36,6 +37,7 @@ fun CurrencyRatesScreen(
 ) {
 
     val state = viewModel.state.collectAsState().value
+
 
     Column(
         modifier = modifier

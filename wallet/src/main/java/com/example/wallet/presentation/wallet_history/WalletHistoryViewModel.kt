@@ -38,12 +38,14 @@ class WalletHistoryViewModel @Inject constructor(
     private fun getChartData(){
         viewModelScope.launch(Dispatchers.IO) {
             val chartData = repository.getWalletChartData()
-            if (chartData == null)
-                _state.value = _state.value.copy(error = "no chart data")
+            println(chartData)
+            if (chartData == null || chartData.price.size < 2)
+                _state.value = _state.value.copy(error = "Error : no chart data")
             else {
                 val lineChartData = chartData.price.mapIndexed { index, price ->
                     LineChartData.Point(price, chartData.time[index])
                 }
+                println(LineChartData(lineChartData))
                 _state.value = _state.value.copy(error = null, chartData = LineChartData(lineChartData))
             }
 

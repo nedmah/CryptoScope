@@ -52,7 +52,8 @@ class AccountsViewModel @Inject constructor(
                         item.address
                     )
                     item.blockChain?.let {
-                        settingsDataStore.putString(SettingsConstants.SELECTED_BLOCKCHAIN, it)
+                        val chain = repository.getBlockchainByName(it)
+                        settingsDataStore.putString(SettingsConstants.SELECTED_BLOCKCHAIN, chain.connectionId)
                     }
                     accounts.map { it.copy(isSelected = true) }
                 } else {
@@ -107,6 +108,7 @@ class AccountsViewModel @Inject constructor(
 
             account.blockChain?.let { name ->
                 val blockchain = repository.getBlockchainByName(name)
+                println("saveSelectedAccount : $blockchain")
                 settingsDataStore.putString(
                     SettingsConstants.SELECTED_BLOCKCHAIN,
                     blockchain.connectionId

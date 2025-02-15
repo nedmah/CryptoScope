@@ -14,7 +14,7 @@ interface WalletRepository {
 
     fun fetchMyCoins(address : String, blockchain : String?) : Flow<Resource<List<MyCoinsModel>>>
 
-    suspend fun getBlockchainEntityByConnectionId(connectionId : String) : BlockchainsEntity
+    suspend fun getBlockchainEntityByConnectionId(connectionId : String) : BlockchainsEntity?
 
     suspend fun getWalletSyncStatus(address: String, blockchain: String): WalletSyncStatus
 

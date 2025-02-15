@@ -1,6 +1,7 @@
 package com.example.language
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -61,6 +62,7 @@ fun LanguageScreen(
             com.example.common_ui.R.drawable.ic_flag_kz
         ),
     )
+
 
     Column(
         modifier = modifier

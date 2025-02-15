@@ -76,10 +76,12 @@ class CryptoWalletViewModel @Inject constructor(
     private fun getBlockchainInfo(connectionId: String) {
         viewModelScope.launch {
             val blockchain = repository.getBlockchainEntityByConnectionId(connectionId)
-            _state.value = _state.value.copy(
-                currentBlockchain = blockchain.name,
-                currentBlockchainImage = blockchain.icon
-            )
+            if (blockchain != null) {
+                _state.value = _state.value.copy(
+                    currentBlockchain = blockchain.name,
+                    currentBlockchainImage = blockchain.icon
+                )
+            }
         }
     }
 

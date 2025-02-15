@@ -52,7 +52,6 @@ class CryptoNewsRemoteMediator(
             db.withTransaction {
                 if(loadType == LoadType.REFRESH){
                     db.getCryptoNewsDao().clearAllData()
-                    db.getCryptoNewsDao().resetAutoIncrement()
                 }
                 val newsEntities = news.result.map { it.toCryptoNewsEntity() }
                 db.getCryptoNewsDao().upsertAll(newsEntities)

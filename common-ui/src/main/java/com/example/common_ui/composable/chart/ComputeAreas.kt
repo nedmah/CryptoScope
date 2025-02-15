@@ -211,6 +211,7 @@ internal fun computeLinePath(
     lineChartData: LineChartData,
     transitionProgress: Float
 ): Path = Path().apply {
+    if (lineChartData.points.size < 2) return@apply
     var prePointLocation: Offset? = null
     lineChartData.points.forEachIndexed { index, point ->
         withProgress(index, lineChartData, transitionProgress) { progress ->
@@ -238,6 +239,7 @@ internal fun computeFillPath(
     lineChartData: LineChartData,
     transitionProgress: Float
 ): Path = Path().apply {
+    if (lineChartData.points.size < 2) return@apply
     moveTo(drawableArea.left, drawableArea.bottom)
     var prePointX: Float? = null
     var prePointLocation: Offset? = null

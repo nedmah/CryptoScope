@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
     val cryptoInfoViewModelFactory: CryptoInfoViewModel.CryptoInfoViewModelFactory.Factory
 ): ViewModel() {
 
-    private val _themeFlow = MutableStateFlow<Boolean?>(null) // изначально null чтобы избежать моргания
+    private val _themeFlow = MutableStateFlow(true) // изначально null чтобы избежать моргания
     val themeFlow: StateFlow<Boolean?> = _themeFlow.asStateFlow()
 
     init {
@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
             _themeFlow.value = initialTheme
 
             settingsDataStore.getBooleanFlow(SettingsConstants.THEME).collectLatest { theme ->
-                _themeFlow.value = theme
+                _themeFlow.value = theme ?: _themeFlow.value
             }
         }
     }

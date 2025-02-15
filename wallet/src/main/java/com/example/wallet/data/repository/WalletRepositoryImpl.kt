@@ -91,7 +91,7 @@ class WalletRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBlockchainEntityByConnectionId(connectionId: String): BlockchainsEntity {
+    override suspend fun getBlockchainEntityByConnectionId(connectionId: String): BlockchainsEntity? {
         return blockchainsDao.getBlockchainById(connectionId)
     }
 

@@ -60,7 +60,7 @@ fun WalletHistoryScreen(
                     onBack()
                 }
                 .padding(
-                    top = MaterialTheme.paddings.large,
+                    top = MaterialTheme.paddings.extraLarge,
                     start = MaterialTheme.paddings.medium,
                     end = MaterialTheme.paddings.medium,
                 )
