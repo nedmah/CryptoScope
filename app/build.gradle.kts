@@ -90,6 +90,9 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    //Work manager
+    implementation (libs.androidx.work.runtime.ktx)
+
     // Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)

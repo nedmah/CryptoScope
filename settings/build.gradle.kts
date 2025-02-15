@@ -48,6 +48,9 @@ dependencies {
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.paging)
 
+    //Work manager
+    implementation (libs.androidx.work.runtime.ktx)
+
     // Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)

@@ -2,15 +2,18 @@ package com.example.cryptoscope.di
 
 import android.app.Application
 import android.content.Context
-import com.example.core.data.settings.SettingsConstants
-import com.example.core.domain.settings.SettingsDataStore
-import com.example.core.util.LocaleHelper
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.crypto_info.di.CryptoInfoModule
 import com.example.cryptolisting.di.ListingsModule
 import com.example.cryptoscope.MainActivity
 import com.example.cryptoscope.di.viewmodel.AppBindsModule
 import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.cryptoscope.di.viewmodel.ViewModelFactoryModule
+import com.example.cryptoscope.worker.CurrencyUpdateWorker
 import com.example.di.SettingsModule
 import com.example.di.db.DataStoreModule
 import com.example.di.db.DatabaseModule
@@ -19,10 +22,7 @@ import com.example.news.di.NewsModule
 import com.example.wallet.di.WalletModule
 import dagger.BindsInstance
 import dagger.Component
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -35,8 +35,30 @@ class CryptoScopeApplication : Application() {
 
         appComponent = DaggerAppComponent.factory().create(this)
         appComponent.inject(this)
+
+        setupWorkManager()
+    }
+
+
+    private fun setupWorkManager() {
+        val workRequest = PeriodicWorkRequestBuilder<CurrencyUpdateWorker>(24, TimeUnit.HOURS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+            )
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "CurrencyUpdateWork",
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+            )
     }
 }
+
+
 
 @Singleton
 @Component(
@@ -58,6 +80,8 @@ interface AppComponent {
     fun inject(activity: MainActivity)
 
     fun inject(app: CryptoScopeApplication)
+
+    fun inject(worker: CurrencyUpdateWorker)
 
     val factory: MultiViewModelFactory
 
