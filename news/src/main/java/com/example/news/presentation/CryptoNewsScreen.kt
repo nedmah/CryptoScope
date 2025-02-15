@@ -33,6 +33,8 @@ import com.example.common_ui.theme.paddings
 import com.example.core.util.openCustomTab
 import com.example.news.R
 import com.example.news.domain.model.CryptoNewsModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CryptoNewsScreen(
@@ -43,6 +45,9 @@ fun CryptoNewsScreen(
 
     val context = LocalContext.current
     val news = viewModel.pageFlow.collectAsLazyPagingItems()
+
+    val swipeRefreshState =
+        rememberSwipeRefreshState(isRefreshing = news.loadState.refresh is LoadState.Loading)
 
     LaunchedEffect(key1 = news.loadState) {
         if (news.loadState.refresh is LoadState.Error) {
@@ -55,34 +60,38 @@ fun CryptoNewsScreen(
         }
     }
 
-
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = MaterialTheme.paddings.medium),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (news.loadState.refresh is LoadState.Loading) {
-            CircularProgressIndicator(
-                modifier = modifier
-            )
-        } else {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.paddings.medium),
+
+        Text(
+            modifier = modifier.padding(
+                top = MaterialTheme.paddings.extraLarge,
+                bottom = MaterialTheme.paddings.extraLarge
+            ),
+            text = stringResource(id = com.example.common_ui.R.string.news),
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+
+        SwipeRefresh(
+            modifier = modifier,
+            state = swipeRefreshState,
+            onRefresh = {
+                news.refresh()
+            }
+        ) {
+            LazyColumn(
+                modifier = modifier,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Text(
-                    modifier = modifier.padding(top = MaterialTheme.paddings.extraLarge, bottom = MaterialTheme.paddings.extraLarge),
-                    text = stringResource(id = com.example.common_ui.R.string.news),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-
-                LazyColumn(
-                    modifier = modifier,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                if (news.loadState.refresh is LoadState.Loading)
+                    items(8) { CryptoNewsItemPlaceholder() }
+                else {
                     items(news.itemCount) {
                         val model = news[it]
                         if (model != null) {
@@ -97,17 +106,14 @@ fun CryptoNewsScreen(
                         }
                     }
 
-                    item {
-                        if (news.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                            )
+                    if (news.loadState.append is LoadState.Loading) {
+                        items(3) {
+                            CryptoNewsItemPlaceholder()
                         }
                     }
-
                 }
             }
+
         }
     }
-
 }

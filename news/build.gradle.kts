@@ -57,6 +57,9 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.logging.interceptor)
 
+    // Accompanists swipeRefresh
+    implementation(libs.accompanist.swiperefresh)
+
     // Coil Compose
     implementation (libs.coil)
 

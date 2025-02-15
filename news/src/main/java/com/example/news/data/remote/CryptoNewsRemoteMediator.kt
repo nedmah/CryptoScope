@@ -36,7 +36,8 @@ class CryptoNewsRemoteMediator(
                     if (lastItem == null){
                         1
                     }else{
-                        (lastItem.id / state.config.pageSize) + 1
+                        val key = (lastItem.id / state.config.pageSize) + 1
+                        key % 100  // never be greater than 100
                     }
 
                 }
@@ -51,6 +52,7 @@ class CryptoNewsRemoteMediator(
             db.withTransaction {
                 if(loadType == LoadType.REFRESH){
                     db.getCryptoNewsDao().clearAllData()
+                    db.getCryptoNewsDao().resetAutoIncrement()
                 }
                 val newsEntities = news.result.map { it.toCryptoNewsEntity() }
                 db.getCryptoNewsDao().upsertAll(newsEntities)

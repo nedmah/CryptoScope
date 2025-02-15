@@ -21,4 +21,7 @@ interface CryptoNewsDao {
     @Query("DELETE FROM cryptonewsentity")
     suspend fun clearAllData()
 
+    @Query("DELETE FROM sqlite_sequence WHERE name='cryptonewsentity'")  //for id not to increase a lot (paging logic depends on id)
+    suspend fun resetAutoIncrement()
+
 }

@@ -28,17 +28,18 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common_ui.composable.PreviewWrapper
+import com.example.common_ui.shimmerEffect
 import com.example.common_ui.theme.paddings
 import com.example.core.util.truncateText
 
 @Composable
 fun CryptoNewsItem(
-    modifier: Modifier = Modifier,
     title: String,
     source: String,
     imageUrl: String,
     date: String,
-    onClick : () -> Unit
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     ElevatedCard(modifier = modifier
         .fillMaxWidth()
@@ -71,7 +72,7 @@ fun CryptoNewsItem(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = title,style = MaterialTheme.typography.titleSmall, maxLines = 2)
+                Text(text = title, style = MaterialTheme.typography.titleSmall, maxLines = 2)
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -79,12 +80,12 @@ fun CryptoNewsItem(
                 ) {
 
 
-                        Text(
-                            modifier = modifier,
-                            text = truncateText(source,20),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    Text(
+                        modifier = modifier,
+                        text = truncateText(source, 20),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     Text(
                         text = date,
@@ -100,6 +101,55 @@ fun CryptoNewsItem(
 }
 
 @Composable
+fun CryptoNewsItemPlaceholder(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .height(128.dp)
+    ) {
+        Row(
+            modifier = modifier.fillMaxWidth().padding(MaterialTheme.paddings.medium),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            Alignment.CenterVertically
+        ) {
+
+            Box(
+                modifier = modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .shimmerEffect(),
+            )
+
+            Column(
+                modifier = modifier
+                    .fillMaxHeight()
+                    .padding(vertical = MaterialTheme.paddings.medium,),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(
+                    modifier = modifier
+                        .width(40.dp)
+                        .height(15.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .shimmerEffect()
+                )
+                Box(
+                    modifier = modifier
+                        .width(120.dp)
+                        .height(15.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .shimmerEffect()
+                )
+            }
+
+        }
+
+    }
+}
+
+@Composable
 @PreviewLightDark
 fun NewsItemPreview() {
     PreviewWrapper {
@@ -108,7 +158,7 @@ fun NewsItemPreview() {
             source = "BBC News",
             imageUrl = "https://coin-turk.com/wp-content/uploads/2024/11/bitcoin-202.jpg",
             date = "20.12.2024"
-        ){
+        ) {
 
         }
     }
