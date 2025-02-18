@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.cryptolisting.presentation
 
 import android.os.Bundle
@@ -8,12 +10,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,6 +38,7 @@ import com.example.core.util.extensions.navigateCryptoListingModelWithBundle
 import com.example.cryptolisting.presentation.composables.FilterBottomSheet
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.launch
 
 @Composable
 fun CryptoListingsScreen(
@@ -40,6 +50,8 @@ fun CryptoListingsScreen(
 
     val state = viewModel.state.collectAsState().value
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
+    val sheetState = rememberModalBottomSheetState()
+    val coroutineScope = rememberCoroutineScope()
 
     val items = state.listings.collectAsLazyPagingItems()
 
@@ -96,7 +108,7 @@ fun CryptoListingsScreen(
                     Text(text = state.error)
                 else
                     LazyColumn() {
-                        items(items.itemCount) { index ->
+                        items(items.itemCount, key = { index -> items[index]?.cryptoId ?: index }) { index ->
                             val crypto = items[index]
                             if (crypto == null) {
                                 CryptoItemPlaceholder()
@@ -121,14 +133,19 @@ fun CryptoListingsScreen(
         }
     }
 
-    FilterBottomSheet(
-        showDialog = state.isBottomDialogOpened,
-        onFilterSelected = {
-            viewModel.onEvent(CryptoListingsEvents.Filter(it))
-        },
-        onDismiss = {
-            viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss)
-        }
-    )
+    if (state.isBottomDialogOpened)
+        FilterBottomSheet(
+            onFilterSelected = {
+                viewModel.onEvent(CryptoListingsEvents.Filter(it))
+            },
+            onDismiss = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                    viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss)
+                }
+
+            },
+            sheetState = sheetState
+        )
 
 }

@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -60,7 +61,7 @@ fun CryptoSwipeableItem(
     onClick: () -> Unit
 ) {
 
-    var contextMenuWidth by remember { mutableFloatStateOf(0f) }
+    var contextMenuWidth by remember(cryptoModel.cryptoId) { mutableFloatStateOf(0f) }
     val offset = remember { Animatable(initialValue = 0f) }
     val scope = rememberCoroutineScope()
 
@@ -152,6 +153,7 @@ fun CryptoItem(
                 AsyncImage(
                     modifier = modifier.size(35.dp),
                     model = cryptoModel.icon,
+                    contentScale = ContentScale.Crop,
                     error = painterResource(id = R.drawable.ic_error_24),
                     contentDescription = null,
                 )
