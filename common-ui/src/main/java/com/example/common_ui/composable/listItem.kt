@@ -237,7 +237,7 @@ fun CryptoItemPlaceholder(
 
     Box(
         modifier = modifier
-            .height(128.dp)
+            .height(96.dp)
             .padding(vertical = MaterialTheme.paddings.extraMedium)
     ) {
 
