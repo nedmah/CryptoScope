@@ -4,8 +4,12 @@ package com.example.cryptolisting.data.repository
 import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.core.util.Resource
 import com.example.core.data.db.daos.CryptoListingsDao
+import com.example.core.data.db.entities.CryptoListingEntity
 import com.example.core.data.mappers.toCryptoListingsEntity
 import com.example.core.data.mappers.toCryptoListingsModel
 import com.example.core.data.settings.SettingsConstants
@@ -25,52 +29,64 @@ class CryptoListingRepositoryImpl @Inject constructor(
 ) : CryptoListingsRepository {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    override suspend fun getListings(
-        fetchFromNetwork: Boolean,
-        query: String
-    ): Flow<Resource<List<CryptoListingsModel>>> {
+    override suspend fun saveListings(
+        fetchFromNetwork: Boolean
+    ): Flow<Resource<Unit>> {
         return flow {
-            emit(Resource.Loading())
+            emit(Resource.Loading(true))
 
-            val currencyCode = dataStore.getString(SettingsConstants.CURRENCY) ?: "USD"
-            val currencyRate = dataStore.getDouble(SettingsConstants.CURRENCY_RATE) ?: 1.0
+            val localListings = dao.getAllListings()
 
-            val localListings = dao.searchForListings(query)
-            emit(Resource.Success(localListings.map { it.toCryptoListingsModel(currencyCode, currencyRate) }))
-
-            val dbIsEmpty = query.isBlank() || localListings.isEmpty()
-            val shouldLoadFromCache = !dbIsEmpty && !fetchFromNetwork
+            val shouldLoadFromCache = localListings.isNotEmpty() && !fetchFromNetwork
             if (shouldLoadFromCache) {
                 emit(Resource.Loading(false))
+                emit(Resource.Success(Unit))
                 return@flow
             }
 
             val remoteListings = try {
-                api.getCryptoListings(100)
+                api.getCryptoListings(300)
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Couldn't retrieve data"))
-                null
+                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
+                return@flow
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Couldn't retrieve data"))
-                null
+                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
+                return@flow
             }
-
 
             remoteListings?.let {
                 val listings = it.listings.map { item -> item.toCryptoListingsModel() }
                 dao.clearListings()
                 dao.saveCryptoListings(listings.map { item -> item.toCryptoListingsEntity() })
-                emit(
-                    Resource.Success(
-                        data = dao
-                            .searchForListings("")
-                            .map { listingItem -> listingItem.toCryptoListingsModel(currencyCode, currencyRate) })
-                )
                 emit(Resource.Loading(false))
+                emit(Resource.Success(Unit))
             }
-
         }
     }
+
+    override fun getPagedListings(
+        query: String,
+        sortOrder: String
+    ): Flow<PagingData<CryptoListingEntity>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = true),
+            pagingSourceFactory = {
+                when (sortOrder) {
+                    "id ASC" -> dao.getPagedDataByIdAsc(query)
+                    "id DESC" -> dao.getPagedDataByIdDesc(query)
+                    "price ASC" -> dao.getPagedDataByPriceAsc(query)
+                    "price DESC" -> dao.getPagedDataByPriceDesc(query)
+                    "percentage ASC" -> dao.getPagedDataByPercentageAsc(query)
+                    "percentage DESC" -> dao.getPagedDataByPercentageDesc(query)
+                    "name ASC" -> dao.getPagedDataByNameAsc(query)
+                    "name DESC" -> dao.getPagedDataByNameDesc(query)
+                    else -> dao.getPagedDataByIdAsc(query)
+                }
+            }
+        ).flow
+    }
+
+
 }

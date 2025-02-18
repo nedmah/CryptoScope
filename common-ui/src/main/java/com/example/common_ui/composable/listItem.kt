@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
@@ -41,6 +43,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common_ui.R
+import com.example.common_ui.shimmerEffect
 import com.example.common_ui.theme.paddings
 import com.example.common_ui.theme.spacers
 import com.example.core.domain.model.CryptoListingsModel
@@ -228,14 +231,83 @@ fun CryptoItemSmall(
 }
 
 @Composable
+fun CryptoItemPlaceholder(
+    modifier: Modifier = Modifier,
+) {
+
+    Box(
+        modifier = modifier
+            .height(128.dp)
+            .padding(vertical = MaterialTheme.paddings.extraMedium)
+    ) {
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.paddings.extraMedium),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row {
+                Box(
+                    modifier = modifier
+                        .size(35.dp)
+                        .clip(CircleShape)
+                        .shimmerEffect()
+                )
+
+                Column(
+                    modifier = modifier.padding(start = MaterialTheme.paddings.medium),
+                ) {
+                    Box(
+                        modifier = modifier
+                            .size(35.dp, 15.dp)
+                            .padding(bottom = MaterialTheme.paddings.extraSmall)
+                            .clip(RoundedCornerShape(4.dp))
+                            .shimmerEffect()
+                    )
+                    Box(
+                        modifier = modifier
+                            .size(45.dp, 15.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .shimmerEffect()
+                    )
+                }
+            }
+
+            Column(
+                modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
+                horizontalAlignment = Alignment.End
+            ) {
+                Box(
+                    modifier = modifier
+                        .size(55.dp, 15.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .padding(bottom = MaterialTheme.paddings.extraSmall)
+                        .shimmerEffect()
+                )
+                Box(
+                    modifier = modifier
+                        .size(80.dp, 15.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .shimmerEffect()
+                )
+            }
+        }
+
+    }
+
+}
+
+@Composable
 fun MyCoinsItem(
     modifier: Modifier = Modifier,
-    icon : String,
-    symbol : String,
-    name : String,
-    price : String,
-    percentage : String,
-    amount : String,
+    icon: String,
+    symbol: String,
+    name: String,
+    price: String,
+    percentage: String,
+    amount: String,
     sum: String,
     onClick: () -> Unit
 ) {
@@ -250,13 +322,18 @@ fun MyCoinsItem(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.paddings.extraMedium, vertical = MaterialTheme.paddings.medium),
+                .padding(
+                    horizontal = MaterialTheme.paddings.extraMedium,
+                    vertical = MaterialTheme.paddings.medium
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row {
                 AsyncImage(
-                    modifier = modifier.size(35.dp).clip(CircleShape),
+                    modifier = modifier
+                        .size(35.dp)
+                        .clip(CircleShape),
                     model = icon,
                     error = painterResource(id = R.drawable.ic_error_24),
                     contentDescription = null,
@@ -274,7 +351,10 @@ fun MyCoinsItem(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        PercentageText(percent = percentage, style = MaterialTheme.typography.bodySmall)
+                        PercentageText(
+                            percent = percentage,
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                 }
             }
@@ -300,11 +380,11 @@ fun MyCoinsItem(
 
 @Composable
 fun MyCoinsItemSmall(
-    imgUrl : String,
-    symbol : String,
-    name : String,
-    price : String,
-    percentOneDay : String,
+    imgUrl: String,
+    symbol: String,
+    name: String,
+    price: String,
+    percentOneDay: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -328,8 +408,7 @@ fun MyCoinsItemSmall(
                 AsyncImage(
                     modifier = modifier
                         .size(35.dp)
-                        .clip(CircleShape)
-                    ,
+                        .clip(CircleShape),
                     model = imgUrl,
                     error = painterResource(id = R.drawable.ic_error_24),
                     contentDescription = null,
@@ -360,13 +439,12 @@ fun MyCoinsItemSmall(
 }
 
 
-
 @Composable
 fun CryptoSwipeableItemWallet(
     modifier: Modifier = Modifier,
     cryptoModel: CryptoListingsModel,
-    amount : String,
-    sum : String,
+    amount: String,
+    sum: String,
     onAction: () -> Unit,
     onClick: () -> Unit
 ) {
@@ -393,7 +471,10 @@ fun CryptoSwipeableItemWallet(
                 modifier = modifier.background(color = MaterialTheme.colorScheme.error),
                 onClick = onAction
             ) {
-                Icon(painter = painterResource(id = R.drawable.ic_delete_24), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_delete_24),
+                    contentDescription = null
+                )
             }
         }
         Surface(
@@ -427,7 +508,12 @@ fun CryptoSwipeableItemWallet(
                     )
                 }
         ) {
-            CryptoItemWallet(cryptoModel = cryptoModel, amount = amount, sum = sum, onClick = onClick)
+            CryptoItemWallet(
+                cryptoModel = cryptoModel,
+                amount = amount,
+                sum = sum,
+                onClick = onClick
+            )
         }
     }
 }
@@ -436,8 +522,8 @@ fun CryptoSwipeableItemWallet(
 fun CryptoItemWallet(
     modifier: Modifier = Modifier,
     cryptoModel: CryptoListingsModel,
-    amount : String,
-    sum : String,
+    amount: String,
+    sum: String,
     onClick: () -> Unit
 ) {
 
@@ -492,11 +578,11 @@ fun CryptoItemWallet(
 @Composable
 fun BalanceHistoryItem(
     modifier: Modifier = Modifier,
-    balance : String,
-    date : String,
-    profit : String,
-    percent : String,
-){
+    balance: String,
+    date: String,
+    profit: String,
+    percent: String,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -528,7 +614,7 @@ fun BalanceHistoryItem(
                 text = profit,
                 style = MaterialTheme.typography.titleMedium
             )
-            PercentageText(modifier = modifier.align(Alignment.End),percent = percent)
+            PercentageText(modifier = modifier.align(Alignment.End), percent = percent)
         }
     }
 }

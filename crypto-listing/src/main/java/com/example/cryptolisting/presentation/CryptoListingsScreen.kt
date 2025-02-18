@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -18,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common_ui.composable.CryptoItem
+import com.example.common_ui.composable.CryptoItemPlaceholder
 import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.composable.CryptoSwipeableItem
 import com.example.common_ui.theme.paddings
@@ -33,9 +37,11 @@ fun CryptoListingsScreen(
     modifier: Modifier = Modifier,
     viewModel: CryptoListingViewModel = viewModel(factory = getViewModelFactory())
 ) {
+
     val state = viewModel.state.collectAsState().value
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
 
+    val items = state.listings.collectAsLazyPagingItems()
 
     Column(
         modifier = modifier
@@ -53,7 +59,9 @@ fun CryptoListingsScreen(
             CryptoSearchBar(
                 modifier = modifier.weight(1f),
                 value = state.searchQuery,
-                onValueChange = { viewModel.onEvent(CryptoListingsEvents.OnSearchQueryChange(it)) }
+                onValueChange = {
+                    viewModel.onEvent(CryptoListingsEvents.OnSearchQueryChange(it))
+                }
             )
 
             IconButton(
@@ -71,7 +79,11 @@ fun CryptoListingsScreen(
         }
 
         if (state.isLoading) {
-            CircularProgressIndicator(modifier = modifier.padding(top = MaterialTheme.paddings.large))
+            LazyColumn {
+                items(8){
+                    CryptoItemPlaceholder()
+                }
+            }
         } else {
             SwipeRefresh(
                 modifier = modifier,
@@ -80,28 +92,43 @@ fun CryptoListingsScreen(
                     viewModel.onEvent(CryptoListingsEvents.Refresh)
                 }
             ) {
-                LazyColumn() {
-                    items(count = state.cryptos.size, key = { it }) { index ->
-                        val crypto = state.cryptos[index]
-                        CryptoSwipeableItem(
-                            cryptoModel = crypto,
-                            onClick = {
-                                navigateCryptoListingModelWithBundle(crypto, navigate)
-                            },
-                            isFavourite = crypto.isFavorite,
-                            onFavouriteAdd = {
-                                viewModel.onEvent(CryptoListingsEvents.OnFavourite(crypto.cryptoId))
-                            })
+                if (state.error.isNotBlank())
+                    Text(text = state.error)
+                else
+                    LazyColumn() {
+                        items(items.itemCount) { index ->
+                            val crypto = items[index]
+                            if (crypto == null) {
+                                CryptoItemPlaceholder()
+                            } else {
+                                CryptoSwipeableItem(
+                                    cryptoModel = crypto,
+                                    isFavourite = crypto.isFavorite,
+                                    onFavouriteAdd = {
+                                        viewModel.onEvent(
+                                            CryptoListingsEvents.OnFavourite(
+                                                crypto.cryptoId
+                                            )
+                                        )
+                                    }) {
+                                    navigateCryptoListingModelWithBundle(crypto, navigate)
+                                }
+                            }
+                        }
+
                     }
-                }
             }
         }
     }
 
     FilterBottomSheet(
         showDialog = state.isBottomDialogOpened,
-        onFilterSelected = { viewModel.onEvent(CryptoListingsEvents.Filter(it)) },
-        onDismiss = { viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss) }
+        onFilterSelected = {
+            viewModel.onEvent(CryptoListingsEvents.Filter(it))
+        },
+        onDismiss = {
+            viewModel.onEvent(CryptoListingsEvents.OnFilterDismiss)
+        }
     )
 
 }

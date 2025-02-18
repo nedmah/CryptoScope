@@ -12,38 +12,93 @@ import kotlinx.coroutines.flow.Flow
 interface CryptoListingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCryptoListings(cryptoListingEntities : List<CryptoListingEntity>)
+    suspend fun saveCryptoListings(cryptoListingEntities: List<CryptoListingEntity>)
 
 
     @Query("DELETE FROM cryptolistingentity")
     suspend fun clearListings()
 
-    @Query("""
-            SELECT * 
-            FROM cryptolistingentity
-            WHERE LOWER(name) LIKE '%' || LOWER(:query) || '%' OR
-                UPPER(:query) == symbol
-        """)
-    suspend fun searchForListings(query : String) : List<CryptoListingEntity>
-
     @Query("SELECT * FROM cryptolistingentity")
-    fun pagingSource() : PagingSource<Int, CryptoListingEntity>
+    suspend fun getAllListings(): List<CryptoListingEntity>
 
 
     @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY id ASC
+""")
+    fun getPagedDataByIdAsc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY id DESC
+""")
+    fun getPagedDataByIdDesc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY price ASC
+""")
+    fun getPagedDataByPriceAsc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY price DESC
+""")
+    fun getPagedDataByPriceDesc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY percentage ASC
+""")
+    fun getPagedDataByPercentageAsc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY percentage DESC
+""")
+    fun getPagedDataByPercentageDesc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY name ASC
+""")
+    fun getPagedDataByNameAsc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("""
+    SELECT * FROM cryptolistingentity
+    WHERE name LIKE '%' || :query || '%' 
+    ORDER BY name DESC
+""")
+    fun getPagedDataByNameDesc(query: String): PagingSource<Int, CryptoListingEntity>
+
+    @Query("SELECT COUNT(*) FROM cryptolistingentity WHERE name LIKE '%' || :query || '%'")
+    suspend fun getTotalCount(query: String): Int
+
+    @Query(
+        """
         SELECT * 
         FROM CryptoListingEntity 
         WHERE cryptoId IN (SELECT crypto FROM FavouriteEntity)
-    """)
+    """
+    )
     fun getCryptoListingsInFavorites(): Flow<List<CryptoListingEntity>>
 
 
-    @Query("""
+    @Query(
+        """
         SELECT * 
         FROM CryptoListingEntity 
         WHERE cryptoId = :cryptoId
-    """)
-    suspend fun getCryptoListingById(cryptoId : String): CryptoListingEntity?
+    """
+    )
+    suspend fun getCryptoListingById(cryptoId: String): CryptoListingEntity?
 
     // Запрос для получения всех имен в виде списка строк
     @Query("SELECT name FROM CryptoListingEntity")
