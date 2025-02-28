@@ -10,12 +10,22 @@
     <string name="market">Нарық</string>
     <string name="settings">Баптаулар</string>
 
+    <string name="delete">Жою кілт</string>
+    <string name="error_api_key">жарамсыз кілт пішімі</string>
+
     <string name="comparison">Салыстыру</string>
     <string name="accounts">Менің есепшоттарым</string>
     <string name="theme">Тақырып</string>
     <string name="currency">Валюта</string>
     <string name="language">Тіл</string>
+    <string name="add_api">кілт қосыңыз</string>
     <string name="info">Қолданба туралы</string>
+
+    <string name="add_api_info">Бағдарламамен жұмыс істеу үшін API кілтін қосуға,
+        қайта жазуға немесе жоюға болады. Оны жасау үшін openapi.coinstats.app/ өтіп, тіркеліп,
+        сізге берілген кілтті көшіріп алыңыз.
+    </string>
+    <string name="key">кілт</string>
 
     <string name="select">Таңдау</string>
     <string name="compare">Салыстыру</string>

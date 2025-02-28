@@ -21,6 +21,7 @@ fun CryptoDialogBox(
     onConfirm : () -> Unit,
     onCancel : () -> Unit,
     modifier: Modifier = Modifier,
+    enabledButton : Boolean = true,
     confirmButtonText: String = "Confirm",
     cancelButtonText: String = "Cancel"
 ){
@@ -38,6 +39,7 @@ fun CryptoDialogBox(
             TextButton(
                 onClick = onConfirm,
                 shape = RoundedCornerShape(4.dp),
+                enabled = enabledButton,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.extraColor.positive,
                     contentColor = Color.White

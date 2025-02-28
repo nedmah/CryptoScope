@@ -9,4 +9,5 @@ object SettingsConstants {
     const val SELECTED_WALLET_ADDRESS = "selected_wallet_address"
     const val SELECTED_BLOCKCHAIN = "selected_blockchain"
     const val LANGUAGE = "language"
+    const val API_KEY = "api_key"
 }

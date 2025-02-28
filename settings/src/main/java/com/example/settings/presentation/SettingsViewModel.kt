@@ -1,37 +1,45 @@
 package com.example.settings.presentation
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.data.settings.SettingsConstants
 import com.example.core.domain.settings.SettingsDataStore
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private var _settingsState = MutableStateFlow(SettingsScreenState())
     val settingsState = _settingsState.asStateFlow()
 
+    private val _apiKey = MutableStateFlow("") // Приватный для контроля
+    val apiKey = _apiKey.asStateFlow()
+
     init {
-        // TODO: сделать в инит блоке получение выбранной валюты и отображать её.
+        _apiKey.value = getApiKey() ?: ""
         loadSettingsFlow()
     }
 
 
     fun onEvent(events: SettingsEvents) {
         when (events) {
-            SettingsEvents.AddAccount -> TODO()
-            SettingsEvents.ChangeCurrency -> TODO()
-            SettingsEvents.ChangeLanguage -> TODO()
-            SettingsEvents.ChangeMainAccount -> TODO()
             SettingsEvents.ChangeTheme -> changeTheme()
+            is SettingsEvents.AddApiKey -> {
+                if (isValidApiKey(events.api))
+                    saveApiKey(events.api)
+                else {
+                    _apiKey.value = "Error"
+                }
+            }
+            SettingsEvents.DeleteApiKey -> deleteApiKey()
         }
     }
 
@@ -66,9 +74,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun getApiKey(): String? {
+        return sharedPreferences.getString(SettingsConstants.API_KEY, null)
+    }
 
-    private fun changeCurrency() {
+    private fun saveApiKey(newKey: String) {
+        sharedPreferences.edit().putString(SettingsConstants.API_KEY, newKey).apply()
+        _apiKey.value = newKey
+    }
 
+    private fun deleteApiKey() {
+        sharedPreferences.edit().remove(SettingsConstants.API_KEY).apply()
+        _apiKey.value = ""
     }
 
     private fun updateItemsWithTitles(isDarkTheme: Boolean, currency: String, language: String): List<SettingsItem> {
@@ -93,5 +110,11 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun isValidApiKey(key: String): Boolean {
+        if (key.isBlank()) return false
 
+        val base64Pattern = "^[A-Za-z0-9+/]*={0,2}$".toRegex()
+        return key.matches(base64Pattern) &&
+                key.length >= 40
+    }
 }

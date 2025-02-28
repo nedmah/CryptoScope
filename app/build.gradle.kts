@@ -31,6 +31,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+        }
+        debug {
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
         }
     }
     compileOptions {
@@ -42,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
@@ -100,4 +105,27 @@ dependencies {
     implementation (libs.logging.interceptor)
 
     implementation(libs.compose.charts)
+}
+
+
+tasks.register<Copy>("moveDebugApk") {
+    from(file("$projectDir/build/outputs/apk/debug/app-debug.apk"))
+    into(file("$rootDir"))
+    rename("app-debug.apk", "CryptoScope-debug.apk")
+    doFirst {
+        val targetFile = file("$rootDir/CryptoScope-debug.apk")
+        if (targetFile.exists()) {
+            targetFile.delete()
+        }
+    }
+    doNotTrackState("Avoid file locking issues")
+}
+
+afterEvaluate {
+    tasks.named("assembleDebug") {
+        finalizedBy(tasks.named("moveDebugApk"))
+    }
+    tasks.named("createDebugApkListingFileRedirect") {
+        dependsOn(tasks.named("moveDebugApk"))
+    }
 }

@@ -22,6 +22,10 @@ data class SettingsScreenState(
             com.example.common_ui.R.drawable.ic_lightmode_24
         ),
         SettingsItem(
+            com.example.common_ui.R.string.add_api,
+            com.example.common_ui.R.drawable.ic_key_24,
+        ),
+        SettingsItem(
             com.example.common_ui.R.string.currency,
             route = Routes.CryptoCurrencyScreen.name,
             title = "usd"
@@ -40,6 +44,5 @@ data class SettingsScreenState(
 
     val isDarkTheme: Boolean? = true,
     val currency: String? = "usd",
-    val language: String? = "ru",
-
+    val language: String? = "ru"
 )

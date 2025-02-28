@@ -15,8 +15,9 @@ import com.example.cryptoscope.di.viewmodel.MultiViewModelFactory
 import com.example.cryptoscope.di.viewmodel.ViewModelFactoryModule
 import com.example.cryptoscope.worker.CurrencyUpdateWorker
 import com.example.di.SettingsModule
-import com.example.di.db.DataStoreModule
-import com.example.di.db.DatabaseModule
+import com.example.di.local_data.DataStoreModule
+import com.example.di.local_data.DatabaseModule
+import com.example.di.local_data.PreferencesModule
 import com.example.di.network.NetworkModule
 import com.example.news.di.NewsModule
 import com.example.wallet.di.WalletModule
@@ -72,6 +73,7 @@ class CryptoScopeApplication : Application() {
         NewsModule::class,
         ViewModelFactoryModule::class,
         DataStoreModule::class,
+        PreferencesModule::class,
         SettingsModule::class
     ]
 )

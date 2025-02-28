@@ -1,6 +1,7 @@
 package com.example.di.network
 
 import android.app.Application
+import android.content.SharedPreferences
 import com.example.core.data.network.Constants
 import dagger.Module
 import dagger.Provides
@@ -13,8 +14,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClientProvider(app: Application): OkHttpClientProvider {
-        return OkHttpClientProvider(app)
+    fun provideOkHttpClientProvider(app: Application, sharedPreferences: SharedPreferences): OkHttpClientProvider {
+        return OkHttpClientProvider(app, sharedPreferences)
     }
 
     @Provides

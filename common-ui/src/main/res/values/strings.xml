@@ -9,13 +9,22 @@
     <string name="wallet">Кошелёк</string>
     <string name="market">Рынок</string>
     <string name="settings">Настройки</string>
+    <string name="delete">Удалить ключ</string>
 
     <string name="comparison">Сравнение</string>
     <string name="accounts">Мои счета</string>
     <string name="theme">Тема</string>
     <string name="currency">Валюта</string>
     <string name="language">Язык</string>
+    <string name="add_api">Добавить ключ</string>
     <string name="info">О приложении</string>
+
+    <string name="add_api_info">
+        Вы можете добавить, перезаписать или удалить ваш апи-ключ для работы с приложением.
+        Чтобы создать его, перейдите на openapi.coinstats.app/, зарегистрируйтесь и скопируйте выданный вам ключ.
+    </string>
+    <string name="key">Ключ</string>
+    <string name="error_api_key">Неверный формат ключа</string>
 
     <string name="select">Выбрать</string>
     <string name="compare">Сравнить</string>

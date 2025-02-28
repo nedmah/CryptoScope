@@ -33,7 +33,6 @@ class CryptoListingViewModel @Inject constructor(
     init {
         loadAndSaveCryptoListings()
         loadListings()
-//        updateCryptoListFlow()
     }
 
     fun onEvent(events: CryptoListingsEvents) {

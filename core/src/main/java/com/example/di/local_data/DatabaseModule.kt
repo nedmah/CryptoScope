@@ -1,4 +1,4 @@
-package com.example.di.db
+package com.example.di.local_data
 
 import android.app.Application
 import androidx.room.Room
