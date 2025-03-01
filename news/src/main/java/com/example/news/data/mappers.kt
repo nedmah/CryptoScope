@@ -24,7 +24,7 @@ fun CryptoNewsDataDto.toCryptoNewsEntity() : CryptoNewsEntity{
 }
 
 fun CryptoNewsEntity.toCryptoNewsModel() : CryptoNewsModel{
-    val formattedDate = formatTimestamp(date, milli = false)
+    val formattedDate = formatTimestamp(date)
     val tags = tags.split(" ").filter { it.isNotBlank() }
     val coins = relatedCoins.split(" ").filter { it.isNotBlank() }
     return CryptoNewsModel(

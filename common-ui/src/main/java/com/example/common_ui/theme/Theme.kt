@@ -170,47 +170,48 @@ val MaterialTheme.extraColor: CryptoColor
 
 
 @Composable
-fun ColorScheme.switch(): ColorScheme = copy(
-    primary = animateColor(primary),
-    primaryContainer = animateColor(primaryContainer),
-    onPrimary = animateColor(onPrimary),
-    secondary = animateColor(secondary),
-    secondaryContainer = animateColor(secondaryContainer),
-    onSecondary = animateColor(onSecondary),
-    background = animateColor(background),
-    onBackground = animateColor(onBackground),
-    surface = animateColor(surface),
-    onTertiary = animateColor(onTertiary),
-    surfaceVariant = animateColor(surfaceVariant),
-    onSurfaceVariant = animateColor(onSurfaceVariant),
-    outline = animateColor(outline),
-    onSurface = animateColor(onSurface),
-    error = animateColor(error),
-    outlineVariant = animateColor(outlineVariant),
-    onError = animateColor(onError)
+fun ColorScheme.switch(darkTheme: Boolean): ColorScheme = copy(
+    primary = animateColor(primary, darkTheme),
+    primaryContainer = animateColor(primaryContainer, darkTheme),
+    onPrimary = animateColor(onPrimary, darkTheme),
+    secondary = animateColor(secondary, darkTheme),
+    secondaryContainer = animateColor(secondaryContainer, darkTheme),
+    onSecondary = animateColor(onSecondary, darkTheme),
+    background = animateColor(background, darkTheme),
+    onBackground = animateColor(onBackground, darkTheme),
+    surface = animateColor(surface, darkTheme),
+    onTertiary = animateColor(onTertiary, darkTheme),
+    surfaceVariant = animateColor(surfaceVariant, darkTheme),
+    onSurfaceVariant = animateColor(onSurfaceVariant, darkTheme),
+    outline = animateColor(outline, darkTheme),
+    onSurface = animateColor(onSurface, darkTheme),
+    error = animateColor(error, darkTheme),
+    outlineVariant = animateColor(outlineVariant, darkTheme),
+    onError = animateColor(onError, darkTheme)
 )
 
 @Composable
-fun CryptoColor.switch(): CryptoColor = copy(
-    positive = animateColor(positive),
-    negative = animateColor(negative),
-    chart = animateColor(chart),
-    secondChart = animateColor(secondChart),
-    wallet = animateColor(wallet),
-    chartGradient = animateColor(chartGradient),
-    secondGradient = animateColor(secondGradient),
-    percentageCard = animateColor(percentageCard),
-    navIconColor = animateColor(navIconColor),
-    hyperlink = animateColor(hyperlink)
+fun CryptoColor.switch(darkTheme: Boolean): CryptoColor = copy(
+    positive = animateColor(positive, darkTheme),
+    negative = animateColor(negative, darkTheme),
+    chart = animateColor(chart, darkTheme),
+    secondChart = animateColor(secondChart, darkTheme),
+    wallet = animateColor(wallet, darkTheme),
+    chartGradient = animateColor(chartGradient, darkTheme),
+    secondGradient = animateColor(secondGradient, darkTheme),
+    percentageCard = animateColor(percentageCard, darkTheme),
+    navIconColor = animateColor(navIconColor, darkTheme),
+    hyperlink = animateColor(hyperlink, darkTheme)
 )
 
 
 
 @Composable
-fun animateColor(targetValue: Color): Color {
+fun animateColor(targetValue: Color, darkTheme: Boolean): Color {
     return animateColorAsState(
         targetValue = targetValue,
-        animationSpec = spring(stiffness = Spring.StiffnessLow)
+        animationSpec = spring(stiffness = 6000f),
+        label = "colorAnimation_$darkTheme" // Уникальный ключ для анимации
     ).value
 }
 
@@ -221,17 +222,20 @@ fun CryptoScopeTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    val targetColorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColors.switch()
-        else -> LightColors.switch()
+        darkTheme -> DarkColors
+        else -> LightColors
     }
 
-    val extraColors = if (darkTheme) darkExtraColor.switch() else lightExtraColor.switch()
+    val targetExtraColors = if (darkTheme) darkExtraColor else lightExtraColor
+
+    val colorScheme = targetColorScheme.switch(darkTheme)
+    val extraColors = targetExtraColors.switch(darkTheme)
 
     CompositionLocalProvider(
         LocalPaddings provides Paddings,

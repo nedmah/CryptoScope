@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common_ui.BitcoinLoadingIndicator
 import com.example.common_ui.composable.BalanceHistoryItem
 import com.example.common_ui.composable.PercentageTextCard
 import com.example.common_ui.composable.chart.CustomLineChart
@@ -112,7 +113,7 @@ fun WalletHistoryScreen(
         )
 
 
-        if (state.loading) CircularProgressIndicator()
+        if (state.loading) BitcoinLoadingIndicator()
         else {
             state.error?.let {
                 Text(
@@ -139,7 +140,7 @@ fun WalletHistoryScreen(
 
                 when (history.loadState.append) {
                     is LoadState.Error -> {}
-                    LoadState.Loading -> item { CircularProgressIndicator(modifier = Modifier.fillMaxWidth()) }
+                    LoadState.Loading -> item { BitcoinLoadingIndicator(modifier = Modifier.fillMaxWidth()) }
                     is LoadState.NotLoading -> {}
                 }
             }

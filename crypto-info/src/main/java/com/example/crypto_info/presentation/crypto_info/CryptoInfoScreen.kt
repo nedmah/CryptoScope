@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.common_ui.BitcoinLoadingIndicator
 import com.example.common_ui.composable.PercentageTextCard
 import com.example.common_ui.composable.chart.CustomLineChart
 import com.example.common_ui.theme.model.Paddings
@@ -90,7 +91,7 @@ fun CryptoInfoScreen(
 
         PercentageTextCard(percent = state.percentage)
 
-        if (state.loading || chartDataState.points.isEmpty()) CircularProgressIndicator(
+        if (state.loading || chartDataState.points.isEmpty()) BitcoinLoadingIndicator(
             modifier.padding(
                 top = MaterialTheme.paddings.medium
             )

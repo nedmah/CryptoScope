@@ -37,7 +37,7 @@ class WalletHistoryPagingSource (
                 val percent = if (previousPrice != 0.0) (profit / previousPrice) * 100 else 0.0
 
                 BalanceHistoryModel(
-                    time = formatTimestamp(entry.timestamp, false),
+                    time = formatTimestamp(entry.timestamp),
                     price = formatPriceWithCurrency(entry.price, currencyCode, currencyRate),
                     profit = formatPriceWithCurrency(profit,currencyCode, currencyRate),
                     percent = "%.2f".format(percent)

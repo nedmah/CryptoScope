@@ -15,6 +15,7 @@ import com.example.core.domain.settings.SettingsDataStore
 import com.example.core.util.Resource
 import com.example.core.util.formatPriceString
 import com.example.core.util.formatPriceWithCurrency
+import com.example.core.util.mapExceptionToMessage
 import com.example.wallet.data.local.data_source.WalletHistoryPagingSource
 import com.example.wallet.domain.model.MyCoinsModel
 import com.example.wallet.data.network.WalletApi
@@ -80,12 +81,8 @@ class WalletRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 emit(Resource.Success(data = myCoins.map { it.toMyCoinsModel(currencyCode, currencyRate) }))
 
-            } catch (e: retrofit2.HttpException) {
-                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
-            } catch (e: NetworkException) {
-                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
-            } catch (e: SocketTimeoutException) {
-                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
+            } catch (e: Exception) {
+                emit(Resource.Error(message = mapExceptionToMessage(e)))
             }
 
         }

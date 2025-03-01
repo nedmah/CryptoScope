@@ -59,9 +59,7 @@ class CryptoNewsRemoteMediator(
 
             MediatorResult.Success(news.result.isEmpty())
 
-        } catch (e : IOException){
-            MediatorResult.Error(e)
-        } catch (e : HttpException){
+        } catch (e : Exception){
             MediatorResult.Error(e)
         }
     }

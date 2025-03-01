@@ -65,4 +65,8 @@
     <string name="english">Ағылшын</string>
     <string name="kazakh">Қазақ</string>
 
+    <string name="email">Пошта: %1$s</string>
+    <string name="github">Github: %1$s</string>
+    <string name="version">Нұсқа: %1$s</string>
+
 </resources>

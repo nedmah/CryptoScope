@@ -10,6 +10,7 @@ import com.example.core.data.db.daos.AccountsDao
 import com.example.core.data.db.daos.BlockchainsDao
 import com.example.core.data.db.daos.MyCoinsDao
 import com.example.core.util.Resource
+import com.example.core.util.mapExceptionToMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -39,10 +40,8 @@ class AccountsRepositoryImpl @Inject constructor(
                 val data = remoteData.map { it.toBlockchainModel() }
                 return Resource.Success(data = data)
             }
-        } catch (e : IOException){
-            return Resource.Error(message = e.message ?: "io exception")
-        } catch (e: retrofit2.HttpException) {
-            return Resource.Error(message = e.message ?: "Couldn't retrieve data")
+        } catch (e : Exception){
+            return Resource.Error(message = mapExceptionToMessage(e))
         }
 
     }

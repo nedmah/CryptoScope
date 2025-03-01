@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common_ui.BitcoinLoadingIndicator
 import com.example.common_ui.composable.CryptoDialogBox
 import com.example.common_ui.composable.chart.CompareLineCharts
 import com.example.common_ui.theme.paddings
@@ -70,7 +71,7 @@ fun CryptoComparisonScreen(
             iconTwo = state.image2Url
         )
 
-        if (state.loading) CircularProgressIndicator()
+        if (state.loading) BitcoinLoadingIndicator()
         else if (!state.errorChart.isNullOrBlank()) Text(text = state.errorChart)
         else {
             if (state.cryptoChart1.points.isNotEmpty() || state.cryptoChart2.points.isNotEmpty())

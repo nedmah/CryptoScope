@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.common_ui.BitcoinLoadingIndicator
 import com.example.common_ui.composable.CryptoItem
 import com.example.common_ui.composable.MyCoinsItemSmall
 import com.example.common_ui.composable.WalletCard
@@ -120,7 +121,7 @@ fun CryptoWalletScreen(
         }
 
         if (state.myCoinsLoading) {
-            CircularProgressIndicator()
+            BitcoinLoadingIndicator()
         } else {
             state.myCoinsError?.let {
                 Text(

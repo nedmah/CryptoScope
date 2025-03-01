@@ -16,6 +16,7 @@ import com.example.core.data.settings.SettingsConstants
 import com.example.cryptolisting.data.remote.CryptoListingsApi
 import com.example.core.domain.model.CryptoListingsModel
 import com.example.core.domain.settings.SettingsDataStore
+import com.example.core.util.mapExceptionToMessage
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -46,13 +47,9 @@ class CryptoListingRepositoryImpl @Inject constructor(
 
             val remoteListings = try {
                 api.getCryptoListings(300)
-            } catch (e: HttpException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
-                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
-                return@flow
-            } catch (e: IOException) {
-                e.printStackTrace()
-                emit(Resource.Error(message = e.message ?: "Couldn't retrieve data"))
+                emit(Resource.Error(message = mapExceptionToMessage(e)))
                 return@flow
             }
 

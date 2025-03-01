@@ -23,6 +23,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.about.AboutScreen
 import com.example.accounts.presentation.AccountsScreen
 import com.example.common_ui.R
 import com.example.common_ui.composable.CryptoBasicScaffold
@@ -66,13 +67,13 @@ class MainActivity : ComponentActivity() {
 
         appComponent.inject(this)
 
-
         enableEdgeToEdge()
         setContent {
 
             CoroutineScope(Dispatchers.IO).launch {
                 LocaleHelper.initializeLocale(viewModel.settingsDataStore, this@MainActivity)
             }
+
             val isDarkTheme by viewModel.themeFlow.collectAsState(initial = true)
 
             if (isDarkTheme != null) {
@@ -248,6 +249,9 @@ private fun CryptoNavGraph(
             }
 
             composable(com.example.settings.navigation.Routes.CryptoAboutScreen.name) {
+                AboutScreen(
+                    onBack = { navController.navigateUp() }
+                )
             }
         }
 

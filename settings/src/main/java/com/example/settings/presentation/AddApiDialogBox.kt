@@ -88,7 +88,7 @@ fun AnnotatedTitle(
         val fullText = stringResource(id = com.example.common_ui.R.string.add_api_info)
         append(fullText)
 
-        val siteWord = "openapi.coinstats.app/"
+        val siteWord = "openapi.coinstats.app"
         val startIndex = fullText.indexOf(siteWord)
         val endIndex = if (startIndex >= 0) startIndex + siteWord.length else -1
 
@@ -103,7 +103,7 @@ fun AnnotatedTitle(
             )
             addStringAnnotation(
                 tag = "URL",
-                annotation = "https://openapi.coinstats.app/",
+                annotation = "https://openapi.coinstats.app",
                 start = startIndex,
                 end = endIndex
             )

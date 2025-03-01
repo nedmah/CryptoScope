@@ -143,7 +143,8 @@ class CryptoComparisonViewModel @Inject constructor(
                                 ?: _state.value.cryptoChart1,
                             cryptoChart2 = chartData2?.let { LineChartData(it) }
                                 ?: _state.value.cryptoChart2,
-                            loading = false
+                            loading = false,
+                            errorChart = null
                         )
 
                     }

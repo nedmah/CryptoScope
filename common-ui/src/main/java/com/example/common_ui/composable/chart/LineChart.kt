@@ -122,7 +122,7 @@ internal fun CryptoLineChart(
                         )
                         selectedValue.value = formatPriceString(tappedPoint.value.toString())
                         val date = tappedPoint.label.toLongOrNull() ?: 0L
-                        selectedDate.value = formatTimestamp(date, milli = tappedPoint.label.length > 11)
+                        selectedDate.value = formatTimestamp(date)
                     } else {
                         selectedPoint.value = null
                         selectedValue.value = null
@@ -331,7 +331,7 @@ internal fun CryptoLineChartsComparison(
                         )
                         selectedValue.value = formatPriceString(closestPoint!!.value.toString())
                         val date = closestPoint!!.label.toLongOrNull() ?: 0L
-                        selectedDate.value = formatTimestamp(date, milli = true)
+                        selectedDate.value = formatTimestamp(date)
                     } else {
                         selectedPoint.value = null
                         selectedValue.value = null

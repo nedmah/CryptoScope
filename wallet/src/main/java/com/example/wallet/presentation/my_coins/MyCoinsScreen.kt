@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common_ui.BitcoinLoadingIndicator
 import com.example.common_ui.composable.MyCoinsItem
 import com.example.common_ui.theme.paddings
 
@@ -63,7 +64,7 @@ fun MyCoinsScreen(
             style = MaterialTheme.typography.headlineSmall
         )
 
-        if (state.isLoading) CircularProgressIndicator()
+        if (state.isLoading) BitcoinLoadingIndicator()
         else if (state.error.isNotBlank()) Text(text = state.error)
         else
             LazyColumn {

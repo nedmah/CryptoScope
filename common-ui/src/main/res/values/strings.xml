@@ -64,4 +64,9 @@
     <string name="english">английский</string>
     <string name="kazakh">казахский</string>
 
+    <string name="email">Почта: %1$s</string>
+    <string name="github">Github: %1$s</string>
+    <string name="version">Версия: %1$s</string>
+
+
 </resources>

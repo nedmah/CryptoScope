@@ -11,3 +11,4 @@ sealed class Resource<T>
     class Success<T>(data: T) : Resource<T>(data)
 
 }
+
