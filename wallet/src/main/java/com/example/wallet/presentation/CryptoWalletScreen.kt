@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,21 +44,23 @@ import com.example.common_ui.theme.extraColor
 import com.example.common_ui.theme.paddings
 import com.example.common_ui.theme.spacers
 import com.example.core.util.extensions.navigateCryptoListingModelWithBundle
-import com.example.core.util.formatPriceString
 import com.example.core.util.truncateMiddleText
 import com.example.wallet.R
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CryptoWalletScreen(
     getViewModelFactory: () -> ViewModelProvider.Factory,
     navigateWithBundle: (Bundle) -> Unit,
-    navigateToMyCoins : () -> Unit,
-    navigateToWalletHistory : () -> Unit,
+    navigateToMyCoins: () -> Unit,
+    navigateToWalletHistory: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CryptoWalletViewModel = viewModel(factory = getViewModelFactory()),
 ) {
 
     val state = viewModel.state.collectAsState().value
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.myCoinsLoading)
 
     Column(
         modifier = modifier
@@ -68,85 +69,95 @@ fun CryptoWalletScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        WalletHeader(
+        SwipeRefresh(
             modifier = modifier,
-            address = state.currentAddress,
-            blockchain = state.currentBlockchain,
-            imgUrl = state.currentBlockchainImage
-        )
-
-        Text(
-            modifier = modifier.padding(
-                top = MaterialTheme.paddings.large,
-                bottom = MaterialTheme.paddings.medium
-            ),
-            text = stringResource(id = com.example.common_ui.R.string.wallet),
-            style = MaterialTheme.typography.headlineSmall
-        )
-
-        WalletCard(
-            balance = state.wallet.balance,
-            profit = state.wallet.profit,
-            percentage = state.wallet.percentage
+            state = swipeRefreshState,
+            onRefresh = {
+                viewModel.onEvent(WalletEvents.onRefresh)
+            }
         ) {
-            navigateToWalletHistory()
-        }
 
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(top = MaterialTheme.paddings.extraLarge),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = stringResource(id = com.example.common_ui.R.string.my_coins), style = MaterialTheme.typography.bodyMedium)
+            WalletHeader(
+                modifier = modifier,
+                address = state.currentAddress,
+                blockchain = state.currentBlockchain,
+                imgUrl = state.currentBlockchainImage
+            )
+
+            Text(
+                modifier = modifier.padding(
+                    top = MaterialTheme.paddings.large,
+                    bottom = MaterialTheme.paddings.medium
+                ),
+                text = stringResource(id = com.example.common_ui.R.string.wallet),
+                style = MaterialTheme.typography.headlineSmall
+            )
+
+            WalletCard(
+                balance = state.wallet.balance,
+                profit = state.wallet.profit,
+                percentage = state.wallet.percentage
+            ) {
+                navigateToWalletHistory()
+            }
+
             Row(
-                modifier = modifier.clickable {
-                    navigateToMyCoins()
-                },
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = MaterialTheme.paddings.extraLarge),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = modifier.padding(horizontal = MaterialTheme.paddings.small),
-                    text = stringResource(id = com.example.common_ui.R.string.open),
-                    color = MaterialTheme.extraColor.chart,
+                    text = stringResource(id = com.example.common_ui.R.string.my_coins),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Icon(
-                    painter = painterResource(id = com.example.common_ui.R.drawable.arrow_right),
-                    tint = MaterialTheme.extraColor.chart,
-                    contentDescription = null
-                )
+                Row(
+                    modifier = modifier.clickable {
+                        navigateToMyCoins()
+                    },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = modifier.padding(horizontal = MaterialTheme.paddings.small),
+                        text = stringResource(id = com.example.common_ui.R.string.open),
+                        color = MaterialTheme.extraColor.chart,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Icon(
+                        painter = painterResource(id = com.example.common_ui.R.drawable.arrow_right),
+                        tint = MaterialTheme.extraColor.chart,
+                        contentDescription = null
+                    )
+                }
             }
-        }
 
-        if (state.myCoinsLoading) {
-            BitcoinLoadingIndicator()
-        } else {
-            state.myCoinsError?.let {
-                Text(
-                    modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } ?:
-            LazyRow {
-                items(state.myCoins.size) { index ->
-                    val crypto = state.myCoins[index]
-                    MyCoinsItemSmall(
-                        modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraSmall),
-                        imgUrl = crypto.imgUrl,
-                        symbol = crypto.symbol,
-                        name = crypto.name,
-                        price = crypto.price.toString(),
-                        percentOneDay = crypto.percentOneDay.toString()
-                    ) {
+            if (state.myCoinsLoading) {
+                BitcoinLoadingIndicator()
+            } else {
+                state.myCoinsError?.let {
+                    Text(
+                        modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                } ?: LazyRow {
+                    items(state.myCoins.size) { index ->
+                        val crypto = state.myCoins[index]
+                        MyCoinsItemSmall(
+                            modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraSmall),
+                            imgUrl = crypto.imgUrl,
+                            symbol = crypto.symbol,
+                            name = crypto.name,
+                            price = crypto.price,
+                            percentOneDay = crypto.percentOneDay.toString()
+                        ) {
 
+                        }
                     }
                 }
             }
         }
-
 
         Text(
             modifier = modifier
@@ -176,8 +187,7 @@ fun CryptoWalletScreen(
                 }
             }
             Spacer(modifier = modifier.height(MaterialTheme.spacers.xxLarge))
-        }
-        else
+        } else
             Text(
                 modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
                 text = stringResource(id = com.example.common_ui.R.string.coins_missing),
@@ -209,18 +219,22 @@ private fun WalletHeader(
             Row(
                 modifier = modifier.clickable {
                     clipboardManager.setText(AnnotatedString(it))
-                    Toast.makeText(context, "Скопировано", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(com.example.common_ui.R.string.copied),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = truncateMiddleText(it,35),
+                    text = truncateMiddleText(it, 35),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacers.extraSmall))
                 Icon(
-                    modifier = modifier.size(12.dp,14.dp),
+                    modifier = modifier.size(12.dp, 14.dp),
                     painter = painterResource(id = com.example.common_ui.R.drawable.ic_copy_24),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     contentDescription = null

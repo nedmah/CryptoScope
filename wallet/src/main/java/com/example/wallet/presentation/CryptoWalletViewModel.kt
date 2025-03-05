@@ -33,6 +33,12 @@ class CryptoWalletViewModel @Inject constructor(
         fetchMyCoins()
     }
 
+    fun onEvent(event: WalletEvents) {
+        when (event) {
+            WalletEvents.onRefresh -> fetchMyCoins()
+        }
+    }
+
 
     private fun fetchMyCoins() {
         viewModelScope.launch() {

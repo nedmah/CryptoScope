@@ -53,6 +53,7 @@
     <string name="open">Open</string>
     <string name="favorite_coins">Favorite Coins</string>
     <string name="coins_missing">Coins Missing</string>
+    <string name="Copied">Copied</string>
 
     <string name="balance">Balance</string>
     <string name="profit">Profit</string>

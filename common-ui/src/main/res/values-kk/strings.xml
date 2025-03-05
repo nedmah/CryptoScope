@@ -56,6 +56,7 @@
     <string name="balance">Баланс</string>
     <string name="profit">Бүгінгі пайда</string>
     <string name="balance_history">Баланс тарихы</string>
+    <string name="copied">Көшірілді</string>
 
     <string name="select_language">Тілді таңдау</string>
     <string name="locale_russian">ru</string>

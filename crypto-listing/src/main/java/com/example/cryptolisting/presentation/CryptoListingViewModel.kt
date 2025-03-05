@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.core.data.mappers.toCryptoListingsModel
+import com.example.core.data.settings.SettingsConstants
 import com.example.cryptolisting.domain.repository.CryptoListingsRepository
 import com.example.core.domain.repository.FavouritesRepository
+import com.example.core.domain.settings.SettingsDataStore
 import com.example.core.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class CryptoListingViewModel @Inject constructor(
     private val listingsRepository: CryptoListingsRepository,
     private val favouritesRepository: FavouritesRepository,
+    private val settingsDataStore: SettingsDataStore
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(CryptoListingsState())
@@ -56,7 +59,10 @@ class CryptoListingViewModel @Inject constructor(
                 loadListings()
             }
 
-            CryptoListingsEvents.Refresh -> loadAndSaveCryptoListings(true)
+            CryptoListingsEvents.Refresh -> {
+                loadAndSaveCryptoListings(true)
+                loadListings()
+            }
         }
     }
 
@@ -64,15 +70,19 @@ class CryptoListingViewModel @Inject constructor(
 
         pagingJob?.cancel()
 
+
         pagingJob = viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             delay(500L)
+
+            val currencyCode = settingsDataStore.getString(SettingsConstants.CURRENCY) ?: "USD"
+            val currencyRate = settingsDataStore.getDouble(SettingsConstants.CURRENCY_RATE) ?: 1.0
 
             val listingsFlow = listingsRepository.getPagedListings(
                 query = _state.value.searchQuery,
                 sortOrder = _state.value.sortOrder.value
             )
-                .map { it.map { entity -> entity.toCryptoListingsModel("usd", 1.0) } }
+                .map { it.map { entity -> entity.toCryptoListingsModel(currencyCode, currencyRate) } }
                 .cachedIn(viewModelScope)
 
             val favoritesFlow = favouritesRepository.getFavouritesFlow()
@@ -102,9 +112,10 @@ class CryptoListingViewModel @Inject constructor(
 
     private fun toggleFavorite(cryptoId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val isFavourite = favouritesRepository.isFavourite(cryptoId)
-            if (isFavourite) favouritesRepository.removeFavourite(cryptoId)
-            else favouritesRepository.addFavourite(cryptoId)
+            favouritesRepository.run {
+                if (isFavourite(cryptoId)) removeFavourite(cryptoId)
+                else addFavourite(cryptoId)
+            }
         }
     }
 

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,18 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.common_ui.composable.CryptoItem
 import com.example.common_ui.composable.CryptoItemPlaceholder
 import com.example.common_ui.composable.CryptoSearchBar
 import com.example.common_ui.composable.CryptoSwipeableItem
@@ -107,7 +101,7 @@ fun CryptoListingsScreen(
                 if (state.error.isNotBlank())
                     Text(text = state.error)
                 else
-                    LazyColumn() {
+                    LazyColumn {
                         items(items.itemCount, key = { index -> items[index]?.cryptoId ?: index }) { index ->
                             val crypto = items[index]
                             if (crypto == null) {

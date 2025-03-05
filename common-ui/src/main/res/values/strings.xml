@@ -55,6 +55,8 @@
     <string name="balance">Баланс</string>
     <string name="profit">Прибыль за сегодня</string>
     <string name="balance_history">История баланса</string>
+    <string name="copied">Скопировано</string>
+
 
     <string name="select_language">Выбрать язык</string>
     <string name="locale_russian">ru</string>
