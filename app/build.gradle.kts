@@ -108,24 +108,23 @@ dependencies {
 }
 
 
-tasks.register<Copy>("moveDebugApk") {
-    from(file("$projectDir/build/outputs/apk/debug/app-debug.apk"))
-    into(file("$rootDir"))
-    rename("app-debug.apk", "CryptoScope-debug.apk")
-    doFirst {
-        val targetFile = file("$rootDir/CryptoScope-debug.apk")
-        if (targetFile.exists()) {
-            targetFile.delete()
-        }
-    }
-    doNotTrackState("Avoid file locking issues")
-}
 
 afterEvaluate {
-    tasks.named("assembleDebug") {
-        finalizedBy(tasks.named("moveDebugApk"))
+
+    tasks.findByName("assembleDebug")?.doLast {
+        copy {
+            from(file("$projectDir/build/outputs/apk/debug/app-debug.apk"))
+            into(file("$rootDir"))
+            rename("app-debug.apk", "CryptoScope-debug.apk")
+        }
     }
-    tasks.named("createDebugApkListingFileRedirect") {
-        dependsOn(tasks.named("moveDebugApk"))
+
+    tasks.findByName("assembleRelease")?.doLast {
+        copy {
+            from(file("$projectDir/build/outputs/apk/release/app-release.apk"))
+            into(file("$rootDir"))
+            rename("app-release.apk", "CryptoScope-release.apk")
+        }
     }
+
 }

@@ -77,82 +77,88 @@ fun CryptoWalletScreen(
             }
         ) {
 
-            WalletHeader(
-                modifier = modifier,
-                address = state.currentAddress,
-                blockchain = state.currentBlockchain,
-                imgUrl = state.currentBlockchainImage
-            )
-
-            Text(
-                modifier = modifier.padding(
-                    top = MaterialTheme.paddings.large,
-                    bottom = MaterialTheme.paddings.medium
-                ),
-                text = stringResource(id = com.example.common_ui.R.string.wallet),
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            WalletCard(
-                balance = state.wallet.balance,
-                profit = state.wallet.profit,
-                percentage = state.wallet.percentage
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                navigateToWalletHistory()
-            }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(top = MaterialTheme.paddings.extraLarge),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = com.example.common_ui.R.string.my_coins),
-                    style = MaterialTheme.typography.bodyMedium
+                WalletHeader(
+                    modifier = modifier,
+                    address = state.currentAddress,
+                    blockchain = state.currentBlockchain,
+                    imgUrl = state.currentBlockchainImage
                 )
+
+                Text(
+                    modifier = modifier.padding(
+                        top = MaterialTheme.paddings.large,
+                        bottom = MaterialTheme.paddings.medium
+                    ),
+                    text = stringResource(id = com.example.common_ui.R.string.wallet),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
+                WalletCard(
+                    balance = state.wallet.balance,
+                    profit = state.wallet.profit,
+                    percentage = state.wallet.percentage
+                ) {
+                    navigateToWalletHistory()
+                }
+
                 Row(
-                    modifier = modifier.clickable {
-                        navigateToMyCoins()
-                    },
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = MaterialTheme.paddings.extraLarge),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = modifier.padding(horizontal = MaterialTheme.paddings.small),
-                        text = stringResource(id = com.example.common_ui.R.string.open),
-                        color = MaterialTheme.extraColor.chart,
+                        text = stringResource(id = com.example.common_ui.R.string.my_coins),
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Icon(
-                        painter = painterResource(id = com.example.common_ui.R.drawable.arrow_right),
-                        tint = MaterialTheme.extraColor.chart,
-                        contentDescription = null
-                    )
+                    Row(
+                        modifier = modifier.clickable {
+                            navigateToMyCoins()
+                        },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = modifier.padding(horizontal = MaterialTheme.paddings.small),
+                            text = stringResource(id = com.example.common_ui.R.string.open),
+                            color = MaterialTheme.extraColor.chart,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Icon(
+                            painter = painterResource(id = com.example.common_ui.R.drawable.arrow_right),
+                            tint = MaterialTheme.extraColor.chart,
+                            contentDescription = null
+                        )
+                    }
+
                 }
-            }
 
-            if (state.myCoinsLoading) {
-                BitcoinLoadingIndicator()
-            } else {
-                state.myCoinsError?.let {
-                    Text(
-                        modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                } ?: LazyRow {
-                    items(state.myCoins.size) { index ->
-                        val crypto = state.myCoins[index]
-                        MyCoinsItemSmall(
-                            modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraSmall),
-                            imgUrl = crypto.imgUrl,
-                            symbol = crypto.symbol,
-                            name = crypto.name,
-                            price = crypto.price,
-                            percentOneDay = crypto.percentOneDay.toString()
-                        ) {
+                if (state.myCoinsLoading) {
+                    BitcoinLoadingIndicator()
+                } else {
+                    state.myCoinsError?.let {
+                        Text(
+                            modifier = modifier.padding(vertical = MaterialTheme.paddings.medium),
+                            text = it,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } ?: LazyRow {
+                        items(state.myCoins.size) { index ->
+                            val crypto = state.myCoins[index]
+                            MyCoinsItemSmall(
+                                modifier = modifier.padding(horizontal = MaterialTheme.paddings.extraSmall),
+                                imgUrl = crypto.imgUrl,
+                                symbol = crypto.symbol,
+                                name = crypto.name,
+                                price = crypto.price,
+                                percentOneDay = crypto.percentOneDay.toString()
+                            ) {
 
+                            }
                         }
                     }
                 }
